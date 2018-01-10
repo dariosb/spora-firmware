@@ -9,6 +9,7 @@
 *.o.*
 *.a
 *.su
+*.swo
 *.mod.c
 *.i
 *.lst
