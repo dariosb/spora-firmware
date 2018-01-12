@@ -86,6 +86,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/str&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/mpu9250&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/pushbutton&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/codeless&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/CMSIS/Include&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.933718024" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu99" valueType="enumerated"/>
@@ -266,16 +267,19 @@
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.955273220" name="Cross ARM C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths.767758500" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../../../../../../CMSIS/Include"/>
-									<listOptionValue builtIn="false" value="../../../../../../../devices"/>
-									<listOptionValue builtIn="false" value="../.."/>
-									<listOptionValue builtIn="false" value="../../../../.."/>
-									<listOptionValue builtIn="false" value="../../../../../../../devices/MKL03Z4/drivers"/>
-									<listOptionValue builtIn="false" value="../../../../../../../devices/MKL03Z4"/>
-									<listOptionValue builtIn="false" value="../../../../../../../devices/MKL03Z4/utilities/io"/>
-									<listOptionValue builtIn="false" value="../../../../../../../devices/MKL03Z4/utilities/str"/>
-									<listOptionValue builtIn="false" value="../../../../../../../devices/MKL03Z4/utilities/log"/>
-									<listOptionValue builtIn="false" value="../../../../../../../devices/MKL03Z4/utilities"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/..&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/board/sporaFrdmkl03&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/devices/MKL03Z4&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/drivers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/io&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/log&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/str&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/mpu9250&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/pushbutton&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ble_codeless&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/CMSIS/Include&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.997197032" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu99" valueType="enumerated"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.391302813" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">

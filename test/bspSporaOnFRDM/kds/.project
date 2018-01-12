@@ -52,6 +52,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/bsp.h</locationURI>
 		</link>
 		<link>
+			<name>bsp/codeless</name>
+			<type>2</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/codeless</locationURI>
+		</link>
+		<link>
 			<name>bsp/ksdk</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
