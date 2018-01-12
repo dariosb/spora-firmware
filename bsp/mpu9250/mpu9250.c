@@ -53,8 +53,6 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "fsl_port.h"
 #include "fsl_gpio.h"
-#include "fsl_debug_console.h"
-
 #include "bsp.h"
 #include "mpu9250.h"
 #include "spora.h"
@@ -153,18 +151,13 @@ mpu9250_init(void)
     mpu9250_writeByte( PWR_MGMT_1, 0x80 );
 
     status0_value = mpu9250_readByte(INT_STATUS);
-    PRINTF("\r\nINT_STATUS: %x.\r\n",status0_value);
-
     /* MPU general settings */
     mpu9250_writeByte(GYRO_CONFIG, GYRO_FULL_SCALE_250_DPS);
 
     aux = mpu9250_readByte(GYRO_CONFIG);
-    PRINTF("\r\nGYRO_CONFIG (must be 0x18): 0x%x.\r\n",aux);
-
     /* settup accelerometers range */
     mpu9250_writeByte(ACCEL_CONFIG, ACC_FULL_SCALE_16_G);
     aux = mpu9250_readByte(ACCEL_CONFIG);
-    PRINTF("\r\nACCEL_CONFIG (must be 0x18): 0x%x.\r\n",aux);
 
     /*
      * INT Pin/Bypass:
@@ -175,16 +168,13 @@ mpu9250_init(void)
     aux |= 0x22;
     mpu9250_writeByte(INT_PIN_CFG, aux);
     aux = mpu9250_readByte(INT_PIN_CFG);
-    PRINTF("\r\nINT_PIN_CFG(must be 0x22): %x.\r\n",aux);
 
     /* Test AK8963 reading Who am I */
     aux = ak8963_readByte(WHO_AM_I_AK8963);
-    PRINTF("\r\nWHO_AM_I_AK8963: 0x%x", aux);
 
     /* Sets magnetometer in 16bit continuos mode */
     ak8963_writeByte(AK8963_CNTL, 0x11);
     aux = ak8963_readByte(AK8963_CNTL);
-    PRINTF("\r\nAK8963_CNTL: 0x%x.\r\n",aux);
 
     EXT_WAKE_UP_irqEnable();
 

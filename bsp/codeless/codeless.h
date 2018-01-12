@@ -64,11 +64,11 @@ extern "C" {
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
-typedef void (*Codeless_receiveDataCallBack)(char *p);
+typedef void (*Codeless_rcvMsgHook)(char *p);
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-bool codeless_init(Codeless_receiveDataCallBack *p);
+bool codeless_init(Codeless_rcvMsgHook p);
 void codeless_reset(void);
 void codeles_advertisementStart(void);
 void codeles_advertisementStop(void);

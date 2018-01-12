@@ -33,10 +33,10 @@
  */
 
 /**
- *  \file       sporafrdm.h
- *  \brief      Board Support Package Spora on FRDMKL03 kit.
+ *  \file       codeless_tree.h
+ *  \brief      Murata BLE Codeless AT command SSP´s tree.
  *
- *  \ingroup    bsp
+ *  \ingroup    codeless
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -50,14 +50,11 @@
  */
 
 /* --------------------------------- Module -------------------------------- */
-
-#ifndef __SPORAFRDM_H__
-#define __SPORAFRDM_H__
+#ifndef __CODELESS_TREE_H__
+#define __CODELESS_TREE_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#include "board.h"
-#include "fsl_port.h"
-#include "fsl_gpio.h"
+#include "ssp.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -66,48 +63,18 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
-#ifdef BOARD_NAME
-#undef BOARD_NAME
-#define BOARD_NAME "SPORA-FRDMKL03"
-#endif
-
-/* ================================== GPIO ================================= */
-#ifndef BOARD_EXT_WAKE_UP_GPIO
-#define BOARD_EXT_WAKE_UP_GPIO          GPIOB
-#endif
-#ifndef BOARD_EXT_WAKE_UP_PORT
-#define BOARD_EXT_WAKE_UP_PORT          PORTB
-#endif
-#ifndef BOARD_EXT_WAKE_UP_GPIO_PIN
-#define BOARD_EXT_WAKE_UP_GPIO_PIN      5U
-#endif
-#define BOARD_EXT_WAKE_UP_IRQ           PORTB_IRQn
-#define BOARD_EXT_WAKE_UP_IRQ_Handler   PORTB_IRQHandler
-#define BOARD_EXT_WAKE_UP_NAME          "EXT_WAKE_UP"
-
-#ifndef BOARD_PUSH_BUTTON_GPIO
-#define BOARD_PUSH_BUTTON_GPIO          GPIOA
-#endif
-#ifndef BOARD_PUSH_BUTTON_PORT
-#define BOARD_PUSH_BUTTON_PORT          PORTA
-#endif
-#ifndef BOARD_PUSH_BUTTON_GPIO_PIN
-#define BOARD_PUSH_BUTTON_GPIO_PIN      7U
-#endif
-#define BOARD_PUSH_BUTTON_IRQ           PORTA_IRQn
-#define BOARD_PUSH_BUTTON_IRQ_Handler   PORTA_IRQHandler
-#define BOARD_PUSH_BUTTON_NAME          "PUSH_BUTTON"
-
-/* ================================= LPUART ================================ */
-#define CODELESS_LPUART                 LPUART0
-#define CODELESS_LPUART_CLKSRC          SYS_CLK
-#define CODELESS_LPUART_CLK_FREQ        CLOCK_GetFreq(SYS_CLK)
-#define CODELESS_LPUART_IRQn            LPUART0_IRQn
-#define CODELESS_LPUART_IRQHandler      LPUART0_IRQHandler
-#define CODELESS_LPUART_BAUDRATE        57600
-
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
+SSP_DCLR_NORMAL_NODE    root;
+
+#if 0
+SSP_DCLR_TRN_NODE		cid1,
+						at2,
+						mreg_rd2,
+						frm1,
+						atdt;
+#endif
+
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

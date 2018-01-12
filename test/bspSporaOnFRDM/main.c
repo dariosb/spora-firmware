@@ -51,19 +51,25 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "fsl_debug_console.h"
 #include "pin_mux.h"
 #include "bsp.h"
 #include "i2c.h"
 #include "mpu9250.h"
 #include "pushbutton.h"
 #include "spora.h"
+#include "codeless.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
+void
+codelessHook(char *p)
+{
+
+}
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
@@ -77,13 +83,11 @@ main(void)
 
     I2C_releaseBus();
     BOARD_I2C_ConfigurePins();
-    BOARD_InitDebugConsole();
 
     GPIO_PinInit(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, &led_config);
     LED_RED_TOGGLE();
 
-    PRINTF("\r\nSpora BSP test on FRDMKL03\r\n");
-
+    codeless_init(codelessHook);
     if (mpu9250_init() == true)
     {
         pushbutton_init();

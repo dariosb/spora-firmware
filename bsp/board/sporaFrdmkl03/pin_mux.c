@@ -76,23 +76,23 @@ void BOARD_InitPins(void)
     CLOCK_EnableClock(kCLOCK_PortB);
     CLOCK_EnableClock(kCLOCK_PortA);
 
+    /* PORTB10 (pin ?) is configured as PTB10 */
+    PORT_SetPinMux(PORTB, 10U, kPORT_MuxAsGpio);
+
+    /* PORTB11 (pin ?) is configured as PTB11 */
+    PORT_SetPinMux(PORTB, 11U, kPORT_MuxAsGpio);
+
+    /* PORTB13 (pin ?) is configured as PTB13 */
+    PORT_SetPinMux(PORTB, 13U, kPORT_MuxAsGpio);
+
+    /* PORTA6 (pin 14) is configured as PTA6 */
+    PORT_SetPinMux(PORTA, 6U, kPORT_MuxAsGpio);
+
     /* PORTB1 (pin 13) is configured as LPUART0_TX */
     PORT_SetPinMux(PORTB, 1U, kPORT_MuxAlt2);
 
     /* PORTB2 (pin 14) is configured as LPUART0_RX */
     PORT_SetPinMux(PORTB, 2U, kPORT_MuxAlt2);
-
-    /* PORTB10 (pin 9) is configured as PTB10 */
-    PORT_SetPinMux(PORTB, 10U, kPORT_MuxAsGpio);
-
-    /* PORTB11 (pin 9) is configured as PTB11 */
-    PORT_SetPinMux(PORTB, 11U, kPORT_MuxAsGpio);
-
-    /* PORTB13 (pin 9) is configured as PTB13 */
-    PORT_SetPinMux(PORTB, 13U, kPORT_MuxAsGpio);
-
-    /* PORTA6 (pin 14) is configured as PTA6 */
-    PORT_SetPinMux(PORTA, 6U, kPORT_MuxAsGpio);
 
     SIM->SOPT5 = ((SIM->SOPT5 &
                    /* Mask bits to zero which are setting */
