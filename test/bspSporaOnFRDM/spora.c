@@ -75,8 +75,6 @@ void
 spora_task(void)
 {
     Mpu9250_data_st data;
-    short int a;
-    int16_t ax;/*, ay, az; */
 
     if (!spora_running)
     {
@@ -87,20 +85,15 @@ spora_task(void)
 
     mpu9250_read(&data);
 
-    ax = data.axh << 8 | data.axl;
-    a = data.axh << 8 | data.axl;
+    /* temp[ºC] = (temp / 333.87) + 21 */
+    PRINTF("Temperature: %i\r\n", data.temp); 
 
     PRINTF("MPU9250_INT_STATUS: 0x%x\r\n", data.status);
+    PRINTF("\tAcc: %i\t%i\t%i\r\n", data.ax, data.ay, data.az );
+    PRINTF("\tGyr: %i\t%i\t%i\r\n", data.gx, data.gy, data.gz );
 
-    PRINTF("AK8963_ST1: 0x%x\r\n",
-           data.magnet);
-
-    PRINTF("Acc X: 0x [ %X %X ]: %i\r\n",
-           data.axh,
-           data.axl,
-           ax);
-
-    PRINTF("    X short int: %i.\r\n", a);
+    PRINTF("AK8963_ST1: 0x%x\r\n", data.magnet);
+    PRINTF("\tMag: %i\t%i\t%i\r\n", data.mx, data.my, data.mz);
 }
 
 /* ------------------------------ End of file ------------------------------ */

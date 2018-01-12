@@ -68,15 +68,21 @@ extern "C" {
 
 typedef struct
 {
+    int16_t temp;
     uint8_t status;
+    int16_t ax;
+    int16_t ay;
+    int16_t az;
+    int16_t gx;
+    int16_t gy;
+    int16_t gz;
     uint8_t magnet;
-    uint8_t axh;
-    uint8_t axl;
-    uint8_t ayh;
-    uint8_t ayl;
-    uint8_t azh;
-    uint8_t azl;
+    int16_t mx;
+    int16_t my;
+    int16_t mz;
 }Mpu9250_data_st;
+
+typedef float SelfTest[6];
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */

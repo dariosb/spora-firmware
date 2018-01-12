@@ -96,12 +96,45 @@ BOARD_EXT_WAKE_UP_IRQ_Handler(void)
 void
 mpu9250_read(Mpu9250_data_st *p)
 {
+    p->temp = mpu9250_readByte(TEMP_OUT_H) << 8 |
+              mpu9250_readByte(TEMP_OUT_L);
+
+    p->ax = mpu9250_readByte(ACCEL_XOUT_H) << 8 |
+            mpu9250_readByte(ACCEL_XOUT_L);
+    
+    p->ay = mpu9250_readByte(ACCEL_YOUT_H) << 8 |
+            mpu9250_readByte(ACCEL_YOUT_L);
+    
+    p->az = mpu9250_readByte(ACCEL_ZOUT_H) << 8 |
+            mpu9250_readByte(ACCEL_ZOUT_L);
+    
+    p->gx = mpu9250_readByte(GYRO_XOUT_H) << 8 |
+            mpu9250_readByte(GYRO_XOUT_L);
+    
+    p->gy = mpu9250_readByte(GYRO_YOUT_H) << 8 |
+            mpu9250_readByte(GYRO_YOUT_L);
+    
+    p->gz = mpu9250_readByte(GYRO_ZOUT_H) << 8 |
+            mpu9250_readByte(GYRO_ZOUT_L);
+    
     p->status = mpu9250_readByte(INT_STATUS);
 
-    p->axh = mpu9250_readByte(ACCEL_XOUT_H);
-    p->axl = mpu9250_readByte(ACCEL_XOUT_L);
-
     p->magnet = ak8963_readByte(AK8963_ST1);
+
+    if(p->magnet != 0x00)
+    {
+        p->mx = ak8963_readByte(AK8963_XOUT_H) << 8 |
+                ak8963_readByte(AK8963_XOUT_L);
+
+        p->my = ak8963_readByte(AK8963_YOUT_H) << 8 |
+                ak8963_readByte(AK8963_YOUT_L);
+
+        p->mz = ak8963_readByte(AK8963_ZOUT_H) << 8 |
+                ak8963_readByte(AK8963_ZOUT_L);
+
+        ak8963_writeByte(AK8963_CNTL, 0x11);
+    }
+
 }
 
 bool
@@ -116,15 +149,14 @@ mpu9250_init(void)
         return false;
     }
 
+    /* MPU reset */
+    mpu9250_writeByte( PWR_MGMT_1, 0x80 );
+
     status0_value = mpu9250_readByte(INT_STATUS);
     PRINTF("\r\nINT_STATUS: %x.\r\n",status0_value);
 
-    aux = mpu9250_readByte(GYRO_CONFIG);
-    PRINTF("\r\nGYRO_CONFIG (must be 0x18): 0x%x.\r\n",aux);
-
     /* MPU general settings */
-
-    mpu9250_writeByte(GYRO_CONFIG, GYRO_FULL_SCALE_2000_DPS);
+    mpu9250_writeByte(GYRO_CONFIG, GYRO_FULL_SCALE_250_DPS);
 
     aux = mpu9250_readByte(GYRO_CONFIG);
     PRINTF("\r\nGYRO_CONFIG (must be 0x18): 0x%x.\r\n",aux);
@@ -149,8 +181,8 @@ mpu9250_init(void)
     aux = ak8963_readByte(WHO_AM_I_AK8963);
     PRINTF("\r\nWHO_AM_I_AK8963: 0x%x", aux);
 
-    /* Request first magnetometer single measurement */
-    ak8963_writeByte(AK8963_CNTL, 0x01);
+    /* Sets magnetometer in 16bit continuos mode */
+    ak8963_writeByte(AK8963_CNTL, 0x11);
     aux = ak8963_readByte(AK8963_CNTL);
     PRINTF("\r\nAK8963_CNTL: 0x%x.\r\n",aux);
 
@@ -161,6 +193,9 @@ mpu9250_init(void)
     aux = mpu9250_readByte(PWR_MGMT_1);
     aux &= 0x8F; /*clear bits 4 5 y 6 */
     mpu9250_writeByte(PWR_MGMT_1,aux);
+
+    /* Disable Accel an Gyro */
+    mpu9250_writeByte(PWR_MGMT_2,0x6C);
 
     /* Enable Axis */
     aux = mpu9250_readByte(PWR_MGMT_2);
@@ -188,20 +223,25 @@ mpu9250_init(void)
     mpu9250_writeByte(MOT_DETECT_CTRL, aux);
 
     /* Step 5: */
-    /* Setup movemente detection threshold */
+    /* Setup Motion detection threshold */
     aux = mpu9250_readByte(WOM_THR);
     aux = 0xFF;
     mpu9250_writeByte(WOM_THR, aux);
 
     /* Step 6: */
+    /* Set Frequency of Wake-up */
     aux = mpu9250_readByte(LP_ACCEL_ODR);
     aux = 0x08;
     mpu9250_writeByte(LP_ACCEL_ODR, aux);
 
     /* Step 7: */
+    /* Enable cycle mode */
     aux = mpu9250_readByte(PWR_MGMT_1);
-    aux |= 0x20; /*or bit 5 */
+    aux |= 0x20;
     mpu9250_writeByte(PWR_MGMT_1, aux);
+
+    /* Enable Accel an Gyro */
+    mpu9250_writeByte(PWR_MGMT_2,0x00);
 
     return true;
 }
