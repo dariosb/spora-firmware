@@ -78,17 +78,17 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/..&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/board/sporaFrdmkl03&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/devices/MKL03Z4&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/drivers&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/io&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/log&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/str&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/mpu9250&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/pushbutton&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/codeless&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/codeless/ssp&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/drivers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/io&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/log&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/str&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/devices/MKL03Z4&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ssp/src&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.933718024" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu99" valueType="enumerated"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.2902121173" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
@@ -108,15 +108,16 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/..&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/board/sporaFrdmkl03&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/devices/MKL03Z4&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/drivers&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/io&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/log&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/str&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/mpu9250&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/pushbutton&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/devices/MKL03Z4&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/drivers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/io&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/log&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/str&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ssp/src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/CMSIS/Include&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.7508785836" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG"/>
@@ -271,16 +272,17 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/..&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/board/sporaFrdmkl03&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/devices/MKL03Z4&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/drivers&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/io&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/log&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/str&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/mpu9250&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/pushbutton&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ble_codeless&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/codeless&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/drivers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/io&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/log&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/str&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/devices/MKL03Z4&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ssp/src&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.997197032" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu99" valueType="enumerated"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.391302813" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
@@ -301,15 +303,15 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/..&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/board/sporaFrdmkl03&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/devices/MKL03Z4&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/drivers&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/io&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/log&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/utilities/str&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/mpu9250&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/pushbutton&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../bsp/ksdk2.3/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/devices/MKL03Z4&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/drivers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/io&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/log&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/str&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/CMSIS/Include&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.3162449327" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG"/>

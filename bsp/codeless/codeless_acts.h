@@ -54,6 +54,8 @@
 #define __CODELESS_ACTS_H__
 
 /* ----------------------------- Include files ----------------------------- */
+#include "codeless.h"
+
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
 extern "C" {
@@ -64,6 +66,17 @@ extern "C" {
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
+void codeless_sspInit(Codeless_rcvMsgHook p);
+
+void cmdOk(unsigned char pos);
+void cmdError(unsigned char pos);
+void inRPrint(unsigned char data);
+void rPrintOk(unsigned char pos);
+void gapStatusCollect(unsigned char data);
+void gapStatusOk(unsigned char pos);
+void rcvCollect(unsigned char data);
+void rcvOk(unsigned char data);
+
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }

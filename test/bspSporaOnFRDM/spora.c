@@ -51,8 +51,11 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
+#include <stdio.h>
 #include "spora.h"
 #include "mpu9250.h"
+#include "codeless.h"
+#include "codeless_cmd.h"
 #include "fsl_debug_console.h"
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -61,6 +64,7 @@
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 static bool spora_running = false;
+static char txBuff[300];
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -86,6 +90,7 @@ spora_task(void)
     mpu9250_read(&data);
 
     /* temp[ºC] = (temp / 333.87) + 21 */
+#if 0
     PRINTF("Temperature: %i\r\n", data.temp); 
 
     PRINTF("MPU9250_INT_STATUS: 0x%x\r\n", data.status);
@@ -94,6 +99,17 @@ spora_task(void)
 
     PRINTF("AK8963_ST1: 0x%x\r\n", data.magnet);
     PRINTF("\tMag: %i\t%i\t%i\r\n", data.mx, data.my, data.mz);
+#endif
+    sprintf(txBuff, "%i,0x%x,%i,%i,%i,%i,%i,%i,0x%x,%i,%i,%i,%s",
+                            data.temp,
+                            data.status,
+                            data.ax, data.ay, data.az,
+                            data.gx, data.gy, data.gz,
+                            data.magnet,
+                            data.mx, data.my, data.mz,
+                            "\\EOSM");
+
+    codeles_sendData(txBuff);
 }
 
 /* ------------------------------ End of file ------------------------------ */

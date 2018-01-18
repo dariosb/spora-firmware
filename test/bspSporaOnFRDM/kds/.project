@@ -57,11 +57,6 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/codeless</locationURI>
 		</link>
 		<link>
-			<name>bsp/ksdk</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>bsp/mpu9250</name>
 			<type>2</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/mpu9250</locationURI>
@@ -92,24 +87,29 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/board/sporaFrdmkl03</locationURI>
 		</link>
 		<link>
-			<name>bsp/ksdk/devices</name>
+			<name>third-party/ksdk/drivers</name>
 			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/third-party/ksdk2.3/drivers</locationURI>
 		</link>
 		<link>
-			<name>bsp/ksdk/drivers</name>
+			<name>third-party/ksdk/utilities</name>
 			<type>2</type>
-			<locationURI>copy_PARENT123/bsp/ksdk2.3/drivers</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/third-party/ksdk2.3/utilities</locationURI>
 		</link>
 		<link>
-			<name>bsp/ksdk/utilities</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ksdk2.3/utilities</locationURI>
+			<name>third-party/ssp/ssp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/third-party/ssp/src/ssp.c</locationURI>
 		</link>
 		<link>
-			<name>bsp/ksdk/devices/MKL03Z4</name>
+			<name>third-party/ssp/ssp.h</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/third-party/ssp/src/ssp.h</locationURI>
+		</link>
+		<link>
+			<name>third-party/ksdk/devices/MKL03Z4</name>
 			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/bsp/ksdk2.3/devices/MKL03Z4</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/third-party/ksdk2.3/devices/MKL03Z4</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

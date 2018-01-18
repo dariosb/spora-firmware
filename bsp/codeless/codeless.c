@@ -54,7 +54,8 @@
 #include "fsl_lpuart.h"
 #include "bsp.h"
 #include "codeless.h"
-#include "codeless_tree.h"
+#include "codeless_acts.h"
+#include "codeless_cmd.h"
 #include "ssp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -62,28 +63,7 @@
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static Codeless_rcvMsgHook rcv_cb;
-
 /* ----------------------- Local function prototypes ----------------------- */
-void CODELESS_LPUART_IRQHandler(void)
-{
-    uint8_t data;
-
-    /* If new data arrived. */
-    if ((kLPUART_RxDataRegFullFlag)&LPUART_GetStatusFlags(CODELESS_LPUART))
-    {
-        data = LPUART_ReadByte(CODELESS_LPUART);
-        ssp_do_search(data);
-    }
-    /* Add for ARM errata 838869, affects Cortex-M4, 
-     * Cortex-M4F Store immediate overlapping exception return operation 
-     * might vector to incorrect interrupt
-     */
-#if defined __CORTEX_M && (__CORTEX_M == 4U)
-    __DSB();
-#endif    
-}
-
 static
 void
 lpuart_init(void)
@@ -114,26 +94,78 @@ lpuart_init(void)
     EnableIRQ(CODELESS_LPUART_IRQn);
 }
 
+static
+void
+lpuart_tx(const char *data)
+{
+    LPUART_WriteBlocking(CODELESS_LPUART, (const uint8_t *)data, strlen(data));
+    LPUART_WriteBlocking(CODELESS_LPUART, "\r", 1);
+}
+
+extern char inSync;
+static
+bool
+waitSync(void)
+{
+    char syncCount = 0;
+    char rtry = 0;
+
+    lpuart_tx(ClessSync.cmd);
+
+    while(!inSync)
+    {
+        if( ++syncCount > 1000 )
+        {
+            if( ++rtry < 4)
+            {
+                lpuart_tx(ClessSync.cmd);
+                syncCount = 0;
+            }
+            else
+                return false;
+        }
+    }
+
+    return true;
+}
+
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
+void CODELESS_LPUART_IRQHandler(void)
+{
+    uint8_t data;
+
+    /* If new data arrived. */
+    if ((kLPUART_RxDataRegFullFlag)&LPUART_GetStatusFlags(CODELESS_LPUART))
+    {
+        data = LPUART_ReadByte(CODELESS_LPUART);
+        ssp_doSearch(data);
+    }
+    /* Add for ARM errata 838869, affects Cortex-M4,
+     * Cortex-M4F Store immediate overlapping exception return operation
+     * might vector to incorrect interrupt
+     */
+#if defined __CORTEX_M && (__CORTEX_M == 4U)
+    __DSB();
+#endif
+}
+
 bool
 codeless_init(Codeless_rcvMsgHook p)
 {
-    rcv_cb = p;
-
-    ssp_init(&root);
+    codeless_sspInit(p);
 
     lpuart_init();
 
-    LPUART_WriteBlocking(CODELESS_LPUART, "AT\r", 3);
+    lpuart_tx(ClessSync.cmd);
 
-    return true;
+    return waitSync();
 }
 
 void
 codeless_reset(void)
 {
-
+    lpuart_tx(ClessReset.cmd);
 }
 
 void
@@ -155,7 +187,9 @@ void codeles_gapDisconnect(void)
 
 void codeles_sendData(char *p)
 {
-
+    LPUART_WriteBlocking(CODELESS_LPUART, ClessSendData.cmd, 
+                                            strlen(ClessSendData.cmd));
+    lpuart_tx(p);
 }
 
 /* ------------------------------ End of file ------------------------------ */

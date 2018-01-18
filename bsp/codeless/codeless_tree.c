@@ -54,19 +54,73 @@
 #include <stdlib.h>
 #include "codeless_tree.h"
 #include "codeless_acts.h"
+#include "codeless_cmd.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
-SSP_CREATE_NORMAL_NODE( root );
-SSP_CREATE_BR_TABLE( root )
-#if 0
-	SSPBR( "AT",		NULL, 				&at		),
-	SSPBR( "RING\r\n",	inc_call,			&root	),
-	SSPBR( "CID",		cid_call, 			&cid	),
-	SSPBR( "NO CARRIER\r\n",	rx_frm_nocarrier,	&root ),
-#endif
+SSP_CREATE_NORMAL_NODE(root);
+SSP_CREATE_BR_TABLE(root)
+	SSPBR("AT",              NULL,   &at),
+	SSPBR(SPORA_RX_MSJ_START, NULL,   &rcv),
+SSP_END_BR_TABLE
+
+/*
+ * AT
+ */
+SSP_CREATE_NORMAL_NODE(at);
+SSP_CREATE_BR_TABLE(at)
+	SSPBR("+",     NULL,   &atPlus),
+	SSPBR("r",     NULL,   &atr),
+	SSPBR(CODELESS_OK,     cmdOk,     &root),
+	SSPBR(CODELESS_ERROR,  cmdError,  &root),
+SSP_END_BR_TABLE
+
+/*
+ * AT+
+ */
+SSP_CREATE_NORMAL_NODE(atPlus);
+SSP_CREATE_BR_TABLE(atPlus)
+	SSPBR("GAPSTATUS\r\n", NULL,      &gapStatus),
+	SSPBR(CODELESS_OK,     cmdOk,     &root),
+	SSPBR(CODELESS_ERROR,  cmdError,  &root),
+SSP_END_BR_TABLE
+
+/*
+ * ATr
+ */
+SSP_CREATE_NORMAL_NODE(atr);
+SSP_CREATE_BR_TABLE(atr)
+	SSPBR("+PRINT=",        NULL,       &rPrint),
+	SSPBR(CODELESS_OK,      cmdOk,      &root),
+	SSPBR(CODELESS_ERROR,   cmdError,   &root),
+SSP_END_BR_TABLE
+
+/*
+ * ATr+PRINT
+ */
+SSP_CREATE_TRN_NODE(rPrint, inRPrint);
+SSP_CREATE_BR_TABLE(rPrint)
+	SSPBR("\\EOSM",  rPrintOk,    &root),
+	SSPBR(CODELESS_ERROR,    cmdError,    &root),
+SSP_END_BR_TABLE
+
+/*
+ * AT+GAPSTATUS
+ */
+SSP_CREATE_TRN_NODE(gapStatus, gapStatusCollect);
+SSP_CREATE_BR_TABLE(gapStatus)
+	SSPBR(CODELESS_OK,     gapStatusOk, &root),
+	SSPBR(CODELESS_ERROR,  cmdError,    &root),
+SSP_END_BR_TABLE
+
+/*
+ * +RCV
+ */
+SSP_CREATE_TRN_NODE(rcv, rcvCollect);
+SSP_CREATE_BR_TABLE(rcv)
+	SSPBR(SPORA_RX_MSJ_END, rcvOk,  &root),
 SSP_END_BR_TABLE
 
 /* ---------------------------- Local variables ---------------------------- */

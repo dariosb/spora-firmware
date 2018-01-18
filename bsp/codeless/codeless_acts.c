@@ -58,11 +58,83 @@
 #include "codeless_tree.h"
 
 /* ----------------------------- Local macros ------------------------------ */
+#define rxBufferEnd     (rxBuffer+sizeof(rxBuffer)/sizeof(char)-1)
+
 /* ------------------------------- Constants ------------------------------- */
+#define CLESS_RXBUFF_SIZE   20
+
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
+static Codeless_rcvMsgHook rcv_cb;
+static char rxBuffer[CLESS_RXBUFF_SIZE];
+static char *prx;
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
+void
+codeless_sspInit(Codeless_rcvMsgHook p)
+{
+    rcv_cb = p;
+	ssp_init(&root);
+    prx = rxBuffer;
+}
+
+
+
+char inSync = 0;
+
+void
+cmdOk(unsigned char pos)
+{
+    inSync = 1;
+}
+
+void
+cmdError(unsigned char pos)
+{
+
+}
+
+void
+inRPrint(unsigned char data)
+{
+
+}
+
+void
+rPrintOk(unsigned char pos)
+{
+
+}
+
+void
+gapStatusCollect(unsigned char data)
+{
+
+}
+
+void
+gapStatusOk(unsigned char data)
+{
+
+}
+
+void
+rcvCollect(unsigned char data)
+{
+    if(prx < rxBufferEnd)
+        *prx++ = data;
+}
+
+void
+rcvOk(unsigned char data)
+{
+    *prx = '\0';
+    prx=rxBuffer;
+    (*rcv_cb)(rxBuffer);
+
+}
+
 /* ------------------------------ End of file ------------------------------ */

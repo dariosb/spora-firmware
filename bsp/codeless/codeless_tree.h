@@ -65,15 +65,14 @@ extern "C" {
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
-SSP_DCLR_NORMAL_NODE    root;
+SSP_DCLR_NORMAL_NODE    root,
+                        at,
+                        atPlus,
+                        atr;
 
-#if 0
-SSP_DCLR_TRN_NODE		cid1,
-						at2,
-						mreg_rd2,
-						frm1,
-						atdt;
-#endif
+SSP_DCLR_TRN_NODE		gapStatus,
+                        rPrint,
+                        rcv;
 
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */

@@ -138,7 +138,6 @@ mpu9250_read(Mpu9250_data_st *p)
 bool
 mpu9250_init(void)
 {
-    uint8_t status0_value = 0;
     uint8_t aux;
 
     I2C_init();
@@ -150,7 +149,7 @@ mpu9250_init(void)
     /* MPU reset */
     mpu9250_writeByte( PWR_MGMT_1, 0x80 );
 
-    status0_value = mpu9250_readByte(INT_STATUS);
+    aux = mpu9250_readByte(INT_STATUS);
     /* MPU general settings */
     mpu9250_writeByte(GYRO_CONFIG, GYRO_FULL_SCALE_250_DPS);
 

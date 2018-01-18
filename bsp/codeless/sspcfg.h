@@ -22,5 +22,4 @@
 
 #define SSP_EN_NODE_NAME				1
 
-
 #endif
