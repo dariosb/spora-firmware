@@ -25,14 +25,18 @@
   <packagedElement xmi:type="uml:Actor" xmi:id="_MPMfoABVEeiuO-25AFpe-g" name="Spora"/>
   <packagedElement xmi:type="uml:Actor" xmi:id="_R6z-oABVEeiuO-25AFpe-g" name="BleMgr"/>
   <packagedElement xmi:type="uml:UseCase" xmi:id="_Ija0oABZEeiuO-25AFpe-g" name="Comunicar">
-    <include xmi:id="_AqogMABpEeiuO-25AFpe-g" addition="_NwSawABcEeiuO-25AFpe-g"/>
+    <ownedComment xmi:id="_asBMYACTEeixWoEUKkuEbw" annotatedElement="_Ija0oABZEeiuO-25AFpe-g">
+      <body>Description: Transmitir las variables de procesadas de los sensores y recibir el perfil de usuario hacia / desde la Android app.&#xD;
+Preconditions: Conexion BLE establecida &amp;&amp; (Pulsación &lt; 3seg || movimiento brusco )&#xD;
+Postconditions: Reposo.</body>
+    </ownedComment>
   </packagedElement>
   <packagedElement xmi:type="uml:Actor" xmi:id="_Ns1lgABZEeiuO-25AFpe-g" name="SporaUser">
     <eAnnotations xmi:id="_Ns2MkABZEeiuO-25AFpe-g" source="http://www.eclipse.org/uml2/2.0.0/UML">
       <details xmi:id="_Ns2MkQBZEeiuO-25AFpe-g" key="Human"/>
     </eAnnotations>
   </packagedElement>
-  <packagedElement xmi:type="uml:Actor" xmi:id="_XKt1MABZEeiuO-25AFpe-g" name="AndroidApp"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_XKt1MABZEeiuO-25AFpe-g" name="SporaAPK"/>
   <packagedElement xmi:type="uml:Association" xmi:id="_bGBNIABZEeiuO-25AFpe-g" memberEnd="_bGB0MABZEeiuO-25AFpe-g _bGB0MQBZEeiuO-25AFpe-g">
     <ownedEnd xmi:id="_bGB0MABZEeiuO-25AFpe-g" type="_Ns1lgABZEeiuO-25AFpe-g" association="_bGBNIABZEeiuO-25AFpe-g"/>
     <ownedEnd xmi:id="_bGB0MQBZEeiuO-25AFpe-g" type="_Ija0oABZEeiuO-25AFpe-g" association="_bGBNIABZEeiuO-25AFpe-g"/>
@@ -42,7 +46,11 @@
     <ownedEnd xmi:id="_biHTQgBZEeiuO-25AFpe-g" type="_Ija0oABZEeiuO-25AFpe-g" association="_biHTQABZEeiuO-25AFpe-g"/>
   </packagedElement>
   <packagedElement xmi:type="uml:UseCase" xmi:id="_gZNvoABaEeiuO-25AFpe-g" name="Configurar">
-    <include xmi:id="_K3DQ4ABpEeiuO-25AFpe-g" addition="_NwSawABcEeiuO-25AFpe-g"/>
+    <ownedComment xmi:id="_WVlXoACTEeixWoEUKkuEbw" annotatedElement="_gZNvoABaEeiuO-25AFpe-g">
+      <body>Description: Recibir y almacenar en memoria no volatil el perfil de usuario y sencibilidad desde la Android App.&#xD;
+Preconditions: Conexion BLE establecida.&#xD;
+Postconditions: Dispositivo configurado.</body>
+    </ownedComment>
   </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_x4b_kABaEeiuO-25AFpe-g" memberEnd="_x4b_kQBaEeiuO-25AFpe-g _x4b_kgBaEeiuO-25AFpe-g">
     <ownedEnd xmi:id="_x4b_kQBaEeiuO-25AFpe-g" association="_x4b_kABaEeiuO-25AFpe-g"/>
@@ -52,7 +60,13 @@
     <ownedEnd xmi:id="_5ovTIABaEeiuO-25AFpe-g" type="_XKt1MABZEeiuO-25AFpe-g" association="_5ousEABaEeiuO-25AFpe-g"/>
     <ownedEnd xmi:id="_5ovTIQBaEeiuO-25AFpe-g" type="_gZNvoABaEeiuO-25AFpe-g" association="_5ousEABaEeiuO-25AFpe-g"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:UseCase" xmi:id="_NwSawABcEeiuO-25AFpe-g" name="Emparejar"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_NwSawABcEeiuO-25AFpe-g" name="Emparejar">
+    <ownedComment xmi:id="_Y-mBQACTEeixWoEUKkuEbw" annotatedElement="_NwSawABcEeiuO-25AFpe-g">
+      <body>Description: Gestionar la conexión BLE entre el Spora y Android APP. &#xD;
+Preconditions: Spora descubrible, Android App visualizando el Spora intenta conectar, &#xD;
+Postconditions: Conexion BLE establecida.</body>
+    </ownedComment>
+  </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_UIghEABcEeiuO-25AFpe-g" memberEnd="_UIhIIABcEeiuO-25AFpe-g _UIhIIQBcEeiuO-25AFpe-g">
     <ownedEnd xmi:id="_UIhIIABcEeiuO-25AFpe-g" type="_Ns1lgABZEeiuO-25AFpe-g" association="_UIghEABcEeiuO-25AFpe-g"/>
     <ownedEnd xmi:id="_UIhIIQBcEeiuO-25AFpe-g" type="_NwSawABcEeiuO-25AFpe-g" association="_UIghEABcEeiuO-25AFpe-g"/>
@@ -60,5 +74,27 @@
   <packagedElement xmi:type="uml:Association" xmi:id="_U5kKkABcEeiuO-25AFpe-g" memberEnd="_U5kKkQBcEeiuO-25AFpe-g _U5kKkgBcEeiuO-25AFpe-g">
     <ownedEnd xmi:id="_U5kKkQBcEeiuO-25AFpe-g" type="_XKt1MABZEeiuO-25AFpe-g" association="_U5kKkABcEeiuO-25AFpe-g"/>
     <ownedEnd xmi:id="_U5kKkgBcEeiuO-25AFpe-g" type="_NwSawABcEeiuO-25AFpe-g" association="_U5kKkABcEeiuO-25AFpe-g"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_vs0f8ACDEeixWoEUKkuEbw" name="Detectar">
+    <ownedComment xmi:id="_6CfgAACTEeixWoEUKkuEbw" annotatedElement="_vs0f8ACDEeixWoEUKkuEbw">
+      <body>Description: Detectar movimientos superiores al umbral preseteado y presion de pulsador &#xD;
+Preconditions: &#xD;
+Postconditions: </body>
+    </ownedComment>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_995_8ACDEeixWoEUKkuEbw" name="Mostrar">
+    <ownedComment xmi:id="_n3K_EACTEeixWoEUKkuEbw" annotatedElement="_995_8ACDEeixWoEUKkuEbw">
+      <body>Description: Mostrar el estado de la conexión, indicar detección de movimientos bruscos y estado de la bateria.&#xD;
+Preconditions: &#xD;
+Postconditions: </body>
+    </ownedComment>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_p3LH8ACTEeixWoEUKkuEbw" memberEnd="_p3LH8QCTEeixWoEUKkuEbw _p3LH8gCTEeixWoEUKkuEbw">
+    <ownedEnd xmi:id="_p3LH8QCTEeixWoEUKkuEbw" type="_995_8ACDEeixWoEUKkuEbw" association="_p3LH8ACTEeixWoEUKkuEbw"/>
+    <ownedEnd xmi:id="_p3LH8gCTEeixWoEUKkuEbw" type="_Ns1lgABZEeiuO-25AFpe-g" association="_p3LH8ACTEeixWoEUKkuEbw"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_79LrEACTEeixWoEUKkuEbw" memberEnd="_79LrEQCTEeixWoEUKkuEbw _79LrEgCTEeixWoEUKkuEbw">
+    <ownedEnd xmi:id="_79LrEQCTEeixWoEUKkuEbw" type="_vs0f8ACDEeixWoEUKkuEbw" association="_79LrEACTEeixWoEUKkuEbw"/>
+    <ownedEnd xmi:id="_79LrEgCTEeixWoEUKkuEbw" type="_Ns1lgABZEeiuO-25AFpe-g" association="_79LrEACTEeixWoEUKkuEbw"/>
   </packagedElement>
 </uml:Model>
