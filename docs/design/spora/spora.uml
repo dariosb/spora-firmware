@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_KY07QABSEeiuO-25AFpe-g" name="NewModel">
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_To-Q8ABSEeiuO-25AFpe-g" name="Scenario_0"/>
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_XiUhEABSEeiuO-25AFpe-g" name="Scenario_1">
+    <ownedAttribute xmi:id="_HLZOkABVEeiuO-25AFpe-g" name="Actor1" type="_HLYAcABVEeiuO-25AFpe-g"/>
+    <ownedAttribute xmi:id="_MPNGsQBVEeiuO-25AFpe-g" name="Actor2" type="_MPMfoABVEeiuO-25AFpe-g"/>
+    <ownedAttribute xmi:id="_R6z-ogBVEeiuO-25AFpe-g" name="Actor3" type="_R6z-oABVEeiuO-25AFpe-g"/>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_ZojtcQBVEeiuO-25AFpe-g" name="Message_0"/>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_6Epv4QBWEeiuO-25AFpe-g" name="Message_1"/>
+    <lifeline xmi:id="_HLYngABVEeiuO-25AFpe-g" name="Actor1" represents="_HLZOkABVEeiuO-25AFpe-g" coveredBy="_ZojtcgBVEeiuO-25AFpe-g"/>
+    <lifeline xmi:id="_MPNGsABVEeiuO-25AFpe-g" name="Actor2" represents="_MPNGsQBVEeiuO-25AFpe-g" coveredBy="_ZojtcwBVEeiuO-25AFpe-g _ZokUgABVEeiuO-25AFpe-g _ZokUgQBVEeiuO-25AFpe-g _6Epv4gBWEeiuO-25AFpe-g"/>
+    <lifeline xmi:id="_R6z-oQBVEeiuO-25AFpe-g" name="Actor3" represents="_R6z-ogBVEeiuO-25AFpe-g" coveredBy="_6Epv4wBWEeiuO-25AFpe-g _6Epv5ABWEeiuO-25AFpe-g _6EqW8ABWEeiuO-25AFpe-g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_ZojtcgBVEeiuO-25AFpe-g" name="Message_0_sender" covered="_HLYngABVEeiuO-25AFpe-g" message="_ZojtcABVEeiuO-25AFpe-g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_ZojtcwBVEeiuO-25AFpe-g" name="Message_0_receiver" covered="_MPNGsABVEeiuO-25AFpe-g" message="_ZojtcABVEeiuO-25AFpe-g"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_ZokUgABVEeiuO-25AFpe-g" name="Message_0" covered="_MPNGsABVEeiuO-25AFpe-g" finish="_ZokUgQBVEeiuO-25AFpe-g" start="_ZojtcwBVEeiuO-25AFpe-g" behavior="_ZojtcQBVEeiuO-25AFpe-g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_6Epv4gBWEeiuO-25AFpe-g" name="Message_1_sender" covered="_MPNGsABVEeiuO-25AFpe-g" message="_6Epv4ABWEeiuO-25AFpe-g"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_6Epv4wBWEeiuO-25AFpe-g" name="Message_1_receiver" covered="_R6z-oQBVEeiuO-25AFpe-g" message="_6Epv4ABWEeiuO-25AFpe-g"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_6Epv5ABWEeiuO-25AFpe-g" name="Message_1" covered="_R6z-oQBVEeiuO-25AFpe-g" finish="_6EqW8ABWEeiuO-25AFpe-g" start="_6Epv4wBWEeiuO-25AFpe-g" behavior="_6Epv4QBWEeiuO-25AFpe-g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_ZokUgQBVEeiuO-25AFpe-g" name="Message_0_finish" covered="_MPNGsABVEeiuO-25AFpe-g" execution="_ZokUgABVEeiuO-25AFpe-g"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_6EqW8ABWEeiuO-25AFpe-g" name="Message_1_finish" covered="_R6z-oQBVEeiuO-25AFpe-g" execution="_6Epv5ABWEeiuO-25AFpe-g"/>
+    <message xmi:id="_ZojtcABVEeiuO-25AFpe-g" name="ShortPress" messageSort="asynchSignal" receiveEvent="_ZojtcwBVEeiuO-25AFpe-g" sendEvent="_ZojtcgBVEeiuO-25AFpe-g"/>
+    <message xmi:id="_6Epv4ABWEeiuO-25AFpe-g" name="bleSendReq" messageSort="asynchCall" receiveEvent="_6Epv4wBWEeiuO-25AFpe-g" sendEvent="_6Epv4gBWEeiuO-25AFpe-g"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_HLYAcABVEeiuO-25AFpe-g" name="PushButton"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_MPMfoABVEeiuO-25AFpe-g" name="Spora"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_R6z-oABVEeiuO-25AFpe-g" name="BleMgr"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_Ija0oABZEeiuO-25AFpe-g" name="Comunicar">
+    <include xmi:id="_AqogMABpEeiuO-25AFpe-g" addition="_NwSawABcEeiuO-25AFpe-g"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_Ns1lgABZEeiuO-25AFpe-g" name="SporaUser">
+    <eAnnotations xmi:id="_Ns2MkABZEeiuO-25AFpe-g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <details xmi:id="_Ns2MkQBZEeiuO-25AFpe-g" key="Human"/>
+    </eAnnotations>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_XKt1MABZEeiuO-25AFpe-g" name="AndroidApp"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_bGBNIABZEeiuO-25AFpe-g" memberEnd="_bGB0MABZEeiuO-25AFpe-g _bGB0MQBZEeiuO-25AFpe-g">
+    <ownedEnd xmi:id="_bGB0MABZEeiuO-25AFpe-g" type="_Ns1lgABZEeiuO-25AFpe-g" association="_bGBNIABZEeiuO-25AFpe-g"/>
+    <ownedEnd xmi:id="_bGB0MQBZEeiuO-25AFpe-g" type="_Ija0oABZEeiuO-25AFpe-g" association="_bGBNIABZEeiuO-25AFpe-g"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_biHTQABZEeiuO-25AFpe-g" memberEnd="_biHTQQBZEeiuO-25AFpe-g _biHTQgBZEeiuO-25AFpe-g">
+    <ownedEnd xmi:id="_biHTQQBZEeiuO-25AFpe-g" type="_XKt1MABZEeiuO-25AFpe-g" association="_biHTQABZEeiuO-25AFpe-g"/>
+    <ownedEnd xmi:id="_biHTQgBZEeiuO-25AFpe-g" type="_Ija0oABZEeiuO-25AFpe-g" association="_biHTQABZEeiuO-25AFpe-g"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_gZNvoABaEeiuO-25AFpe-g" name="Configurar">
+    <include xmi:id="_K3DQ4ABpEeiuO-25AFpe-g" addition="_NwSawABcEeiuO-25AFpe-g"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_x4b_kABaEeiuO-25AFpe-g" memberEnd="_x4b_kQBaEeiuO-25AFpe-g _x4b_kgBaEeiuO-25AFpe-g">
+    <ownedEnd xmi:id="_x4b_kQBaEeiuO-25AFpe-g" association="_x4b_kABaEeiuO-25AFpe-g"/>
+    <ownedEnd xmi:id="_x4b_kgBaEeiuO-25AFpe-g" type="_gZNvoABaEeiuO-25AFpe-g" association="_x4b_kABaEeiuO-25AFpe-g"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_5ousEABaEeiuO-25AFpe-g" memberEnd="_5ovTIABaEeiuO-25AFpe-g _5ovTIQBaEeiuO-25AFpe-g">
+    <ownedEnd xmi:id="_5ovTIABaEeiuO-25AFpe-g" type="_XKt1MABZEeiuO-25AFpe-g" association="_5ousEABaEeiuO-25AFpe-g"/>
+    <ownedEnd xmi:id="_5ovTIQBaEeiuO-25AFpe-g" type="_gZNvoABaEeiuO-25AFpe-g" association="_5ousEABaEeiuO-25AFpe-g"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_NwSawABcEeiuO-25AFpe-g" name="Emparejar"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_UIghEABcEeiuO-25AFpe-g" memberEnd="_UIhIIABcEeiuO-25AFpe-g _UIhIIQBcEeiuO-25AFpe-g">
+    <ownedEnd xmi:id="_UIhIIABcEeiuO-25AFpe-g" type="_Ns1lgABZEeiuO-25AFpe-g" association="_UIghEABcEeiuO-25AFpe-g"/>
+    <ownedEnd xmi:id="_UIhIIQBcEeiuO-25AFpe-g" type="_NwSawABcEeiuO-25AFpe-g" association="_UIghEABcEeiuO-25AFpe-g"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_U5kKkABcEeiuO-25AFpe-g" memberEnd="_U5kKkQBcEeiuO-25AFpe-g _U5kKkgBcEeiuO-25AFpe-g">
+    <ownedEnd xmi:id="_U5kKkQBcEeiuO-25AFpe-g" type="_XKt1MABZEeiuO-25AFpe-g" association="_U5kKkABcEeiuO-25AFpe-g"/>
+    <ownedEnd xmi:id="_U5kKkgBcEeiuO-25AFpe-g" type="_NwSawABcEeiuO-25AFpe-g" association="_U5kKkABcEeiuO-25AFpe-g"/>
+  </packagedElement>
+</uml:Model>
