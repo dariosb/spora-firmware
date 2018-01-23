@@ -89,6 +89,13 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/str&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/devices/MKL03Z4&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ssp/src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/fwk/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/mempool/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/queue/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/sm/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/sma/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/tmr/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/trc/inc&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.933718024" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu99" valueType="enumerated"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.2902121173" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
@@ -98,6 +105,7 @@
 									<listOptionValue builtIn="false" value="FREEDOM"/>
 									<listOptionValue builtIn="false" value="PRINTF_ADVANCED_ENABLE=1"/>
 									<listOptionValue builtIn="false" value="SPORA_FRDM_KL03Z"/>
+									<listOptionValue builtIn="false" value="__KSDK_KDS_2_3__"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.nostdinc.5784180560" name="Do not search system directories (-nostdinc)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.nostdinc" useByScannerDiscovery="true" value="false" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.other.9945907763" name="Other compiler flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.other" useByScannerDiscovery="true" value=" -mapcs " valueType="string"/>
@@ -118,9 +126,17 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/str&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ssp/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/fwk/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/mempool/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/queue/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/sm/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/sma/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/tmr/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/trc/inc&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.7508785836" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG"/>
+									<listOptionValue builtIn="false" value="__KSDK_KDS_2_3__"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nostdinc.1426703458" name="Do not search system directories (-nostdinc)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nostdinc" useByScannerDiscovery="true" value="false" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nostdincpp.5966565065" name="Do not search system C++ directories (-nostdinc++)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nostdincpp" useByScannerDiscovery="true" value="false" valueType="boolean"/>
@@ -283,6 +299,13 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/str&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/devices/MKL03Z4&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ssp/src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/fwk/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/mempool/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/queue/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/sm/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/sma/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/tmr/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/trc/inc&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.997197032" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu99" valueType="enumerated"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.391302813" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
@@ -293,6 +316,7 @@
 									<listOptionValue builtIn="false" value="PRINTF_ADVANCED_ENABLE=1"/>
 									<listOptionValue builtIn="false" value="NDEBUG"/>
 									<listOptionValue builtIn="false" value="SPORA_FRDM_KL03Z"/>
+									<listOptionValue builtIn="false" value="__KSDK_KDS_2_3__"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.nostdinc.1939533464" name="Do not search system directories (-nostdinc)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.nostdinc" useByScannerDiscovery="true" value="false" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.other.5495323925" name="Other compiler flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.other" useByScannerDiscovery="true" value=" -mapcs " valueType="string"/>
@@ -312,9 +336,17 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/log&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/str&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/fwk/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/mempool/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/queue/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/sm/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/sma/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/tmr/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/trc/inc&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.3162449327" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG"/>
+									<listOptionValue builtIn="false" value="__KSDK_KDS_2_3__"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nostdinc.2820094368" name="Do not search system directories (-nostdinc)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nostdinc" useByScannerDiscovery="true" value="false" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nostdincpp.6321480923" name="Do not search system C++ directories (-nostdinc++)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nostdincpp" useByScannerDiscovery="true" value="false" valueType="boolean"/>
