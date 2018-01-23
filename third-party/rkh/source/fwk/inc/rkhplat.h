@@ -83,6 +83,10 @@
     #include "..\..\portable\arm-cortex\rkhs\ksdk\kds\rkhport.h"
 #endif
 
+#ifdef __KSDK_KDS_2_3__
+    #include "..\..\portable\arm-cortex\rkhs\ksdk_2.3\kds\rkhport.h"
+#endif
+
 #ifdef __KSDK_OS_KDS__
     #include "..\..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkhport.h"
 #endif

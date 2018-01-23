@@ -30,80 +30,28 @@
  */
 
 /**
- *  \file       rkhtype.h
- *  \brief      Defines the data types that uses RKH.
+ *  \file       rkhport.c
+ * 	\brief 		ARM Cortex-M0 MCU's, KSDK 2.3 KDS
  *
- *  \ingroup    apiPortMisc
+ *  \ingroup    port
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2015.10.24  LeFr  v2.4.05  Initial version
+ *  2017.04.14  Daba  v2.4.05  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
 /*
  *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  DaBa  Dario Baliña       dariosb@gmail.com
  */
 
-/* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
-#ifndef __RKHTYPE_H__
-#define __RKHTYPE_H__
+#ifndef __RKHT_H__
+#define __RKHT_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#ifdef __W32STVC__
-    #include "..\..\portable\80x86\win32_st\vc\rkht.h"
-#endif
-
-#ifdef __W32MTVC__
-    #include "..\..\portable\80x86\win32_mt\vc\rkht.h"
-#endif
-
-#ifdef __LNXGNU__
-    #include "../../portable/80x86/linux_st/gnu/rkht.h"
-#endif
-
-#ifdef __S08CW63__
-    #include "..\..\portable\s08\rkhs\cw6_3\rkht.h"
-#endif
-
-#ifdef __CFV1CW63__
-    #include "..\..\portable\cfv1\rkhs\cw6_3\rkht.h"
-#endif
-
-#ifdef __ARM_CM0CW10__
-    #include "../../portable/arm-cortex/rkhs/arm_cm0/cw_v10/rkht.h"
-#endif
-
-#ifdef __ARM_CM4FCW10__
-    #include "../../portable/arm-cortex/rkhs/arm_cm4f/cw_v10/rkht.h"
-#endif
-
-#ifdef __KSDK_KDS__
-    #include "..\..\portable\arm-cortex\rkhs\ksdk\kds\rkht.h"
-#endif
-
-#ifdef __KSDK_KDS_2_3__
-    #include "..\..\portable\arm-cortex\rkhs\ksdk_2.3\kds\rkht.h"
-#endif
-
-#ifdef __KSDK_OS_KDS__
-    #include "..\..\portable\arm-cortex\ksdk_os\ucosiii\kds\rkht.h"
-#endif
-
-#ifdef __UCOS_V3_03_01__
-    #include "..\..\portable\ucos\v3.03.01\rkht.h"
-#endif
-
-#ifdef __ARM_CM3XPRESSO___
-    #include "../../portable/arm-cortex/rkhs/arm_cm3/codered/rkht.h"
-#endif
-
-#ifdef __TEST__
-    #include "../../portable/test/rkht.h"
-#endif
-
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
 extern "C" {
@@ -112,6 +60,34 @@ extern "C" {
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
+/*
+ *  The RKH uses a set of integer quantities. That maybe machine or
+ *  compiler dependent.
+ */
+typedef signed char ri8_t;
+typedef signed short ri16_t;
+typedef signed long ri32_t;
+typedef unsigned char rui8_t;
+typedef unsigned short rui16_t;
+typedef unsigned long rui32_t;
+
+/*
+ *  The 'ruint' and 'rInt' will normally be the natural size for a
+ *  particular machine. These types designates an integer type that is
+ *  usually fastest to operate with among all integer types.
+ */
+typedef unsigned char ruint;
+typedef signed char rInt;
+
+/*
+ *  Boolean data type and constants.
+ *
+ *  \note
+ *  The true (RKH_TRUE) and false (RKH_FALSE) values as defined as macro
+ *  definitions in \c rkhdef.h file.
+ */
+typedef unsigned int rbool_t;
+
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */
@@ -122,4 +98,4 @@ extern "C" {
 /* ------------------------------ Module end ------------------------------- */
 #endif
 
-/* ------------------------------ End of file ------------------------------ */
+/* ------------------------------ File footer ------------------------------ */
