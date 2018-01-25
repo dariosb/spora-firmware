@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nattable="http://www.eclipse.org/papyrus/nattable/model" xmlns:nattableaxis="http://www.eclipse.org/papyrus/nattable/model/table/nattableaxis" xmlns:nattableaxisprovider="http://www.eclipse.org/papyrus/nattable/model/table/nattableaxisprovider" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/papyrus/infra/gmfdiag/style" xsi:schemaLocation="http://www.eclipse.org/papyrus/nattable/model/table/nattableaxis http://www.eclipse.org/papyrus/nattable/model#//nattableaxis http://www.eclipse.org/papyrus/nattable/model/table/nattableaxisprovider http://www.eclipse.org/papyrus/nattable/model#//nattableaxisprovider">
+  <notation:Diagram xmi:id="_efvIkAHmEeiKDdt5eME2xA" type="PapyrusUMLClassDiagram" name="SysML 1.4 Requirement Diagram" measurementUnit="Pixel">
+    <styles xsi:type="notation:StringValueStyle" xmi:id="_efvIkQHmEeiKDdt5eME2xA" name="diagram_compatibility_version" stringValue="1.3.0"/>
+    <styles xsi:type="notation:DiagramStyle" xmi:id="_efvIkgHmEeiKDdt5eME2xA"/>
+    <styles xsi:type="style:PapyrusDiagramStyle" xmi:id="_efvIkwHmEeiKDdt5eME2xA" diagramKindId="org.eclipse.papyrus.sysml14.diagram.requirement">
+      <owner href="requirement.uml#_bzHxUAHmEeiKDdt5eME2xA"/>
+    </styles>
+    <element href="requirement.uml#_bzHxUAHmEeiKDdt5eME2xA"/>
+  </notation:Diagram>
+  <nattable:Table xmi:id="_efw9wAHmEeiKDdt5eME2xA" name="SysML 1.4 Requirement Table" currentRowAxisProvider="_efw9xAHmEeiKDdt5eME2xA" currentColumnAxisProvider="_efw9wQHmEeiKDdt5eME2xA" tableKindId="org.eclipse.papyrus.sysml14.table.requirement">
+    <eAnnotations xmi:id="_efxk0AHmEeiKDdt5eME2xA" source="http://www.eclipse.org/papyrus/infra/nattable/version">
+      <details xmi:id="_efxk0QHmEeiKDdt5eME2xA" key="version" value="1.3.0"/>
+    </eAnnotations>
+    <context href="requirement.uml#_bzHxUAHmEeiKDdt5eME2xA"/>
+    <owner href="requirement.uml#_bzHxUAHmEeiKDdt5eME2xA"/>
+    <tableConfiguration href="platform:/plugin/org.eclipse.papyrus.sysml14.nattable.requirement/resources/requirement.nattableconfiguration#/"/>
+    <columnAxisProvidersHistory xsi:type="nattableaxisprovider:SlaveObjectAxisProvider" xmi:id="_efw9wQHmEeiKDdt5eME2xA" description="Provides the columns of the tables with a default configuration" name="Requirements Feature Columns Provider">
+      <axis xsi:type="nattableaxis:FeatureIdAxis" xmi:id="_efw9wgHmEeiKDdt5eME2xA" element="property_of_stereotype:/SysML::Requirements::Requirement::id">
+        <manager href="platform:/plugin/org.eclipse.papyrus.sysml14.nattable.requirement/resources/requirement.nattableconfiguration#//@columnHeaderAxisConfiguration/@axisManagers.1"/>
+      </axis>
+      <axis xsi:type="nattableaxis:FeatureIdAxis" xmi:id="_efw9wwHmEeiKDdt5eME2xA" element="property_of_stereotype:/SysML::Requirements::Requirement::text">
+        <manager href="platform:/plugin/org.eclipse.papyrus.sysml14.nattable.requirement/resources/requirement.nattableconfiguration#//@columnHeaderAxisConfiguration/@axisManagers.1"/>
+      </axis>
+    </columnAxisProvidersHistory>
+    <rowAxisProvidersHistory xsi:type="nattableaxisprovider:MasterObjectAxisProvider" xmi:id="_efw9xAHmEeiKDdt5eME2xA" description="Provides the requirements directly owned by the context of the table" name="Requirement Axis Provider" disconnectSlave="true"/>
+  </nattable:Table>
+  <notation:Diagram xmi:id="_ef0BEAHmEeiKDdt5eME2xA" type="UseCase" name="SysML 1.4 Use Case Diagram" measurementUnit="Pixel">
+    <styles xsi:type="notation:StringValueStyle" xmi:id="_ef0BEQHmEeiKDdt5eME2xA" name="diagram_compatibility_version" stringValue="1.3.0"/>
+    <styles xsi:type="notation:DiagramStyle" xmi:id="_ef0BEgHmEeiKDdt5eME2xA"/>
+    <styles xsi:type="style:PapyrusDiagramStyle" xmi:id="_ef0BEwHmEeiKDdt5eME2xA" diagramKindId="org.eclipse.papyrus.sysml14.diagram.useCase">
+      <owner href="requirement.uml#_bzHxUAHmEeiKDdt5eME2xA"/>
+    </styles>
+    <element href="requirement.uml#_bzHxUAHmEeiKDdt5eME2xA"/>
+  </notation:Diagram>
+</xmi:XMI>
