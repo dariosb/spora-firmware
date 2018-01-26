@@ -48,13 +48,9 @@
  */
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "blinky.h"
+#include "blemgr.h"
 #include "rkh.h"
 #include "bsp.h"
-//#include "mcu.h"
-//#include "gpio.h"
-//#include "serial.h"
-
 #include "pin_mux.h"
 #include "bsp.h"
 #include "i2c.h"
