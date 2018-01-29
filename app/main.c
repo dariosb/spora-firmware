@@ -33,11 +33,11 @@ static RKH_EVT_T *qsto[QSTO_SIZE];
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 int
-main(int argc, char *argv[])
+main(void)
 {
-    bsp_init(argc, argv);
+    bsp_init();
 
-    RKH_SMA_ACTIVATE(blinky, qsto, QSTO_SIZE, 0, 0);
+    RKH_SMA_ACTIVATE(bleMgr, qsto, QSTO_SIZE, 0, 0);
     rkh_fwk_enter();
 
     RKH_TRC_CLOSE();

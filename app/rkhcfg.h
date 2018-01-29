@@ -174,7 +174,7 @@
  *	not included: state nesting, composite state, history (shallow and deep)
  *	pseudostate, entry action, and exit action.
  */
-#define RKH_CFG_SMA_HCAL_EN             RKH_DISABLED
+#define RKH_CFG_SMA_HCAL_EN             RKH_ENABLED
 
 /**
  *  Specify the maximum number of hierarchical levels. The smaller this
@@ -182,7 +182,7 @@
  *  hierarchical state machines uses up to 4 levels. Currently
  *  #RKH_CFG_SMA_MAX_HCAL_DEPTH cannot exceed 8.
  */
-#define RKH_CFG_SMA_MAX_HCAL_DEPTH      2u
+#define RKH_CFG_SMA_MAX_HCAL_DEPTH      3u
 
 /**
  *	Specify the maximum number of linked transition segments. The smaller
@@ -190,13 +190,13 @@
  *	hierarchical state machines uses up to 4 transition segments.
  *	Currently #RKH_CFG_SMA_MAX_TRC_SEGS cannot exceed 8.
  */
-#define RKH_CFG_SMA_MAX_TRC_SEGS        2u
+#define RKH_CFG_SMA_MAX_TRC_SEGS        4u
 
 /**
  *	If the #RKH_CFG_SMA_PSEUDOSTATE_EN is set to 1, the RKH allows
  *	pseudostates usage.
  */
-#define RKH_CFG_SMA_PSEUDOSTATE_EN      RKH_DISABLED
+#define RKH_CFG_SMA_PSEUDOSTATE_EN      RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_SMA_DEEP_HIST_EN and #RKH_CFG_SMA_PSEUDOSTATE_EN are

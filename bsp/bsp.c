@@ -70,24 +70,19 @@ SysTick_Handler(void)
 
 /* ---------------------------- Global functions --------------------------- */
 void
-bsp_init(int argc, char *argv[])
+bsp_init(void)
 {
-    (void)argc;
-    (void)argv;
+    gpio_pin_config_t led_config = {kGPIO_DigitalOutput, 1};
 
-    gpio_pin_config_t led_config = {kGPIO_DigitalOutput, 0};
+    BOARD_InitPins();
+    BOARD_BootClockRUN();
 
-     BOARD_InitPins();
-     BOARD_BootClockRUN();
+    SysTick_Config(SystemCoreClock/RKH_CFG_FWK_TICK_RATE_HZ);
 
-     SysTick_Config(SystemCoreClock/RKH_CFG_FWK_TICK_RATE_HZ);
+    I2C_releaseBus();
+    BOARD_I2C_ConfigurePins();
 
-     I2C_releaseBus();
-     BOARD_I2C_ConfigurePins();
-
-     GPIO_PinInit(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, &led_config);
-     LED_RED_TOGGLE();
-
+    GPIO_PinInit(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, &led_config);
 
     rkh_fwk_init();
 
