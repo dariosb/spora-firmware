@@ -87,6 +87,7 @@ void
 SysTick_Handler(void)
 {
 	RKH_TIM_TICK(0);
+    pushbutton_tick();
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -102,6 +103,8 @@ bsp_init(void)
 
     I2C_releaseBus();
     BOARD_I2C_ConfigurePins();
+
+    pushbutton_init();
 
     GPIO_PinInit(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, &led_config);
     GPIO_PinInit(BOARD_LED_BLUE_GPIO, BOARD_LED_BLUE_GPIO_PIN, &led_config);

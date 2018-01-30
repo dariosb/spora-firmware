@@ -51,27 +51,34 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
 #include "bsp.h"
+#include "bleMgr.h"
 #include "fsl_gpio.h"
-#include "spora.h"
 
 /* ----------------------------- Local macros ------------------------------ */
+#define pinRead()               GPIO_PinRead(BOARD_PUSH_BUTTON_GPIO, \
+                                             BOARD_PUSH_BUTTON_GPIO_PIN) 
+
 /* ------------------------------- Constants ------------------------------- */
+#define DEBOUNCING_SAMPLES      7
+#define PRESS_MASK              (1<<DEBOUNCING_SAMPLES)
+#define RELEASE_MASK            (~(PRESS_MASK) && 0xFF)
+
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
+static unsigned char state;
+
+#if defined(RKH_USE_TRC_SENDER)
+static rui8_t pushbutton;
+#endif
+
+static RKH_STATIC_EVENT(e_pushbutton, evPushbuttonRelease);
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-void
-BOARD_PUSH_BUTTON_IRQ_Handler(void)
-{
-    GPIO_PortClearInterruptFlags(BOARD_PUSH_BUTTON_GPIO,
-                                 1U << BOARD_PUSH_BUTTON_GPIO_PIN);
-
-    spora_wakeup();
-}
-
 void
 pushbutton_init(void)
 {
@@ -87,15 +94,28 @@ pushbutton_init(void)
                       BOARD_PUSH_BUTTON_GPIO_PIN,
                       &sw_port_config);
 
-    PORT_SetPinInterruptConfig(BOARD_PUSH_BUTTON_PORT,
-                               BOARD_PUSH_BUTTON_GPIO_PIN,
-                               kPORT_InterruptFallingEdge);
-
-    EnableIRQ(BOARD_PUSH_BUTTON_IRQ);
-
     GPIO_PinInit(BOARD_PUSH_BUTTON_GPIO,
                  BOARD_PUSH_BUTTON_GPIO_PIN,
                  &sw_config);
+
+    state = 0;
+}
+
+void
+pushbutton_tick(void)
+{
+    state = (state << 1) | pinRead(); 
+
+    if(state == RELEASE_MASK)
+    {
+        RKH_SET_STATIC_EVENT(&e_pushbutton, evPushbuttonRelease);
+        RKH_SMA_POST_FIFO(bleMgr, &e_pushbutton, &pushbutton);
+    }
+    else if(state == PRESS_MASK)
+    {
+        RKH_SET_STATIC_EVENT(&e_pushbutton, evPushbuttonPress);
+        RKH_SMA_POST_FIFO(bleMgr, &e_pushbutton, &pushbutton);
+    }
 }
 
 /* ------------------------------ End of file ------------------------------ */

@@ -64,6 +64,7 @@ extern "C" {
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 void pushbutton_init(void);
+void pushbutton_tick(void);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
