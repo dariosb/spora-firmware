@@ -85,6 +85,7 @@ typedef enum
     CLESS_GSTATUS,
     CLESS_ADVSTOP,
     CLESS_ADVSTART,
+    CLESS_DISCONNECT,
     CLESS_SEND,
     CLESS_CMDS
 }CodelessCmdIx;
@@ -94,6 +95,7 @@ typedef enum
 #define ClessGapStatus   codelessCmdTbl[CLESS_GSTATUS]
 #define ClessAdvStop     codelessCmdTbl[CLESS_ADVSTOP]
 #define ClessAdvStart    codelessCmdTbl[CLESS_ADVSTART]
+#define ClessDisconnect  codelessCmdTbl[CLESS_DISCONNECT]
 #define ClessSendData    codelessCmdTbl[CLESS_SEND]
 
 /* ------------------------------- Data types ------------------------------ */

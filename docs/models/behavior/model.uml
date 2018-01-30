@@ -122,6 +122,10 @@
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_WoErQAV0Eeit67JRAsgWRA" name="bleIsConnected()"/>
               <trigger xmi:id="_WoFSUAV0Eeit67JRAsgWRA" name="evConnected"/>
             </transition>
+            <transition xmi:id="_CZXzIAW9Eei64r585RhGNQ" source="_yIqxwAK8Eeiknsfs-jeQ4w" target="_4ovpAAK7Eeiknsfs-jeQ4w">
+              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_F4ryoAW9Eei64r585RhGNQ" name="sendDisconnect();"/>
+              <trigger xmi:id="_F4sZsAW9Eei64r585RhGNQ" name="evForceDisconnect"/>
+            </transition>
             <subvertex xmi:type="uml:State" xmi:id="_4ovpAAK7Eeiknsfs-jeQ4w" name="disconected">
               <region xmi:id="_K-zM8AVyEeit67JRAsgWRA" name="disconnected">
                 <transition xmi:id="_iYLuMAVyEeit67JRAsgWRA" source="_QoYroAVyEeit67JRAsgWRA" target="_QoYroAVyEeit67JRAsgWRA">
@@ -140,5 +144,34 @@
         </subvertex>
       </region>
     </ownedBehavior>
+    <ownedOperation xmi:id="_gbhzoAXHEei64r585RhGNQ" name="Operation_1"/>
+    <ownedOperation xmi:id="_9OsnkAXIEei64r585RhGNQ" name="Operation_2"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_CG6loAXHEei64r585RhGNQ" name="SporaBleMgr">
+    <ownedAttribute xmi:id="_QZwZIAXHEei64r585RhGNQ" name="BleMgr " type="_cGIJoAKmEeiwX8FNi-VDBQ"/>
+    <ownedAttribute xmi:id="_Q96PEAXHEei64r585RhGNQ" name="Spora" type="_Q95A8AXHEei64r585RhGNQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UC8GUAXHEei64r585RhGNQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_UC8tYAXHEei64r585RhGNQ" value="1"/>
+    </ownedAttribute>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_1RbEcQXHEei64r585RhGNQ" name="Operation_1"/>
+    <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_9OtOoQXIEei64r585RhGNQ" name="Operation_2"/>
+    <lifeline xmi:id="_Q95oAAXHEei64r585RhGNQ" name="Spora : Spora [1]" represents="_Q96PEAXHEei64r585RhGNQ" coveredBy="_1RbEcwXHEei64r585RhGNQ _1RbEdAXHEei64r585RhGNQ _1RbrgAXHEei64r585RhGNQ _9OtOogXIEei64r585RhGNQ"/>
+    <lifeline xmi:id="_QZwZIQXHEei64r585RhGNQ" name="BleMgr " represents="_QZwZIAXHEei64r585RhGNQ" coveredBy="_1RbEcgXHEei64r585RhGNQ _9Ot1sAXIEei64r585RhGNQ _9Ot1sQXIEei64r585RhGNQ _9Ot1sgXIEei64r585RhGNQ"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_1RbEcgXHEei64r585RhGNQ" name="evDisconnected_sender" covered="_QZwZIQXHEei64r585RhGNQ" message="_1RbEcAXHEei64r585RhGNQ"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_1RbEcwXHEei64r585RhGNQ" name="evDisconnected_receiver" covered="_Q95oAAXHEei64r585RhGNQ" message="_1RbEcAXHEei64r585RhGNQ"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_1RbEdAXHEei64r585RhGNQ" name="Operation_1" covered="_Q95oAAXHEei64r585RhGNQ" finish="_1RbrgAXHEei64r585RhGNQ" start="_1RbEcwXHEei64r585RhGNQ" behavior="_1RbEcQXHEei64r585RhGNQ"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_1RbrgAXHEei64r585RhGNQ" name="Operation_1_finish" covered="_Q95oAAXHEei64r585RhGNQ" execution="_1RbEdAXHEei64r585RhGNQ"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_9OtOogXIEei64r585RhGNQ" name="evStopAdvetising_sender" covered="_Q95oAAXHEei64r585RhGNQ" message="_9OtOoAXIEei64r585RhGNQ"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_9Ot1sAXIEei64r585RhGNQ" name="evStopAdvetising_receiver" covered="_QZwZIQXHEei64r585RhGNQ" message="_9OtOoAXIEei64r585RhGNQ"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_9Ot1sQXIEei64r585RhGNQ" name="Operation_2" covered="_QZwZIQXHEei64r585RhGNQ" finish="_9Ot1sgXIEei64r585RhGNQ" start="_9Ot1sAXIEei64r585RhGNQ" behavior="_9OtOoQXIEei64r585RhGNQ"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_9Ot1sgXIEei64r585RhGNQ" name="Operation_2_finish" covered="_QZwZIQXHEei64r585RhGNQ" execution="_9Ot1sQXIEei64r585RhGNQ"/>
+    <message xmi:id="_1RbEcAXHEei64r585RhGNQ" name="evDisconnected" messageSort="asynchCall" receiveEvent="_1RbEcwXHEei64r585RhGNQ" sendEvent="_1RbEcgXHEei64r585RhGNQ" signature="_1RadYAXHEei64r585RhGNQ"/>
+    <message xmi:id="_9OtOoAXIEei64r585RhGNQ" name="evStopAdvetising" messageSort="asynchCall" receiveEvent="_9Ot1sAXIEei64r585RhGNQ" sendEvent="_9OtOogXIEei64r585RhGNQ" signature="_9OsnkAXIEei64r585RhGNQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Q95A8AXHEei64r585RhGNQ" name="Spora">
+    <ownedOperation xmi:id="_1RadYAXHEei64r585RhGNQ" name="Operation_1"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:StateMachine" xmi:id="_n4JrUAXJEei64r585RhGNQ" name="NewModel statemachine">
+    <region xmi:id="_n4JrUQXJEei64r585RhGNQ" name="Region1"/>
   </packagedElement>
 </uml:Model>

@@ -76,6 +76,8 @@ void bsp_uartPutchar(unsigned char c);
 void bsp_setBleFailureLed(bool state);
 void bsp_setBleConnectionLed(bool state);
 
+uint32_t bsp_getTimeSec(void);
+
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }

@@ -75,6 +75,9 @@ typedef enum Signals
     evError,
     evStartAdvertising,
     evStopAdvertising,
+    evPushbuttonPress,
+    evPushbuttonRelease,
+    evForceDisconnect,
 	BLEMGR_NUM_EVENTS
 }Signals;
 

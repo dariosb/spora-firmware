@@ -51,6 +51,7 @@
 #include "fsl_lpuart.h"
 #include "i2c.h"
 #include "pin_mux.h"
+#include "pushbutton.h"
 #include "bsp.h"
 #include "blemgr.h"
 #include "codeless.h"
@@ -62,6 +63,9 @@
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
+static uint8_t tick_cnt = 1000/RKH_CFG_FWK_TICK_RATE_HZ;
+static uint32_t timeSecCounter = 0;
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 void CODELESS_LPUART_IRQHandler(void)
@@ -88,6 +92,11 @@ SysTick_Handler(void)
 {
 	RKH_TIM_TICK(0);
     pushbutton_tick();
+    if(tick_cnt && --tick_cnt == 0)
+    {
+        tick_cnt = RKH_CFG_FWK_TICK_RATE_HZ;
+        ++timeSecCounter;
+    }
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -176,6 +185,12 @@ void
 bsp_setBleConnectionLed(bool state)
 {
 	state == true ? LED_BLUE_ON() : LED_BLUE_OFF();
+}
+
+uint32_t
+bsp_getTimeSec(void)
+{
+    return timeSecCounter;
 }
 
 /* ------------------------------ End of file ------------------------------ */

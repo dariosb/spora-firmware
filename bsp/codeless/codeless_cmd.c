@@ -59,12 +59,13 @@
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 CLESS_CMD_TBL(codelessCmdTbl)
-    CLESS_CMD("AT\r",           1000)
-    CLESS_CMD("ATZ\r",          500)
-    CLESS_CMD("AT+GAPSTATUS\r", 200)
-    CLESS_CMD("AT+ADVSTOP\r",   200)
-    CLESS_CMD("AT+ADVSTART\r",  500)
-    CLESS_CMD("ATr+PRINT=",     200)
+    CLESS_CMD("AT\r",               1000)
+    CLESS_CMD("ATZ\r",              500)
+    CLESS_CMD("AT+GAPSTATUS\r",     200)
+    CLESS_CMD("AT+ADVSTOP\r",       200)
+    CLESS_CMD("AT+ADVSTART\r",      500)
+    CLESS_CMD("AT+GAPDISCONNECT\r", 500)
+    CLESS_CMD("ATr+PRINT=",         200)
 CLESS_CMD_ENDTBL;
 
 /* ----------------------- Local function prototypes ----------------------- */

@@ -73,6 +73,7 @@ void codeless_reset(void);
 void codeless_getGapStatus(void);
 void codeless_advertisingStart(void);
 void codeless_advertisingStop(void);
+void codeless_gapDisconnect(void);
 void codeless_sendData(char *p);
 
 /* -------------------- External C language linkage end -------------------- */

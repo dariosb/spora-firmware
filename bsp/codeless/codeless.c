@@ -120,6 +120,13 @@ codeless_advertisingStop(void)
     RKH_TMR_ONESHOT(&cmdTout, bleMgr, ClessAdvStop.tout);
 }
 
+void
+codeless_gapDisconnect(void)
+{
+    bsp_uartPutstring(ClessDisconnect.cmd);
+    RKH_TMR_ONESHOT(&cmdTout, bleMgr, ClessDisconnect.tout);
+}
+
 void codeless_sendData(char *p)
 {
 	/*

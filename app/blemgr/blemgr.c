@@ -78,6 +78,7 @@ static void sendReset(BleMgr *const me, RKH_EVT_T *pe);
 static void sendGetConnStatus(BleMgr *const me, RKH_EVT_T *pe);
 static void bleIsDisconnected(BleMgr *const me, RKH_EVT_T *pe);
 static void bleIsConnected(BleMgr *const me, RKH_EVT_T *pe);
+static void sendDisconnect(BleMgr *const me, RKH_EVT_T *pe);
 
 /* ......................... Declares entry actions ........................ */
 static void initEntry(BleMgr *const me);
@@ -146,6 +147,7 @@ RKH_CREATE_BASIC_STATE(connected, connectedEntry, connectedExit,
                        &advertisingOn, NULL);
 RKH_CREATE_TRANS_TABLE(connected)
     RKH_TRREG(evConnStatusTout, NULL, sendGetConnStatus, &waitConnStatus),
+    RKH_TRREG(evForceDisconnect, NULL, sendDisconnect, &disconnected),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(waitConnStatus, NULL, NULL, &advertisingOn, NULL);
@@ -225,6 +227,16 @@ bleIsConnected(BleMgr *const me, RKH_EVT_T *pe)
     (void)pe;
 
     bsp_setBleConnectionLed(true);
+}
+
+static void
+sendDisconnect(BleMgr *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+
+    codeless_gapDisconnect();
+    bsp_setBleConnectionLed(false);
 }
 
 /* ............................. Entry actions ............................. */
