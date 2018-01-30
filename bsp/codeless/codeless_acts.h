@@ -66,7 +66,7 @@ extern "C" {
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-void codeless_sspInit(Codeless_rcvMsgHook p);
+void codeless_sspInit(void);
 
 void cmdOk(unsigned char pos);
 void cmdError(unsigned char pos);

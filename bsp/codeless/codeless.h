@@ -64,16 +64,16 @@ extern "C" {
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
-typedef void (*Codeless_rcvMsgHook)(char *p);
-
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-bool codeless_init(Codeless_rcvMsgHook p);
+void codeless_init(void);
+void codeless_stopCmdTimer(void);
+void codeless_sync(void);
 void codeless_reset(void);
-void codeles_advertisementStart(void);
-void codeles_advertisementStop(void);
-void codeles_gapDisconnect(void);
-void codeles_sendData(char *p);
+void codeless_getGapStatus(void);
+void codeless_advertisingStart(void);
+void codeless_advertisingStop(void);
+void codeless_sendData(char *p);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

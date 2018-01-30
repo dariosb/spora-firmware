@@ -55,6 +55,7 @@
 
 /* ----------------------------- Include files ----------------------------- */
 #include "fsl_common.h"
+#include "rkh.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -62,16 +63,17 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
-#define CLESS_CMD_TBL(name)				const CodelessCmdTbl name[] = {
-//#define CLESS_CMD(cmd,tout,delay)  {(cmd), RKH_TIM_MS(tout), RKH_TIM_MS(delay)},
-#define CLESS_CMD(cmd,tout,delay)       {(cmd), tout, delay},
-#define CLESS_CMD_ENDTBL				{ NULL, 0, 0 } }
+#define CLESS_CMD_TBL(name)         const CodelessCmd name[] = {
+#define CLESS_CMD(cmd,tout)         {(cmd), RKH_TIME_MS(tout)},
+#define CLESS_CMD_ENDTBL            { NULL, 0 }}
 
 /* -------------------------------- Constants ------------------------------ */
-#define CODELESS_OK         "\r\nOK\r\n"
-#define CODELESS_ERROR      "\r\nERROR\r\n"
-#define SPORA_RX_MSJ_START  "+RCV="
-#define SPORA_RX_MSJ_END    "\\EOSM\r\n"
+#define CODELESS_OK             "\r\nOK\r\n"
+#define CODELESS_ERROR          "\r\nERROR\r\n"
+#define GAP_CONNSTAT_OFFSET     2
+#define GAP_CONNECTED           '1'    
+#define SPORA_RX_MSJ_START      "+RCV="
+#define SPORA_RX_MSJ_END        "\\EOSM\r\n"
 
 /*
  * Codeless AT Command Table index
@@ -80,33 +82,30 @@ typedef enum
 {
     CLESS_SYNC,
     CLESS_RESET,
-    CLESS_SEND,
     CLESS_GSTATUS,
+    CLESS_ADVSTOP,
+    CLESS_ADVSTART,
+    CLESS_SEND,
     CLESS_CMDS
 }CodelessCmdIx;
 
 #define ClessSync        codelessCmdTbl[CLESS_SYNC]
 #define ClessReset       codelessCmdTbl[CLESS_RESET]
-#define ClessSendData    codelessCmdTbl[CLESS_SEND]
 #define ClessGapStatus   codelessCmdTbl[CLESS_GSTATUS]
+#define ClessAdvStop     codelessCmdTbl[CLESS_ADVSTOP]
+#define ClessAdvStart    codelessCmdTbl[CLESS_ADVSTART]
+#define ClessSendData    codelessCmdTbl[CLESS_SEND]
 
 /* ------------------------------- Data types ------------------------------ */
 
 typedef struct
 {
 	const char* cmd;
-#if 0
-	RKH_TNT_T ntick;
-	RKH_TNT_T delay;
-#else
     unsigned char tout;
-    unsigned char delay;
-#endif
-
-}CodelessCmdTbl;
+}CodelessCmd;
 
 /* -------------------------- External variables --------------------------- */
-extern const CodelessCmdTbl codelessCmdTbl[];
+extern const CodelessCmd codelessCmdTbl[];
 
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */

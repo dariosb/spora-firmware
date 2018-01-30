@@ -53,143 +53,79 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "fsl_lpuart.h"
 #include "bsp.h"
+#include "ssp.h"
+#include "rkh.h"
+#include "blemgr.h"
 #include "codeless.h"
 #include "codeless_acts.h"
 #include "codeless_cmd.h"
-#include "ssp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
+static RKH_ROM_STATIC_EVENT(e_CmdTout, evCmdTout);
+static RKH_TMR_T cmdTout;
+
 /* ----------------------- Local function prototypes ----------------------- */
-static
-void
-lpuart_init(void)
-{
-    lpuart_config_t config;
-
-    CLOCK_SetLpuart0Clock(0x1U);
-    /*
-     * config.baudRate_Bps = 115200U;
-     * config.parityMode = kLPUART_ParityDisabled;
-     * config.stopBitCount = kLPUART_OneStopBit;
-     * config.txFifoWatermark = 0;
-     * config.rxFifoWatermark = 0;
-     * config.enableTx = false;
-     * config.enableRx = false;
-     */
-    LPUART_GetDefaultConfig(&config);
-
-    config.baudRate_Bps = CODELESS_LPUART_BAUDRATE;
-    config.enableTx = true;
-    config.enableRx = true;
-
-    LPUART_Init(CODELESS_LPUART, &config, CODELESS_LPUART_CLK_FREQ);    
-
-    /* Enable RX interrupt. */
-    LPUART_EnableInterrupts(CODELESS_LPUART, 
-                            kLPUART_RxDataRegFullInterruptEnable);
-    EnableIRQ(CODELESS_LPUART_IRQn);
-}
-
-static
-void
-lpuart_tx(const char *data)
-{
-    LPUART_WriteBlocking(CODELESS_LPUART, (const uint8_t *)data, strlen(data));
-    LPUART_WriteBlocking(CODELESS_LPUART, "\r", 1);
-}
-
-extern char inSync;
-static
-bool
-waitSync(void)
-{
-    char syncCount = 0;
-    char rtry = 0;
-
-    lpuart_tx(ClessSync.cmd);
-
-    while(!inSync)
-    {
-        if( ++syncCount > 1000 )
-        {
-            if( ++rtry < 4)
-            {
-                lpuart_tx(ClessSync.cmd);
-                syncCount = 0;
-            }
-            else
-                return false;
-        }
-    }
-
-    return true;
-}
-
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-void CODELESS_LPUART_IRQHandler(void)
+void
+codeless_init(void)
 {
-    uint8_t data;
-
-    /* If new data arrived. */
-    if ((kLPUART_RxDataRegFullFlag)&LPUART_GetStatusFlags(CODELESS_LPUART))
-    {
-        data = LPUART_ReadByte(CODELESS_LPUART);
-        ssp_doSearch(data);
-    }
-    /* Add for ARM errata 838869, affects Cortex-M4,
-     * Cortex-M4F Store immediate overlapping exception return operation
-     * might vector to incorrect interrupt
-     */
-#if defined __CORTEX_M && (__CORTEX_M == 4U)
-    __DSB();
-#endif
+    bsp_uartInit();
+    codeless_sspInit();
+    RKH_TMR_INIT(&cmdTout, &e_CmdTout, NULL);
 }
 
-bool
-codeless_init(Codeless_rcvMsgHook p)
+void
+codeless_stopCmdTimer(void)
 {
-    codeless_sspInit(p);
+    rkh_tmr_stop(&cmdTout);
+}
 
-    lpuart_init();
-
-    lpuart_tx(ClessSync.cmd);
-
-    return waitSync();
+void
+codeless_sync(void)
+{
+    bsp_uartPutstring(ClessSync.cmd);
+    RKH_TMR_ONESHOT(&cmdTout, bleMgr, ClessSync.tout);
 }
 
 void
 codeless_reset(void)
 {
-    lpuart_tx(ClessReset.cmd);
+    bsp_uartPutstring(ClessReset.cmd);
+    RKH_TMR_ONESHOT(&cmdTout, bleMgr, ClessReset.tout);
 }
 
 void
-codeles_advertisementStart(void)
+codeless_getGapStatus(void)
 {
-
+    bsp_uartPutstring(ClessGapStatus.cmd);
+    RKH_TMR_ONESHOT(&cmdTout, bleMgr, ClessGapStatus.tout);
 }
 
 void
-codeles_advertisementStop(void)
+codeless_advertisingStart(void)
 {
-
+    bsp_uartPutstring(ClessAdvStart.cmd);
+    RKH_TMR_ONESHOT(&cmdTout, bleMgr, ClessAdvStart.tout);
 }
 
-void codeles_gapDisconnect(void)
+void
+codeless_advertisingStop(void)
 {
-
+    bsp_uartPutstring(ClessAdvStop.cmd);
+    RKH_TMR_ONESHOT(&cmdTout, bleMgr, ClessAdvStop.tout);
 }
 
-void codeles_sendData(char *p)
+void codeless_sendData(char *p)
 {
+	/*
     LPUART_WriteBlocking(CODELESS_LPUART, ClessSendData.cmd, 
                                             strlen(ClessSendData.cmd));
-    lpuart_tx(p);
+    lpuart_tx(p);*/
 }
 
 /* ------------------------------ End of file ------------------------------ */

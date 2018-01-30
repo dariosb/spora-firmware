@@ -66,14 +66,15 @@ extern "C" {
 typedef enum Signals
 {
 	evInitTout,
-	evSyncTout,
+	evCmdTout,
     evConnStatusTout,
     evDisconnectedTout,
     evConnected,
     evDisconnected,
     evOk,
-    evStartAdvertisement,
-    evStopAdvertisement,
+    evError,
+    evStartAdvertising,
+    evStopAdvertising,
 	BLEMGR_NUM_EVENTS
 }Signals;
 

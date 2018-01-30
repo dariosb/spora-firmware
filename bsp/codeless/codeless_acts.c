@@ -54,7 +54,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "rkh.h"
+#include "blemgr.h"
 #include "codeless_acts.h"
+#include "codeless_cmd.h"
 #include "codeless_tree.h"
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -66,35 +69,39 @@
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static Codeless_rcvMsgHook rcv_cb;
+#if defined(RKH_USE_TRC_SENDER)
+static rui8_t ssp;
+#endif
+
 static char rxBuffer[CLESS_RXBUFF_SIZE];
 static char *prx;
+
+static RKH_STATIC_EVENT(e_cmdResp, evOk);
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 void
-codeless_sspInit(Codeless_rcvMsgHook p)
+codeless_sspInit(void)
 {
-    rcv_cb = p;
 	ssp_init(&root);
     prx = rxBuffer;
 }
 
-
-
-char inSync = 0;
-
 void
 cmdOk(unsigned char pos)
 {
-    inSync = 1;
+    RKH_SET_STATIC_EVENT(&e_cmdResp, evOk);
+    RKH_SMA_POST_FIFO(bleMgr, &e_cmdResp, &ssp);
+    codeless_stopCmdTimer();
 }
 
 void
 cmdError(unsigned char pos)
 {
-
+    RKH_SET_STATIC_EVENT(&e_cmdResp, evOk);
+    RKH_SMA_POST_FIFO(bleMgr, &e_cmdResp, &ssp);
+    codeless_stopCmdTimer();
 }
 
 void
@@ -112,13 +119,27 @@ rPrintOk(unsigned char pos)
 void
 gapStatusCollect(unsigned char data)
 {
-
+    if(prx < rxBufferEnd)
+        *prx++ = data;
 }
 
 void
 gapStatusOk(unsigned char data)
 {
+    codeless_stopCmdTimer();
 
+    prx = rxBuffer;
+
+    if( *(prx + GAP_CONNSTAT_OFFSET) == GAP_CONNECTED )
+    {
+        RKH_SET_STATIC_EVENT(&e_cmdResp, evConnected);
+    }
+    else
+    {
+        RKH_SET_STATIC_EVENT(&e_cmdResp, evDisconnected);
+    }
+
+    RKH_SMA_POST_FIFO(bleMgr, &e_cmdResp, &ssp);
 }
 
 void
@@ -132,9 +153,10 @@ void
 rcvOk(unsigned char data)
 {
     *prx = '\0';
-    prx=rxBuffer;
-    (*rcv_cb)(rxBuffer);
-
+    prx = rxBuffer;
+    /* an valid received packet from SporaApk
+     * the packet must be processed here
+     */
 }
 
 /* ------------------------------ End of file ------------------------------ */

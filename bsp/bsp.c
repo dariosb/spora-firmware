@@ -48,12 +48,14 @@
  */
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "blemgr.h"
-#include "rkh.h"
-#include "bsp.h"
+#include "fsl_lpuart.h"
+#include "i2c.h"
 #include "pin_mux.h"
 #include "bsp.h"
-#include "i2c.h"
+#include "blemgr.h"
+#include "codeless.h"
+#include "rkh.h"
+#include "ssp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -62,6 +64,25 @@
 /* ---------------------------- Local variables ---------------------------- */
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+void CODELESS_LPUART_IRQHandler(void)
+{
+    uint8_t data;
+
+    /* If new data arrived. */
+    if ((kLPUART_RxDataRegFullFlag)&LPUART_GetStatusFlags(CODELESS_LPUART))
+    {
+        data = LPUART_ReadByte(CODELESS_LPUART);
+        ssp_doSearch(data);
+    }
+    /* Add for ARM errata 838869, affects Cortex-M4,
+     * Cortex-M4F Store immediate overlapping exception return operation
+     * might vector to incorrect interrupt
+     */
+#if defined __CORTEX_M && (__CORTEX_M == 4U)
+    __DSB();
+#endif
+}
+
 void
 SysTick_Handler(void)
 {
@@ -83,6 +104,8 @@ bsp_init(void)
     BOARD_I2C_ConfigurePins();
 
     GPIO_PinInit(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, &led_config);
+    GPIO_PinInit(BOARD_LED_BLUE_GPIO, BOARD_LED_BLUE_GPIO_PIN, &led_config);
+    GPIO_PinInit(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, &led_config);
 
     rkh_fwk_init();
 
@@ -99,15 +122,57 @@ bsp_init(void)
 }
 
 void
-bsp_ledOn(void)
+bsp_uartInit(void)
 {
-	LED_RED_ON();
+    lpuart_config_t config;
+
+    CLOCK_SetLpuart0Clock(0x1U);
+    /*
+     * config.baudRate_Bps = 115200U;
+     * config.parityMode = kLPUART_ParityDisabled;
+     * config.stopBitCount = kLPUART_OneStopBit;
+     * config.txFifoWatermark = 0;
+     * config.rxFifoWatermark = 0;
+     * config.enableTx = false;
+     * config.enableRx = false;
+     */
+    LPUART_GetDefaultConfig(&config);
+
+    config.baudRate_Bps = CODELESS_LPUART_BAUDRATE;
+    config.enableTx = true;
+    config.enableRx = true;
+
+    LPUART_Init(CODELESS_LPUART, &config, CODELESS_LPUART_CLK_FREQ);    
+
+    /* Enable RX interrupt. */
+    LPUART_EnableInterrupts(CODELESS_LPUART, 
+                            kLPUART_RxDataRegFullInterruptEnable);
+    EnableIRQ(CODELESS_LPUART_IRQn);
 }
 
 void
-bsp_ledOff(void)
+bsp_uartPutstring(const char *s)
 {
-	LED_RED_OFF();
+    LPUART_WriteBlocking(CODELESS_LPUART, (const uint8_t *)s, strlen(s));
+}
+
+void
+bsp_uartPutchar(unsigned char c)
+{
+    LPUART_WriteBlocking(CODELESS_LPUART, &c, 1);
+}
+
+
+void
+bsp_setBleFailureLed(bool state)
+{
+	state == true ? LED_RED_ON() : LED_RED_OFF();
+}
+
+void
+bsp_setBleConnectionLed(bool state)
+{
+	state == true ? LED_BLUE_ON() : LED_BLUE_OFF();
 }
 
 /* ------------------------------ End of file ------------------------------ */

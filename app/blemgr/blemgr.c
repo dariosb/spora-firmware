@@ -51,51 +51,63 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
 #include "blemgr.h"
+#include "codeless.h"
+#include "codeless_cmd.h"
 #include "bsp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
-#define INIT_TIME            RKH_TIME_SEC(5)
-#define SYNC_TIME            RKH_TIME_SEC(2)
+#define INIT_TIME               RKH_TIME_SEC(5)
+#define DISCONNECTED_TIMEOUT    RKH_TIME_SEC(60)
+#define CONNSTATUS_CHKTIME      RKH_TIME_SEC(1)
 
 /* ......................... Declares active object ........................ */
 typedef struct BleMgr BleMgr;
 
 /* ................... Declares states and pseudostates .................... */
 RKH_DCLR_BASIC_STATE waitSync, reseting, failure, 
-                     disconnected, connected, waitConnStatus,
-                     advertisementOff;
+                     waitConnect, connected, waitConnStatus,
+                     advertisingOff;
 
-RKH_DCLR_COMP_STATE init, advertisementOn;
+RKH_DCLR_COMP_STATE init, advertisingOn, disconnected;
 
 /* ........................ Declares initial action ........................ */
 static void bleInit(BleMgr *const me);
 
 /* ........................ Declares effect actions ........................ */
 static void sendReset(BleMgr *const me, RKH_EVT_T *pe);
-static void bleError(BleMgr *const me, RKH_EVT_T *pe);
 static void sendGetConnStatus(BleMgr *const me, RKH_EVT_T *pe);
 static void bleIsDisconnected(BleMgr *const me, RKH_EVT_T *pe);
 static void bleIsConnected(BleMgr *const me, RKH_EVT_T *pe);
 
 /* ......................... Declares entry actions ........................ */
+static void initEntry(BleMgr *const me);
 static void sendSync(BleMgr *const me);
-static void sendAdvertisementOff(BleMgr *const me);
+static void bleError(BleMgr *const me);
+static void disconnectedEntry(BleMgr *const me);
+static void waitConnectEntry(BleMgr *const me);
+#define connectedEntry          waitConnectEntry
+static void sendAdvertisingOff(BleMgr *const me);
 
 /* ......................... Declares exit actions ......................... */
-static void sendAdvertisementOn(BleMgr *const me);
+static void initExit(BleMgr *const me);
+static void disconnectedExit(BleMgr *const me);
+static void waitConnectExit(BleMgr *const me);
+#define connectedExit           waitConnectExit
+static void sendAdvertisingOn(BleMgr *const me);
 
 /* ............................ Declares guards ............................ */
 /* ........................ States and pseudostates ........................ */
-RKH_CREATE_COMP_REGION_STATE(init, NULL, NULL,  RKH_ROOT, &waitSync, NULL,
-                             RKH_NO_HISTORY, NULL, NULL, NULL, NULL );
+RKH_CREATE_COMP_REGION_STATE(init, initEntry, initExit,  RKH_ROOT, &waitSync,
+                             NULL, RKH_NO_HISTORY, NULL, NULL, NULL, NULL );
 RKH_CREATE_TRANS_TABLE(init)
-    RKH_TRREG(evInitTout, NULL, bleError, &failure),
-    RKH_TRREG(evOk, NULL, sendGetConnStatus, &advertisementOn),
+    RKH_TRREG(evInitTout, NULL, NULL, &failure),
+    RKH_TRREG(evCmdTout, NULL, NULL, &failure),
+    RKH_TRREG(evOk, NULL, NULL, &advertisingOn),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(waitSync, sendSync, NULL, &init, NULL);
 RKH_CREATE_TRANS_TABLE(waitSync)
-    RKH_TRINT(evSyncTout, NULL, sendSync),
+    RKH_TRINT(evCmdTout, NULL, sendSync),
     RKH_TRREG(evOk, NULL, sendReset, &reseting),
 RKH_END_TRANS_TABLE
 
@@ -103,46 +115,57 @@ RKH_CREATE_BASIC_STATE(reseting, NULL, NULL, &init, NULL);
 RKH_CREATE_TRANS_TABLE(reseting)
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(failure, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_BASIC_STATE(failure, bleError, NULL, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(failure)
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_COMP_REGION_STATE(advertisementOn, NULL, NULL, RKH_ROOT,
+RKH_CREATE_COMP_REGION_STATE(advertisingOn, NULL, NULL, RKH_ROOT,
                              &disconnected, NULL,
                              RKH_NO_HISTORY, NULL, NULL, NULL, NULL );
-RKH_CREATE_TRANS_TABLE(advertisementOn)
-    RKH_TRREG(evStopAdvertisement, NULL, NULL, &advertisementOff),
+RKH_CREATE_TRANS_TABLE(advertisingOn)
+    RKH_TRREG(evCmdTout, NULL, NULL, &failure),
+    RKH_TRREG(evStopAdvertising, NULL, NULL, &advertisingOff),
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(disconnected, NULL, NULL, &advertisementOn, NULL);
+RKH_CREATE_COMP_REGION_STATE(disconnected, 
+                             disconnectedEntry, disconnectedExit,
+                             &advertisingOn, &waitConnect, NULL,
+                             RKH_NO_HISTORY, NULL, NULL, NULL, NULL );
 RKH_CREATE_TRANS_TABLE(disconnected)
-    RKH_TRREG(evDisconnectedTout, NULL, NULL, &advertisementOff),
+    RKH_TRREG(evDisconnectedTout, NULL, NULL, &advertisingOff),
+    RKH_TRREG(evConnected, NULL, bleIsConnected, &connected),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(waitConnect, waitConnectEntry, waitConnectExit,
+                       &disconnected, NULL);
+RKH_CREATE_TRANS_TABLE(waitConnect)
+    RKH_TRREG(evConnStatusTout, NULL, sendGetConnStatus, &waitConnect),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(connected, connectedEntry, connectedExit, 
+                       &advertisingOn, NULL);
+RKH_CREATE_TRANS_TABLE(connected)
     RKH_TRREG(evConnStatusTout, NULL, sendGetConnStatus, &waitConnStatus),
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(waitConnStatus, NULL, NULL, &advertisementOn, NULL);
+RKH_CREATE_BASIC_STATE(waitConnStatus, NULL, NULL, &advertisingOn, NULL);
 RKH_CREATE_TRANS_TABLE(waitConnStatus)
     RKH_TRREG(evDisconnected, NULL, bleIsDisconnected, &disconnected),
     RKH_TRREG(evConnected, NULL, bleIsConnected, &connected),
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(connected, NULL, NULL, &advertisementOn, NULL);
-RKH_CREATE_TRANS_TABLE(connected)
-    RKH_TRREG(evConnStatusTout, NULL, sendGetConnStatus, &waitConnStatus),
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE(advertisementOff, 
-                       sendAdvertisementOff, sendAdvertisementOn,
+RKH_CREATE_BASIC_STATE(advertisingOff, 
+                       sendAdvertisingOff, sendAdvertisingOn,
                        RKH_ROOT, NULL);
-RKH_CREATE_TRANS_TABLE(advertisementOff)
-    RKH_TRREG(evStartAdvertisement, NULL, NULL, &advertisementOn),
+RKH_CREATE_TRANS_TABLE(advertisingOff)
+    RKH_TRREG(evStartAdvertising, NULL, NULL, &advertisingOn),
 RKH_END_TRANS_TABLE
 /* ............................. Active object ............................. */
 struct BleMgr
 {
     RKH_SMA_T sma;
-    RKH_TMR_T tmr1;
-    RKH_TMR_T tmr2;
+    RKH_TMR_T tmr;
+    RKH_TMR_T tmrDisc;
 };
 
 RKH_SMA_CREATE(BleMgr, bleMgr, 0, HCAL, &init, bleInit, NULL);
@@ -152,13 +175,8 @@ RKH_SMA_DEF_PTR(bleMgr);
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-/*
- *  Declare and allocate the 'e_tout' event.
- *  The 'e_tout' event with TIMEOUT signal never changes, so it can be
- *  statically allocated just once by means of RKH_ROM_STATIC_EVENT() macro.
- */
-static RKH_ROM_STATIC_EVENT(e_tmr1, evInitTout);
-static RKH_ROM_STATIC_EVENT(e_tmr2, evSyncTout);
+static RKH_STATIC_EVENT(e_tmr, evInitTout);
+static RKH_ROM_STATIC_EVENT(e_tmrDisc, evDisconnectedTout);
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -166,10 +184,10 @@ static RKH_ROM_STATIC_EVENT(e_tmr2, evSyncTout);
 static void
 bleInit(BleMgr *const me)
 {
-    RKH_TMR_INIT(&me->tmr1, &e_tmr1, NULL);
-    RKH_TMR_INIT(&me->tmr2, &e_tmr2, NULL);
+    RKH_TMR_INIT(&me->tmr, &e_tmr, NULL);
+    RKH_TMR_INIT(&me->tmrDisc, &e_tmrDisc, NULL);
 
-    RKH_TMR_ONESHOT(&me->tmr1,  RKH_UPCAST(RKH_SMA_T, me), INIT_TIME);
+    codeless_init();
 }
 
 /* ............................ Effect actions ............................. */
@@ -178,14 +196,8 @@ sendReset(BleMgr *const me, RKH_EVT_T *pe)
 {
     (void)me;
     (void)pe;
-}
-
-static void
-bleError(BleMgr *const me, RKH_EVT_T *pe)
-{
-    (void)me;
-    (void)pe;
-    bsp_ledOn();
+        
+    codeless_reset();
 }
 
 static void
@@ -193,6 +205,8 @@ sendGetConnStatus(BleMgr *const me, RKH_EVT_T *pe)
 {
     (void)me;
     (void)pe;
+
+    codeless_getGapStatus();
 }
 
 static void
@@ -200,6 +214,8 @@ bleIsDisconnected(BleMgr *const me, RKH_EVT_T *pe)
 {
     (void)me;
     (void)pe;
+
+    bsp_setBleConnectionLed(false);
 }
 
 static void
@@ -207,27 +223,75 @@ bleIsConnected(BleMgr *const me, RKH_EVT_T *pe)
 {
     (void)me;
     (void)pe;
+
+    bsp_setBleConnectionLed(true);
 }
 
 /* ............................. Entry actions ............................. */
 static void
-sendSync(BleMgr *const me)
+initEntry(BleMgr *const me)
 {
-    (void)me;
-    RKH_TMR_ONESHOT(&me->tmr1,  RKH_UPCAST(RKH_SMA_T, me), SYNC_TIME);
+    RKH_TMR_ONESHOT(&me->tmr,  bleMgr, INIT_TIME);
 }
 
 static void
-sendAdvertisementOff(BleMgr *const me)
+sendSync(BleMgr *const me)
 {
     (void)me;
+    codeless_sync();
+}
+
+static void
+bleError(BleMgr *const me)
+{
+    (void)me;
+    bsp_setBleFailureLed(true);
+}
+
+static void 
+disconnectedEntry(BleMgr *const me)
+{
+    RKH_TMR_ONESHOT(&me->tmrDisc, bleMgr, DISCONNECTED_TIMEOUT);
+}
+
+static void
+waitConnectEntry(BleMgr *const me)
+{
+    RKH_SET_STATIC_EVENT(&e_tmr, evConnStatusTout);
+    RKH_TMR_ONESHOT(&me->tmr, bleMgr, CONNSTATUS_CHKTIME);
+}
+
+static void
+sendAdvertisingOff(BleMgr *const me)
+{
+    (void)me;
+    codeless_advertisingStop();
 }
 
 /* ............................. Exit actions .............................. */
 static void
-sendAdvertisementOn(BleMgr *const me)
+initExit(BleMgr *const me)
+{
+   rkh_tmr_stop(&me->tmr); 
+}
+
+static void
+disconnectedExit(BleMgr *const me)
+{
+    rkh_tmr_stop(&me->tmrDisc);
+}
+
+static void
+waitConnectExit(BleMgr *const me)
+{
+    rkh_tmr_stop(&me->tmr);
+}
+
+static void
+sendAdvertisingOn(BleMgr *const me)
 {
     (void)me;
+    codeless_advertisingStart();
 }
 
 /* ................................ Guards ................................. */

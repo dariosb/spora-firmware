@@ -69,6 +69,12 @@ extern "C" {
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 void bsp_init(void);
+void bsp_uartInit(void);
+void bsp_uartPutstring(const char *s);
+void bsp_uartPutchar(unsigned char c);
+
+void bsp_setBleFailureLed(bool state);
+void bsp_setBleConnectionLed(bool state);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
