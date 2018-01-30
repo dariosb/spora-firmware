@@ -74,7 +74,9 @@ void bsp_uartPutstring(const char *s);
 void bsp_uartPutchar(unsigned char c);
 
 void bsp_setMotionLed(bool state);
+void bsp_toggleMotionLed(void);
 #define bsp_setBleFailureLed(x) bsp_setMotionLed(x)
+#define bsp_toggleBleFailureLed(x) bsp_toggleMotionLed(x)
 void bsp_setBleConnectionLed(bool state);
 
 uint32_t bsp_getTimeSec(void);

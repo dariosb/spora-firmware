@@ -67,8 +67,10 @@ typedef enum Signals
 {
 	evInitTout,
 	evCmdTout,
+    evFailureToggle,
     evConnStatusTout,
     evUnlikedTout,
+    evMotionIndicatorTout,
     evConnected,
     evDisconnected,
     evOk,
@@ -79,6 +81,7 @@ typedef enum Signals
     evPushbuttonLongPress,
     evForceDisconnect,
     evMotionDetect,
+
 	SPORA_NUM_EVENTS
 }Signals;
 

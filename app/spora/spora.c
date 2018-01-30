@@ -52,16 +52,18 @@
 #include "rkh.h"
 #include "spora.h"
 #include "codeless.h"
+#include "mpu9250.h"
 #include "bsp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 #define UNLINKED_TIMEOUT        RKH_TIME_SEC(60)
+#define MOTION_INDICATOR_TIME   RKH_TIME_MS(3000)
 
 /* ......................... Declares active object ........................ */
 typedef struct Spora Spora;
 
 /* ................... Declares states and pseudostates .................... */
-RKH_DCLR_BASIC_STATE unlinked, linked, hiden; 
+RKH_DCLR_BASIC_STATE unlinked, linked, hiden, motionDetect; 
 
 /* ........................ Declares initial action ........................ */
 static void init(Spora *const me);
@@ -86,6 +88,7 @@ static void offMotion(Spora *const me);
 /* ........................ States and pseudostates ........................ */
 RKH_CREATE_BASIC_STATE(unlinked, unlinkedEntry, unlinkedExit, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(unlinked)
+    RKH_TRREG(evMotionDetect, NULL, sendSporaData, &motionDetect),
     RKH_TRREG(evUnlikedTout, NULL, setHiden, &hiden),
     RKH_TRREG(evConnected, NULL, NULL, &linked),
 RKH_END_TRANS_TABLE
@@ -97,16 +100,14 @@ RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(linked, linkReady, linkLost, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(linked)
-    RKH_TRINT(evMotionDetect, NULL, sendSporaData),
+    RKH_TRREG(evMotionDetect, NULL, sendSporaData, &motionDetect),
     RKH_TRREG(evDisconnected, NULL, NULL, &unlinked),
     RKH_TRREG(evPushbuttonLongPress, NULL, disconnect, &unlinked),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(motionDetect, onMotion, offMotion, RKH_ROOT, NULL);
-RKH_CREATE_TRANS_TABLE(motionDetec)
-    RKH_TRINT(evMotionDetect, NULL, sendSporaData),
-    RKH_TRREG(evDisconnected, NULL, NULL, &unlinked),
-    RKH_TRREG(evPushbuttonLongPress, NULL, disconnect, &unlinked),
+RKH_CREATE_TRANS_TABLE(motionDetect)
+    RKH_TRREG(evMotionIndicatorTout, NULL, NULL, &unlinked),
 RKH_END_TRANS_TABLE
 
 /* ............................. Active object ............................. */
@@ -131,6 +132,8 @@ static RKH_STATIC_EVENT(e_tmr, evInitTout);
 static void
 init(Spora *const me)
 {
+    pushbutton_init();
+    mpu9250_init();
     RKH_TMR_INIT(&me->tmr, &e_tmr, NULL);
 }
 
@@ -156,7 +159,6 @@ disconnect(Spora *const me, RKH_EVT_T *pe)
 static void
 sendSporaData(Spora *const me, RKH_EVT_T *pe)
 {
-
 }
 
 /* ............................. Entry actions ............................. */
@@ -177,13 +179,15 @@ static void
 onMotion(Spora *const me)
 {
     bsp_setMotionLed(true);
+    RKH_SET_STATIC_EVENT(&e_tmr, evMotionIndicatorTout);
+    RKH_TMR_ONESHOT(&me->tmr, spora, MOTION_INDICATOR_TIME);
 }
 
 /* ............................. Exit actions .............................. */
 static void
 unlinkedExit(Spora *const me)
 {
-   rkh_tmr_stop(&me->tmr); 
+    rkh_tmr_stop(&me->tmr); 
 }
 
 static void
@@ -196,6 +200,7 @@ static void
 offMotion(Spora *const me)
 {
     bsp_setMotionLed(false);
+    rkh_tmr_stop(&me->tmr); 
 }
 
 /* ................................ Guards ................................. */

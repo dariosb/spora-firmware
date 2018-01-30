@@ -196,15 +196,22 @@
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_Pn1iQAXuEei64r585RhGNQ" name="sendSporadata()"/>
               <trigger xmi:id="_Pn1iQQXuEei64r585RhGNQ" name="evMotionDetect"/>
             </transition>
-            <transition xmi:id="_DEhWMAXvEei64r585RhGNQ" source="_zn5QIAXuEei64r585RhGNQ" target="_AQP3kAXKEei64r585RhGNQ">
+            <transition xmi:id="_DEhWMAXvEei64r585RhGNQ" source="_zn5QIAXuEei64r585RhGNQ" target="__nTBMAXJEei64r585RhGNQ">
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_QuGxUAXvEei64r585RhGNQ" name="turnoffIndicator()"/>
-              <trigger xmi:id="_QuHYYAXvEei64r585RhGNQ" name="after(MotionIndicatorTimeout)"/>
+              <trigger xmi:id="_fTuGIAYLEei64r585RhGNQ" name="after(MotionIndicatorTout)"/>
+            </transition>
+            <transition xmi:id="_A5weEAYLEei64r585RhGNQ" source="__nTBMAXJEei64r585RhGNQ" target="_zn5QIAXuEei64r585RhGNQ">
+              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_JGtRYAYLEei64r585RhGNQ" name="sendSporadata()"/>
+              <trigger xmi:id="_JGtRYQYLEei64r585RhGNQ" name="evMotionDetect"/>
             </transition>
             <subvertex xmi:type="uml:State" xmi:id="__nTBMAXJEei64r585RhGNQ" name="unlinked"/>
             <subvertex xmi:type="uml:Pseudostate" xmi:id="__AI6kAXJEei64r585RhGNQ" name="Initial1"/>
             <subvertex xmi:type="uml:State" xmi:id="_AQP3kAXKEei64r585RhGNQ" name="linked"/>
             <subvertex xmi:type="uml:State" xmi:id="_uJkdsAXXEei64r585RhGNQ" name="hiden"/>
-            <subvertex xmi:type="uml:State" xmi:id="_zn5QIAXuEei64r585RhGNQ" name="motionDetected"/>
+            <subvertex xmi:type="uml:State" xmi:id="_zn5QIAXuEei64r585RhGNQ" name="motionDetected">
+              <entry xmi:type="uml:OpaqueBehavior" xmi:id="_zWyBQAYKEei64r585RhGNQ" name="onMotion"/>
+              <exit xmi:type="uml:OpaqueBehavior" xmi:id="_4efh8AYKEei64r585RhGNQ" name="offMotion"/>
+            </subvertex>
           </region>
         </subvertex>
         <subvertex xmi:type="uml:Pseudostate" xmi:id="_adHZ0AXaEei64r585RhGNQ" name="Initial1"/>

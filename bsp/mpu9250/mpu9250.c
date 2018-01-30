@@ -60,6 +60,13 @@
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
+typedef struct
+{
+    int16_t x;
+    int16_t y;
+    int16_t z;
+}InstantMotion;
+
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 #if defined(RKH_USE_TRC_SENDER)
@@ -67,6 +74,8 @@ static rui8_t mpu9250;
 #endif
 
 static RKH_ROM_STATIC_EVENT(e_motion, evMotionDetect);
+
+static InstantMotion motion;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -90,10 +99,22 @@ EXT_WAKE_UP_irqEnable(void)
 void
 BOARD_EXT_WAKE_UP_IRQ_Handler(void)
 {
+    uint8_t status;
+
     GPIO_PortClearInterruptFlags(BOARD_EXT_WAKE_UP_GPIO,
                                  1U << BOARD_EXT_WAKE_UP_GPIO_PIN);
 
-    LED_RED_TOGGLE();
+
+    motion.x = mpu9250_readByte(ACCEL_XOUT_H) << 8 |
+            mpu9250_readByte(ACCEL_XOUT_L);
+    
+    motion.y = mpu9250_readByte(ACCEL_YOUT_H) << 8 |
+            mpu9250_readByte(ACCEL_YOUT_L);
+    
+    motion.z = mpu9250_readByte(ACCEL_ZOUT_H) << 8 |
+            mpu9250_readByte(ACCEL_ZOUT_L);
+    
+    mpu9250_readByte(INT_STATUS);
 
     RKH_SMA_POST_FIFO(spora, &e_motion, &mpu9250);
 }

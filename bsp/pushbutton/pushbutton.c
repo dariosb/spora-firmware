@@ -79,6 +79,7 @@ typedef enum
 /* ---------------------------- Local variables ---------------------------- */
 static unsigned char filter, state, button;
 static uint32_t tout;
+static bool running = false;
 
 #if defined(RKH_USE_TRC_SENDER)
 static rui8_t pushbutton;
@@ -110,11 +111,15 @@ pushbutton_init(void)
 
     filter = 0;
     button = state = stReleased;
+    running = true;
 }
 
 void
 pushbutton_tick(void)
 {
+    if(!running)
+        return;
+
     /* Debouncer filter */
     filter = (filter << 1) | pinRead(); 
 

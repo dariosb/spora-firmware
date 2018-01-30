@@ -60,6 +60,7 @@
 #define INIT_TIME               RKH_TIME_SEC(5)
 #define DISCONNECTED_TIMEOUT    RKH_TIME_SEC(60)
 #define CONNSTATUS_CHKTIME      RKH_TIME_SEC(1)
+#define FAILURE_PERIOD          RKH_TIME_MS(200)
 
 /* ......................... Declares active object ........................ */
 typedef struct BleMgr BleMgr;
@@ -109,6 +110,7 @@ RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(failure, bleError, NULL, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(failure)
+    RKH_TRREG(evFailureToggle, NULL, NULL, &failure),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_COMP_REGION_STATE(running, NULL, NULL, RKH_ROOT, &idle, NULL,
@@ -191,7 +193,9 @@ static void
 bleError(BleMgr *const me)
 {
     (void)me;
-    bsp_setBleFailureLed(true);
+    bsp_toggleBleFailureLed();
+    RKH_SET_STATIC_EVENT(&e_tmr, evFailureToggle);
+    RKH_TMR_ONESHOT(&me->tmr, bleMgr, FAILURE_PERIOD);
 }
 
 static void
