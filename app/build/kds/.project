@@ -67,6 +67,11 @@
 			<locationURI>PARENT-2-PROJECT_LOC/rkhcfg.h</locationURI>
 		</link>
 		<link>
+			<name>source/app/spora</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/spora</locationURI>
+		</link>
+		<link>
 			<name>source/bsp/assert.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/assert.c</locationURI>

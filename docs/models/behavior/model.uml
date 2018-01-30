@@ -62,13 +62,12 @@
           <trigger xmi:id="_jhYvwAVjEeit67JRAsgWRA" name="evCmdTout"/>
         </transition>
         <transition xmi:id="_q_97oAK6Eeiknsfs-jeQ4w" source="_ZUd9gAKqEeiwX8FNi-VDBQ" target="_2HCWsAK6Eeiknsfs-jeQ4w">
-          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_lk9AoAV8Eeit67JRAsgWRA" name="advertisingStart()"/>
           <trigger xmi:id="_rz7IIAK6Eeiknsfs-jeQ4w" name="evOk"/>
         </transition>
-        <transition xmi:id="_7Qdf4ALAEeiknsfs-jeQ4w" source="_2HCWsAK6Eeiknsfs-jeQ4w" target="_35X3AAK6Eeiknsfs-jeQ4w">
+        <transition xmi:id="_7Qdf4ALAEeiknsfs-jeQ4w" source="_2HCWsAK6Eeiknsfs-jeQ4w">
           <trigger xmi:id="_eshlsAV7Eeit67JRAsgWRA" name="evStopAdvertising"/>
         </transition>
-        <transition xmi:id="_azTbkALBEeiknsfs-jeQ4w" source="_35X3AAK6Eeiknsfs-jeQ4w" target="_2HCWsAK6Eeiknsfs-jeQ4w">
+        <transition xmi:id="_azTbkALBEeiknsfs-jeQ4w" target="_2HCWsAK6Eeiknsfs-jeQ4w">
           <trigger xmi:id="_gHEREAV7Eeit67JRAsgWRA" name="evStartAdvertising"/>
         </transition>
         <transition xmi:id="_CN1g4AViEeit67JRAsgWRA" source="_2HCWsAK6Eeiknsfs-jeQ4w" target="_h5iD8AKsEeiwX8FNi-VDBQ">
@@ -96,50 +95,31 @@
         <subvertex xmi:type="uml:State" xmi:id="_h5iD8AKsEeiwX8FNi-VDBQ" name="failure">
           <entry xmi:type="uml:OpaqueBehavior" xmi:id="_gj-moAVnEeit67JRAsgWRA" name="bleError()"/>
         </subvertex>
-        <subvertex xmi:type="uml:State" xmi:id="_35X3AAK6Eeiknsfs-jeQ4w" name="advertisingOff">
-          <entry xmi:type="uml:OpaqueBehavior" xmi:id="_foVl8ALDEeiknsfs-jeQ4w" name="sendAdvertisingOff"/>
-          <exit xmi:type="uml:OpaqueBehavior" xmi:id="_iiqpEALDEeiknsfs-jeQ4w" name="sendAdvertisingOn"/>
-        </subvertex>
-        <subvertex xmi:type="uml:State" xmi:id="_2HCWsAK6Eeiknsfs-jeQ4w" name="advertisingOn">
+        <subvertex xmi:type="uml:State" xmi:id="_2HCWsAK6Eeiknsfs-jeQ4w" name="running">
           <region xmi:id="_IpF8oAK7Eeiknsfs-jeQ4w" name="AdvertisementOn">
-            <transition xmi:id="_MrSKQAK8Eeiknsfs-jeQ4w" source="_K4c6sAK8Eeiknsfs-jeQ4w" target="_4ovpAAK7Eeiknsfs-jeQ4w"/>
-            <transition xmi:id="_1RXBAAK8Eeiknsfs-jeQ4w" source="_4ovpAAK7Eeiknsfs-jeQ4w" target="_yIqxwAK8Eeiknsfs-jeQ4w">
+            <transition xmi:id="_MrSKQAK8Eeiknsfs-jeQ4w" source="_K4c6sAK8Eeiknsfs-jeQ4w"/>
+            <transition xmi:id="_1RXBAAK8Eeiknsfs-jeQ4w">
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_1P3Z8ALBEeiknsfs-jeQ4w" name="bleIsConnected()"/>
               <trigger xmi:id="_OrgrgAT_Eei1GM3NUxNacg" name="evConnected"/>
             </transition>
-            <transition xmi:id="_15610AK8Eeiknsfs-jeQ4w" source="_vNVvEATrEei1GM3NUxNacg" target="_4ovpAAK7Eeiknsfs-jeQ4w">
-              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_3-h_oALBEeiknsfs-jeQ4w" name="bleIsDisconnected()"/>
-              <trigger xmi:id="_Nw-V4AT_Eei1GM3NUxNacg" name="evDisconnected"/>
+            <transition xmi:id="_15610AK8Eeiknsfs-jeQ4w" source="_vNVvEATrEei1GM3NUxNacg" target="_5Gr5QAXcEei64r585RhGNQ">
+              <trigger xmi:id="_TbPLIAXdEei64r585RhGNQ" name="evOk"/>
             </transition>
-            <transition xmi:id="_54zzoALEEeiknsfs-jeQ4w" source="_4ovpAAK7Eeiknsfs-jeQ4w" target="_35X3AAK6Eeiknsfs-jeQ4w">
+            <transition xmi:id="_54zzoALEEeiknsfs-jeQ4w">
               <trigger xmi:id="_J_KzMALFEeiknsfs-jeQ4w" name="after(DISCONECTED_TIMEOUT)"/>
             </transition>
-            <transition xmi:id="_h0Nw0AT2Eei1GM3NUxNacg" source="_yIqxwAK8Eeiknsfs-jeQ4w" target="_vNVvEATrEei1GM3NUxNacg">
+            <transition xmi:id="_h0Nw0AT2Eei1GM3NUxNacg" source="_5Gr5QAXcEei64r585RhGNQ" target="_vNVvEATrEei1GM3NUxNacg">
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_jhLo8AT2Eei1GM3NUxNacg" name="sendGetConnStatus()"/>
               <trigger xmi:id="_gFf9EAV2Eeit67JRAsgWRA" name="after(CONNSTATUS_CHKTIME)"/>
             </transition>
-            <transition xmi:id="_VoXhwAV0Eeit67JRAsgWRA" source="_vNVvEATrEei1GM3NUxNacg" target="_yIqxwAK8Eeiknsfs-jeQ4w">
-              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_WoErQAV0Eeit67JRAsgWRA" name="bleIsConnected()"/>
-              <trigger xmi:id="_WoFSUAV0Eeit67JRAsgWRA" name="evConnected"/>
-            </transition>
-            <transition xmi:id="_CZXzIAW9Eei64r585RhGNQ" source="_yIqxwAK8Eeiknsfs-jeQ4w" target="_4ovpAAK7Eeiknsfs-jeQ4w">
+            <transition xmi:id="_CZXzIAW9Eei64r585RhGNQ">
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_F4ryoAW9Eei64r585RhGNQ" name="sendDisconnect();"/>
               <trigger xmi:id="_F4sZsAW9Eei64r585RhGNQ" name="evForceDisconnect"/>
             </transition>
-            <subvertex xmi:type="uml:State" xmi:id="_4ovpAAK7Eeiknsfs-jeQ4w" name="disconected">
-              <region xmi:id="_K-zM8AVyEeit67JRAsgWRA" name="disconnected">
-                <transition xmi:id="_iYLuMAVyEeit67JRAsgWRA" source="_QoYroAVyEeit67JRAsgWRA" target="_QoYroAVyEeit67JRAsgWRA">
-                  <effect xmi:type="uml:OpaqueBehavior" xmi:id="_j1ojoAVyEeit67JRAsgWRA" name="sendGetConnStatus()"/>
-                  <trigger xmi:id="_d2nqsAV2Eeit67JRAsgWRA" name="after(CONNSTATUS_CHKTIME)"/>
-                </transition>
-                <transition xmi:id="_s0wawAVyEeit67JRAsgWRA" source="_r9QyEAVyEeit67JRAsgWRA" target="_QoYroAVyEeit67JRAsgWRA"/>
-                <subvertex xmi:type="uml:State" xmi:id="_QoYroAVyEeit67JRAsgWRA" name="waitConnect"/>
-                <subvertex xmi:type="uml:Pseudostate" xmi:id="_r9QyEAVyEeit67JRAsgWRA" name="Initial1"/>
-              </region>
-            </subvertex>
+            <transition xmi:id="_aDRPEAXdEei64r585RhGNQ" source="_K4c6sAK8Eeiknsfs-jeQ4w" target="_5Gr5QAXcEei64r585RhGNQ"/>
             <subvertex xmi:type="uml:Pseudostate" xmi:id="_K4c6sAK8Eeiknsfs-jeQ4w" name="Initial1"/>
-            <subvertex xmi:type="uml:State" xmi:id="_yIqxwAK8Eeiknsfs-jeQ4w" name="connected"/>
             <subvertex xmi:type="uml:State" xmi:id="_vNVvEATrEei1GM3NUxNacg" name="waitConnStatus"/>
+            <subvertex xmi:type="uml:State" xmi:id="_5Gr5QAXcEei64r585RhGNQ" name="idle"/>
           </region>
         </subvertex>
       </region>
@@ -153,10 +133,20 @@
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UC8GUAXHEei64r585RhGNQ" value="1"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_UC8tYAXHEei64r585RhGNQ" value="1"/>
     </ownedAttribute>
+    <ownedAttribute xmi:id="_GdEXcgXQEei64r585RhGNQ" name="Pushbutton" type="_GdEXcAXQEei64r585RhGNQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KsdJAAXQEei64r585RhGNQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KsdwEAXQEei64r585RhGNQ" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XNdLcQXQEei64r585RhGNQ" name="LedMgr" type="_XNckYAXQEei64r585RhGNQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ZzvRMAXQEei64r585RhGNQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Zzv4QAXQEei64r585RhGNQ" value="1"/>
+    </ownedAttribute>
     <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_1RbEcQXHEei64r585RhGNQ" name="Operation_1"/>
     <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_9OtOoQXIEei64r585RhGNQ" name="Operation_2"/>
     <lifeline xmi:id="_Q95oAAXHEei64r585RhGNQ" name="Spora : Spora [1]" represents="_Q96PEAXHEei64r585RhGNQ" coveredBy="_1RbEcwXHEei64r585RhGNQ _1RbEdAXHEei64r585RhGNQ _1RbrgAXHEei64r585RhGNQ _9OtOogXIEei64r585RhGNQ"/>
     <lifeline xmi:id="_QZwZIQXHEei64r585RhGNQ" name="BleMgr " represents="_QZwZIAXHEei64r585RhGNQ" coveredBy="_1RbEcgXHEei64r585RhGNQ _9Ot1sAXIEei64r585RhGNQ _9Ot1sQXIEei64r585RhGNQ _9Ot1sgXIEei64r585RhGNQ"/>
+    <lifeline xmi:id="_GdEXcQXQEei64r585RhGNQ" name="Pushbutton : Pushbutton [1]" represents="_GdEXcgXQEei64r585RhGNQ"/>
+    <lifeline xmi:id="_XNdLcAXQEei64r585RhGNQ" name="LedMgr : LedMgr [1]" represents="_XNdLcQXQEei64r585RhGNQ"/>
     <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_1RbEcgXHEei64r585RhGNQ" name="evDisconnected_sender" covered="_QZwZIQXHEei64r585RhGNQ" message="_1RbEcAXHEei64r585RhGNQ"/>
     <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_1RbEcwXHEei64r585RhGNQ" name="evDisconnected_receiver" covered="_Q95oAAXHEei64r585RhGNQ" message="_1RbEcAXHEei64r585RhGNQ"/>
     <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_1RbEdAXHEei64r585RhGNQ" name="Operation_1" covered="_Q95oAAXHEei64r585RhGNQ" finish="_1RbrgAXHEei64r585RhGNQ" start="_1RbEcwXHEei64r585RhGNQ" behavior="_1RbEcQXHEei64r585RhGNQ"/>
@@ -169,9 +159,81 @@
     <message xmi:id="_9OtOoAXIEei64r585RhGNQ" name="evStopAdvetising" messageSort="asynchCall" receiveEvent="_9Ot1sAXIEei64r585RhGNQ" sendEvent="_9OtOogXIEei64r585RhGNQ" signature="_9OsnkAXIEei64r585RhGNQ"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_Q95A8AXHEei64r585RhGNQ" name="Spora">
+    <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_n4JrUAXJEei64r585RhGNQ" name="Spora statemachine">
+      <region xmi:id="_n4JrUQXJEei64r585RhGNQ" name="Region1">
+        <transition xmi:id="_IRf7wAXLEei64r585RhGNQ" source="__nTBMAXJEei64r585RhGNQ" target="_uJkdsAXXEei64r585RhGNQ">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_RiEvQAXLEei64r585RhGNQ" name="setHiden()"/>
+          <trigger xmi:id="_LObMoAXbEei64r585RhGNQ" name="after(UnlinkedTimeout)"/>
+        </transition>
+        <transition xmi:id="_UWNtAAXaEei64r585RhGNQ" source="_jx31oAXNEei64r585RhGNQ" target="_o1eSYAXNEei64r585RhGNQ">
+          <trigger xmi:id="_WeUpAAXaEei64r585RhGNQ" name="evBleUp"/>
+        </transition>
+        <transition xmi:id="_bMvf8AXaEei64r585RhGNQ" source="_adHZ0AXaEei64r585RhGNQ" target="_jx31oAXNEei64r585RhGNQ">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_kpE3gAXaEei64r585RhGNQ" name="init()"/>
+        </transition>
+        <subvertex xmi:type="uml:State" xmi:id="_dQwZYAXKEei64r585RhGNQ" name="discoverable">
+          <region xmi:id="_jw5soAXKEei64r585RhGNQ" name="discoverable"/>
+        </subvertex>
+        <subvertex xmi:type="uml:State" xmi:id="_jx31oAXNEei64r585RhGNQ" name="init"/>
+        <subvertex xmi:type="uml:State" xmi:id="_o1eSYAXNEei64r585RhGNQ" name="running">
+          <region xmi:id="_tKfK0AXNEei64r585RhGNQ" name="running">
+            <transition xmi:id="_GQPHQAXOEei64r585RhGNQ" source="__AI6kAXJEei64r585RhGNQ" target="__nTBMAXJEei64r585RhGNQ"/>
+            <transition xmi:id="_4WabQAXOEei64r585RhGNQ" source="__nTBMAXJEei64r585RhGNQ" target="_AQP3kAXKEei64r585RhGNQ">
+              <trigger xmi:id="_Be-iQAXPEei64r585RhGNQ" name="evConnected"/>
+            </transition>
+            <transition xmi:id="_yRA0MAXXEei64r585RhGNQ" source="_uJkdsAXXEei64r585RhGNQ" target="__nTBMAXJEei64r585RhGNQ">
+              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_1rYCQAXXEei64r585RhGNQ" name="setDiscoverable()"/>
+              <trigger xmi:id="_jpC1gAXoEei64r585RhGNQ" name="evPushbuttonLongPress"/>
+            </transition>
+            <transition xmi:id="_4FCoUAXXEei64r585RhGNQ" source="_AQP3kAXKEei64r585RhGNQ" target="__nTBMAXJEei64r585RhGNQ">
+              <trigger xmi:id="_5YoXIAXXEei64r585RhGNQ" name="evDisconnected"/>
+            </transition>
+            <transition xmi:id="_bdg-gAXoEei64r585RhGNQ" source="_AQP3kAXKEei64r585RhGNQ" target="__nTBMAXJEei64r585RhGNQ">
+              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_hyzsoAXoEei64r585RhGNQ" name="disconnect()"/>
+              <trigger xmi:id="_iqFS4AXoEei64r585RhGNQ" name="evPushbuttonLongPress"/>
+            </transition>
+            <transition xmi:id="_J4uqYAXuEei64r585RhGNQ" source="_AQP3kAXKEei64r585RhGNQ" target="_zn5QIAXuEei64r585RhGNQ">
+              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_Pn1iQAXuEei64r585RhGNQ" name="sendSporadata()"/>
+              <trigger xmi:id="_Pn1iQQXuEei64r585RhGNQ" name="evMotionDetect"/>
+            </transition>
+            <transition xmi:id="_DEhWMAXvEei64r585RhGNQ" source="_zn5QIAXuEei64r585RhGNQ" target="_AQP3kAXKEei64r585RhGNQ">
+              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_QuGxUAXvEei64r585RhGNQ" name="turnoffIndicator()"/>
+              <trigger xmi:id="_QuHYYAXvEei64r585RhGNQ" name="after(MotionIndicatorTimeout)"/>
+            </transition>
+            <subvertex xmi:type="uml:State" xmi:id="__nTBMAXJEei64r585RhGNQ" name="unlinked"/>
+            <subvertex xmi:type="uml:Pseudostate" xmi:id="__AI6kAXJEei64r585RhGNQ" name="Initial1"/>
+            <subvertex xmi:type="uml:State" xmi:id="_AQP3kAXKEei64r585RhGNQ" name="linked"/>
+            <subvertex xmi:type="uml:State" xmi:id="_uJkdsAXXEei64r585RhGNQ" name="hiden"/>
+            <subvertex xmi:type="uml:State" xmi:id="_zn5QIAXuEei64r585RhGNQ" name="motionDetected"/>
+          </region>
+        </subvertex>
+        <subvertex xmi:type="uml:Pseudostate" xmi:id="_adHZ0AXaEei64r585RhGNQ" name="Initial1"/>
+      </region>
+    </ownedBehavior>
     <ownedOperation xmi:id="_1RadYAXHEei64r585RhGNQ" name="Operation_1"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:StateMachine" xmi:id="_n4JrUAXJEei64r585RhGNQ" name="NewModel statemachine">
-    <region xmi:id="_n4JrUQXJEei64r585RhGNQ" name="Region1"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_GdEXcAXQEei64r585RhGNQ" name="Pushbutton">
+    <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_izLRYAXQEei64r585RhGNQ" name="Push statemachine">
+      <region xmi:id="_izLRYQXQEei64r585RhGNQ" name="Region1">
+        <transition xmi:id="_C-BBMAXREei64r585RhGNQ" source="_70mHcAXQEei64r585RhGNQ" target="__F6HMAXQEei64r585RhGNQ">
+          <trigger xmi:id="_yR1iUAXREei64r585RhGNQ" name="evPushbuttonPress"/>
+        </transition>
+        <transition xmi:id="_GJwkcAXREei64r585RhGNQ" source="__F6HMAXQEei64r585RhGNQ" target="_KVQ7kAXREei64r585RhGNQ">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_km41QAXREei64r585RhGNQ" name="buttonLongPress()"/>
+          <trigger xmi:id="_II3VcAXREei64r585RhGNQ" name="after(SHORT2LONG)"/>
+        </transition>
+        <transition xmi:id="_PVMZQAXREei64r585RhGNQ" source="_KVQ7kAXREei64r585RhGNQ" target="_70mHcAXQEei64r585RhGNQ">
+          <trigger xmi:id="_SGwh8AXREei64r585RhGNQ" name="evPushbuttonRelease"/>
+        </transition>
+        <transition xmi:id="_l5HSIAXREei64r585RhGNQ" source="__F6HMAXQEei64r585RhGNQ" target="_70mHcAXQEei64r585RhGNQ">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_pgawAAXREei64r585RhGNQ" name="buttonShortPress()"/>
+          <trigger xmi:id="_pgbXEAXREei64r585RhGNQ" name="evPushbuttonRelease"/>
+        </transition>
+        <subvertex xmi:type="uml:State" xmi:id="_70mHcAXQEei64r585RhGNQ" name="released" visibility="public"/>
+        <subvertex xmi:type="uml:State" xmi:id="__F6HMAXQEei64r585RhGNQ" name="press"/>
+        <subvertex xmi:type="uml:State" xmi:id="_KVQ7kAXREei64r585RhGNQ" name="longPress"/>
+      </region>
+    </ownedBehavior>
   </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_XNckYAXQEei64r585RhGNQ" name="LedMgr"/>
 </uml:Model>

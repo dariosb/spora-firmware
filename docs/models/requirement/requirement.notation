@@ -755,7 +755,7 @@
       <element xsi:nil="true"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MD3RlQW0Eei64r585RhGNQ" x="200"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_MF0ZYAW0Eei64r585RhGNQ" type="Class_Shape">
+    <children xmi:type="notation:Shape" xmi:id="_MF0ZYAW0Eei64r585RhGNQ" type="Class_Shape" fillColor="8905185">
       <children xmi:type="notation:DecorationNode" xmi:id="_MF1AcAW0Eei64r585RhGNQ" type="Class_NameLabel"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_MF1AcQW0Eei64r585RhGNQ" type="Class_FloatingNameLabel">
         <layoutConstraint xmi:type="notation:Location" xmi:id="_MF1AcgW0Eei64r585RhGNQ" y="15"/>
@@ -823,7 +823,7 @@
       <element xsi:nil="true"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MIq5EgW0Eei64r585RhGNQ" x="200"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_MKrEMAW0Eei64r585RhGNQ" type="Class_Shape">
+    <children xmi:type="notation:Shape" xmi:id="_MKrEMAW0Eei64r585RhGNQ" type="Class_Shape" fillColor="8905185">
       <children xmi:type="notation:DecorationNode" xmi:id="_MKrrQAW0Eei64r585RhGNQ" type="Class_NameLabel"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_MKrrQQW0Eei64r585RhGNQ" type="Class_FloatingNameLabel">
         <layoutConstraint xmi:type="notation:Location" xmi:id="_MKrrQgW0Eei64r585RhGNQ" y="15"/>

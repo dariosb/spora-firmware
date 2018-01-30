@@ -33,8 +33,9 @@
  */
 
 /**
- *  \file       spora.c
- *  \brief      Simple test app for Spora BSP on FRDMKL03.
+ *  \file       pushbutton.c
+ *  \brief      Simple Pushbutton debouncer and LONG/SHORT press detection
+ *              statemachine
  *
  *  \ingroup    bsp_test
  */
@@ -53,7 +54,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
 #include "bsp.h"
-#include "bleMgr.h"
+#include "spora.h"
 #include "fsl_gpio.h"
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -61,20 +62,29 @@
                                              BOARD_PUSH_BUTTON_GPIO_PIN) 
 
 /* ------------------------------- Constants ------------------------------- */
+#define SHORT2LONG_BUTT_TIME    RKH_TIME_MS(3000)
 #define DEBOUNCING_SAMPLES      7
 #define PRESS_MASK              (1<<DEBOUNCING_SAMPLES)
 #define RELEASE_MASK            (~(PRESS_MASK) && 0xFF)
 
+typedef enum
+{
+    stReleased,
+    stPress,
+    stLongPress
+}PushButtonState;
+
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static unsigned char state;
+static unsigned char filter, state, button;
+static uint32_t tout;
 
 #if defined(RKH_USE_TRC_SENDER)
 static rui8_t pushbutton;
 #endif
 
-static RKH_STATIC_EVENT(e_pushbutton, evPushbuttonRelease);
+static RKH_STATIC_EVENT(e_pushbutton, evPushbuttonLongPress);
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -98,23 +108,58 @@ pushbutton_init(void)
                  BOARD_PUSH_BUTTON_GPIO_PIN,
                  &sw_config);
 
-    state = 0;
+    filter = 0;
+    button = state = stReleased;
 }
 
 void
 pushbutton_tick(void)
 {
-    state = (state << 1) | pinRead(); 
+    /* Debouncer filter */
+    filter = (filter << 1) | pinRead(); 
 
-    if(state == RELEASE_MASK)
+    if(filter == RELEASE_MASK)
     {
-        RKH_SET_STATIC_EVENT(&e_pushbutton, evPushbuttonRelease);
-        RKH_SMA_POST_FIFO(bleMgr, &e_pushbutton, &pushbutton);
+        button = stReleased;
     }
-    else if(state == PRESS_MASK)
+    else if(filter == PRESS_MASK)
     {
-        RKH_SET_STATIC_EVENT(&e_pushbutton, evPushbuttonPress);
-        RKH_SMA_POST_FIFO(bleMgr, &e_pushbutton, &pushbutton);
+        button = stPress;
+    }
+
+    /* Pushbutton state machine */
+    switch(state)
+    {
+        case stReleased:
+            if(button == stPress)
+            {
+                state = stPress;
+                tout = SHORT2LONG_BUTT_TIME;
+            }
+            break;
+
+        case stPress:
+            if(button == stReleased)
+            {
+                RKH_SET_STATIC_EVENT(&e_pushbutton, evPushbuttonShortPress);
+                RKH_SMA_POST_FIFO(spora, &e_pushbutton, &pushbutton);
+                state = stReleased;
+            }
+            else if(tout && (--tout == 0))
+            {
+                RKH_SET_STATIC_EVENT(&e_pushbutton, evPushbuttonLongPress);
+                RKH_SMA_POST_FIFO(spora, &e_pushbutton, &pushbutton);
+                state = stLongPress;
+            }
+            break;
+
+        case stLongPress:
+            if(button == stReleased)
+                state = stReleased;
+            break;
+
+        default:
+            break;
     }
 }
 

@@ -34,26 +34,27 @@
 
 /**
  *  \file       spora.h
- *  \brief      Simple test app for Spora BSP on FRDMKL03.
- *
- *  \ingroup    bsp_test
+ *  \brief      Spora demo.
  */
 
 /* -------------------------- Development history -------------------------- */
 /*
- *  2018.01.5  DaBa  v0.0.01  Initial version
+ *  2018.01.28  DaBa  v1.0.00  Initial version
  */
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  DaBa  Dario Baliña       db@vortexmakes.com
+ *  DaBa  Dario Baliña  db@vortexmakes.com
  */
 
+/* --------------------------------- Notes --------------------------------- */
 /* --------------------------------- Module -------------------------------- */
 #ifndef __SPORA_H__
 #define __SPORA_H__
 
 /* ----------------------------- Include files ----------------------------- */
+#include "rkh.h"
+
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
 extern "C" {
@@ -61,12 +62,32 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
+/* ................................ Signals ................................ */
+typedef enum Signals
+{
+	evInitTout,
+	evCmdTout,
+    evConnStatusTout,
+    evUnlikedTout,
+    evConnected,
+    evDisconnected,
+    evOk,
+    evError,
+    evStartAdvertising,
+    evStopAdvertising,
+    evPushbuttonShortPress,
+    evPushbuttonLongPress,
+    evForceDisconnect,
+    evMotionDetect,
+	SPORA_NUM_EVENTS
+}Signals;
+
+/* ........................ Declares active object ......................... */
+RKH_SMA_DCLR(spora);
+
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-#define spora_wakeup();
-#define spora_task();
-
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }
@@ -75,4 +96,4 @@ extern "C" {
 /* ------------------------------ Module end ------------------------------- */
 #endif
 
-/* ------------------------------ File footer ------------------------------ */
+/* ------------------------------ End of file ------------------------------ */

@@ -51,6 +51,7 @@
 #include "fsl_lpuart.h"
 #include "i2c.h"
 #include "pin_mux.h"
+#include "mpu9250.h"
 #include "pushbutton.h"
 #include "bsp.h"
 #include "blemgr.h"
@@ -121,6 +122,8 @@ bsp_init(void)
 
     rkh_fwk_init();
 
+    mpu9250_init();
+
     RKH_FILTER_ON_GROUP(RKH_TRC_ALL_GROUPS);
     RKH_FILTER_ON_EVENT(RKH_TRC_ALL_EVENTS);
     RKH_FILTER_OFF_EVENT(RKH_TE_TMR_TOUT);
@@ -174,17 +177,16 @@ bsp_uartPutchar(unsigned char c)
     LPUART_WriteBlocking(CODELESS_LPUART, &c, 1);
 }
 
-
-void
-bsp_setBleFailureLed(bool state)
-{
-	state == true ? LED_RED_ON() : LED_RED_OFF();
-}
-
 void
 bsp_setBleConnectionLed(bool state)
 {
 	state == true ? LED_BLUE_ON() : LED_BLUE_OFF();
+}
+
+void
+bsp_setMotionLed(bool state)
+{
+	state == true ? LED_RED_ON() : LED_RED_OFF();
 }
 
 uint32_t

@@ -55,6 +55,7 @@
 #include "bsp.h"
 #include "ssp.h"
 #include "rkh.h"
+#include "spora.h"
 #include "blemgr.h"
 #include "codeless.h"
 #include "codeless_acts.h"
@@ -124,7 +125,7 @@ void
 codeless_gapDisconnect(void)
 {
     bsp_uartPutstring(ClessDisconnect.cmd);
-    RKH_TMR_ONESHOT(&cmdTout, bleMgr, ClessDisconnect.tout);
+//    RKH_TMR_ONESHOT(&cmdTout, bleMgr, ClessDisconnect.tout);
 }
 
 void codeless_sendData(char *p)

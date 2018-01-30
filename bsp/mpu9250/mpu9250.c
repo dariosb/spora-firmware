@@ -62,6 +62,12 @@
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
+#if defined(RKH_USE_TRC_SENDER)
+static rui8_t mpu9250;
+#endif
+
+static RKH_ROM_STATIC_EVENT(e_motion, evMotionDetect);
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 static void
@@ -88,7 +94,8 @@ BOARD_EXT_WAKE_UP_IRQ_Handler(void)
                                  1U << BOARD_EXT_WAKE_UP_GPIO_PIN);
 
     LED_RED_TOGGLE();
-    spora_wakeup();
+
+    RKH_SMA_POST_FIFO(spora, &e_motion, &mpu9250);
 }
 
 void

@@ -97,6 +97,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/trc/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../..&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../blemgr&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../spora&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.933718024" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu99" valueType="enumerated"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.2902121173" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
@@ -135,6 +136,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/trc/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../..&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../blemgr&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../spora&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.7508785836" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG"/>
@@ -237,8 +239,8 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.size.279076886" name="Size command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.size" value="size" valueType="string"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.make.1573227602" name="Build command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.make" value="make" valueType="string"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm.1269834234" name="Remove command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm" value="rm" valueType="string"/>
-							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.286942610" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" value="false" valueType="boolean"/>
-							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.992362786" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" value="false" valueType="boolean"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.286942610" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" value="true" valueType="boolean"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.992362786" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.useglobalpath.1682061124" name="Use global path" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.useglobalpath" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.ar.43762243" name="Archiver" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.ar" value="ar" valueType="string"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.abi.1708035637" name="Float ABI" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.abi" value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.abi.soft" valueType="enumerated"/>
@@ -309,6 +311,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/trc/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../..&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../blemgr&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../spora&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.997197032" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu99" valueType="enumerated"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.391302813" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
@@ -337,6 +340,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/io&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/log&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/utilities/str&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ssp/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/ksdk2.3/CMSIS/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/fwk/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/mempool/inc&quot;"/>
@@ -347,6 +351,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/trc/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../..&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../blemgr&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../spora&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.3162449327" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DEBUG"/>

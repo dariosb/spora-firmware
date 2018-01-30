@@ -63,24 +63,6 @@ extern "C" {
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
 /* ................................ Signals ................................ */
-typedef enum Signals
-{
-	evInitTout,
-	evCmdTout,
-    evConnStatusTout,
-    evDisconnectedTout,
-    evConnected,
-    evDisconnected,
-    evOk,
-    evError,
-    evStartAdvertising,
-    evStopAdvertising,
-    evPushbuttonPress,
-    evPushbuttonRelease,
-    evForceDisconnect,
-	BLEMGR_NUM_EVENTS
-}Signals;
-
 /* ........................ Declares active object ......................... */
 RKH_SMA_DCLR(bleMgr);
 

@@ -33,8 +33,11 @@
  */
 
 /**
- *  \file       main.c
- *  \brief      Spora demo app.
+ *  \file       sporadata.c
+ *  \brief      This module collect IMU sensor and context info to xmit to
+ *              SporaApk.
+ *
+ *  \ingroup    sporaData
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -49,35 +52,14 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "rkh.h"
-#include "spora.h"
-#include "blemgr.h"
-#include "bsp.h"
+#include "sporadata.h"
 
 /* ----------------------------- Local macros ------------------------------ */
-#define QSTO_SIZE           4
-
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static RKH_EVT_T *qSpora[QSTO_SIZE];
-static RKH_EVT_T *qBleMgr[QSTO_SIZE];
-
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-int
-main(void)
-{
-    bsp_init();
-
-    RKH_SMA_ACTIVATE(spora, qSpora, QSTO_SIZE, 0, 0);
-    RKH_SMA_ACTIVATE(bleMgr, qBleMgr, QSTO_SIZE, 0, 0);
-    rkh_fwk_enter();
-
-    RKH_TRC_CLOSE();
-    return 0;
-}
-
 /* ------------------------------ End of file ------------------------------ */

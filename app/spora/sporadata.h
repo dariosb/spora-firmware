@@ -33,10 +33,11 @@
  */
 
 /**
- *  \file       mpu9250.h
- *  \brief      MPU9250 device routines.
+ *  \file       sporadata.h
+ *  \brief      This module collect IMU sensor and context info to xmit to
+ *              SporaApk.
  *
- *  \ingroup    bsp
+ *  \ingroup    sporaData
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -50,12 +51,11 @@
  */
 
 /* --------------------------------- Module -------------------------------- */
-#ifndef __MPU9250_H__
-#define __MPU9250_H__
+#ifndef __SPORADATA_H__
+#define __SPORADATA_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#include "mpu9250_regs.h"
-#include "i2c.h"
+#include "rkh.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -64,29 +64,26 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
+#define MAX_NAME_SIZE 20
 /* ------------------------------- Data types ------------------------------ */
-
 typedef struct
 {
-    int16_t temp;
-    uint8_t status;
     int16_t ax;
     int16_t ay;
     int16_t az;
+    int16_t aModule;
     int16_t gx;
     int16_t gy;
     int16_t gz;
-    uint8_t magnet;
-    int16_t mx;
-    int16_t my;
-    int16_t mz;
-}Mpu9250_data_st;
+    int16_t temperature;
+    uint8_t pushbutton;
+    int16_t motionThr;
+    char name[MAX_NAME_SIZE];
+    uint32_t runTime;
+}SporaData;
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-bool mpu9250_init(void);
-void mpu9250_read(Mpu9250_data_st *p);
-
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
 }
@@ -96,3 +93,4 @@ void mpu9250_read(Mpu9250_data_st *p);
 #endif
 
 /* ------------------------------ File footer ------------------------------ */
+

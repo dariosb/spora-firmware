@@ -33,8 +33,8 @@
  */
 
 /**
- *  \file       blemgr.c
- *  \brief      BLE Connection Manager.
+ *  \file       spora.c
+ *  \brief      Spora demo.
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -51,91 +51,73 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
 #include "spora.h"
-#include "blemgr.h"
 #include "codeless.h"
-#include "codeless_cmd.h"
 #include "bsp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
-#define INIT_TIME               RKH_TIME_SEC(5)
-#define DISCONNECTED_TIMEOUT    RKH_TIME_SEC(60)
-#define CONNSTATUS_CHKTIME      RKH_TIME_SEC(1)
+#define UNLINKED_TIMEOUT        RKH_TIME_SEC(60)
 
 /* ......................... Declares active object ........................ */
-typedef struct BleMgr BleMgr;
+typedef struct Spora Spora;
 
 /* ................... Declares states and pseudostates .................... */
-RKH_DCLR_BASIC_STATE waitSync, reseting, failure, 
-                     idle, waitConnStatus;
-
-RKH_DCLR_COMP_STATE init, running;
+RKH_DCLR_BASIC_STATE unlinked, linked, hiden; 
 
 /* ........................ Declares initial action ........................ */
-static void bleInit(BleMgr *const me);
+static void init(Spora *const me);
 
 /* ........................ Declares effect actions ........................ */
-static void sendReset(BleMgr *const me, RKH_EVT_T *pe);
-static void sendGetConnStatus(BleMgr *const me, RKH_EVT_T *pe);
+static void setHiden(Spora *const me, RKH_EVT_T *pe);
+static void setDiscoverable(Spora *const me, RKH_EVT_T *pe);
+static void disconnect(Spora *const me, RKH_EVT_T *pe);
+static void sendSporaData(Spora *const me, RKH_EVT_T *pe);
 
 /* ......................... Declares entry actions ........................ */
-static void initEntry(BleMgr *const me);
-static void sendSync(BleMgr *const me);
-static void bleError(BleMgr *const me);
-static void idleEntry(BleMgr *const me);
+static void unlinkedEntry(Spora *const me);
+static void linkReady(Spora *const me);
+static void onMotion(Spora *const me);
 
 /* ......................... Declares exit actions ......................... */
-static void initExit(BleMgr *const me);
-static void idleExit(BleMgr *const me);
+static void unlinkedExit(Spora *const me);
+static void linkLost(Spora *const me);
+static void offMotion(Spora *const me);
 
 /* ............................ Declares guards ............................ */
 /* ........................ States and pseudostates ........................ */
-RKH_CREATE_COMP_REGION_STATE(init, initEntry, initExit,  RKH_ROOT, &waitSync,
-                             NULL, RKH_NO_HISTORY, NULL, NULL, NULL, NULL );
-RKH_CREATE_TRANS_TABLE(init)
-    RKH_TRREG(evInitTout, NULL, NULL, &failure),
-    RKH_TRREG(evCmdTout, NULL, NULL, &failure),
-    RKH_TRREG(evOk, NULL, NULL, &running),
+RKH_CREATE_BASIC_STATE(unlinked, unlinkedEntry, unlinkedExit, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(unlinked)
+    RKH_TRREG(evUnlikedTout, NULL, setHiden, &hiden),
+    RKH_TRREG(evConnected, NULL, NULL, &linked),
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(waitSync, sendSync, NULL, &init, NULL);
-RKH_CREATE_TRANS_TABLE(waitSync)
-    RKH_TRINT(evCmdTout, NULL, sendSync),
-    RKH_TRREG(evOk, NULL, sendReset, &reseting),
+RKH_CREATE_BASIC_STATE(hiden, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(hiden)
+    RKH_TRREG(evPushbuttonLongPress, NULL, setDiscoverable, &unlinked),
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(reseting, NULL, NULL, &init, NULL);
-RKH_CREATE_TRANS_TABLE(reseting)
+RKH_CREATE_BASIC_STATE(linked, linkReady, linkLost, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(linked)
+    RKH_TRINT(evMotionDetect, NULL, sendSporaData),
+    RKH_TRREG(evDisconnected, NULL, NULL, &unlinked),
+    RKH_TRREG(evPushbuttonLongPress, NULL, disconnect, &unlinked),
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(failure, bleError, NULL, RKH_ROOT, NULL);
-RKH_CREATE_TRANS_TABLE(failure)
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_COMP_REGION_STATE(running, NULL, NULL, RKH_ROOT, &idle, NULL,
-                             RKH_NO_HISTORY, NULL, NULL, NULL, NULL );
-RKH_CREATE_TRANS_TABLE(running)
-    RKH_TRREG(evCmdTout, NULL, NULL, &failure),
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE(idle, idleEntry, idleExit, &running, NULL);
-RKH_CREATE_TRANS_TABLE(idle)
-    RKH_TRREG(evConnStatusTout, NULL, sendGetConnStatus, &waitConnStatus),
-RKH_END_TRANS_TABLE
-
-RKH_CREATE_BASIC_STATE(waitConnStatus, NULL, NULL, &running, NULL);
-RKH_CREATE_TRANS_TABLE(waitConnStatus)
-    RKH_TRREG(evOk, NULL, NULL, &idle),
+RKH_CREATE_BASIC_STATE(motionDetect, onMotion, offMotion, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(motionDetec)
+    RKH_TRINT(evMotionDetect, NULL, sendSporaData),
+    RKH_TRREG(evDisconnected, NULL, NULL, &unlinked),
+    RKH_TRREG(evPushbuttonLongPress, NULL, disconnect, &unlinked),
 RKH_END_TRANS_TABLE
 
 /* ............................. Active object ............................. */
-struct BleMgr
+struct Spora
 {
     RKH_SMA_T sma;
     RKH_TMR_T tmr;
 };
 
-RKH_SMA_CREATE(BleMgr, bleMgr, 1, HCAL, &init, bleInit, NULL);
-RKH_SMA_DEF_PTR(bleMgr);
+RKH_SMA_CREATE(Spora, spora, 0, HCAL, &unlinked, init, NULL);
+RKH_SMA_DEF_PTR(spora);
 
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
@@ -147,71 +129,73 @@ static RKH_STATIC_EVENT(e_tmr, evInitTout);
 /* ---------------------------- Local functions ---------------------------- */
 /* ............................ Initial action ............................. */
 static void
-bleInit(BleMgr *const me)
+init(Spora *const me)
 {
     RKH_TMR_INIT(&me->tmr, &e_tmr, NULL);
-
-    codeless_init();
 }
 
 /* ............................ Effect actions ............................. */
 static void
-sendReset(BleMgr *const me, RKH_EVT_T *pe)
+setHiden(Spora *const me, RKH_EVT_T *pe)
 {
-    (void)me;
-    (void)pe;
-        
-    codeless_reset();
+    codeless_advertisingStop();
 }
 
 static void
-sendGetConnStatus(BleMgr *const me, RKH_EVT_T *pe)
+setDiscoverable(Spora *const me, RKH_EVT_T *pe)
 {
-    (void)me;
-    (void)pe;
+    codeless_advertisingStart();
+}
 
-    codeless_getGapStatus();
+static void
+disconnect(Spora *const me, RKH_EVT_T *pe)
+{
+    codeless_gapDisconnect();
+}
+
+static void
+sendSporaData(Spora *const me, RKH_EVT_T *pe)
+{
+
 }
 
 /* ............................. Entry actions ............................. */
 static void
-initEntry(BleMgr *const me)
+unlinkedEntry(Spora *const me)
 {
-    RKH_TMR_ONESHOT(&me->tmr,  bleMgr, INIT_TIME);
+    RKH_SET_STATIC_EVENT(&e_tmr, evUnlikedTout);
+    RKH_TMR_ONESHOT(&me->tmr, spora, UNLINKED_TIMEOUT);
 }
 
 static void
-sendSync(BleMgr *const me)
+linkReady(Spora *const me)
 {
-    (void)me;
-    codeless_sync();
+    bsp_setBleConnectionLed(true);
 }
 
 static void
-bleError(BleMgr *const me)
+onMotion(Spora *const me)
 {
-    (void)me;
-    bsp_setBleFailureLed(true);
-}
-
-static void
-idleEntry(BleMgr *const me)
-{
-    RKH_SET_STATIC_EVENT(&e_tmr, evConnStatusTout);
-    RKH_TMR_ONESHOT(&me->tmr, bleMgr, CONNSTATUS_CHKTIME);
+    bsp_setMotionLed(true);
 }
 
 /* ............................. Exit actions .............................. */
 static void
-initExit(BleMgr *const me)
+unlinkedExit(Spora *const me)
 {
    rkh_tmr_stop(&me->tmr); 
 }
 
 static void
-idleExit(BleMgr *const me)
+linkLost(Spora *const me)
 {
-    rkh_tmr_stop(&me->tmr);
+    bsp_setBleConnectionLed(false);
+}
+
+static void
+offMotion(Spora *const me)
+{
+    bsp_setMotionLed(false);
 }
 
 /* ................................ Guards ................................. */

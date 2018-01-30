@@ -55,6 +55,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "rkh.h"
+#include "spora.h"
 #include "blemgr.h"
 #include "codeless_acts.h"
 #include "codeless_cmd.h"
@@ -76,6 +77,7 @@ static rui8_t ssp;
 static char rxBuffer[CLESS_RXBUFF_SIZE];
 static char *prx;
 
+static RKH_ROM_STATIC_EVENT(e_cmdOk, evOk);
 static RKH_STATIC_EVENT(e_cmdResp, evOk);
 
 /* ----------------------- Local function prototypes ----------------------- */
@@ -91,16 +93,14 @@ codeless_sspInit(void)
 void
 cmdOk(unsigned char pos)
 {
-    RKH_SET_STATIC_EVENT(&e_cmdResp, evOk);
-    RKH_SMA_POST_FIFO(bleMgr, &e_cmdResp, &ssp);
+    RKH_SMA_POST_FIFO(bleMgr, &e_cmdOk, &ssp);
     codeless_stopCmdTimer();
 }
 
 void
 cmdError(unsigned char pos)
 {
-    RKH_SET_STATIC_EVENT(&e_cmdResp, evOk);
-    RKH_SMA_POST_FIFO(bleMgr, &e_cmdResp, &ssp);
+    RKH_SMA_POST_FIFO(bleMgr, &e_cmdOk, &ssp);
     codeless_stopCmdTimer();
 }
 
@@ -139,7 +139,8 @@ gapStatusOk(unsigned char data)
         RKH_SET_STATIC_EVENT(&e_cmdResp, evDisconnected);
     }
 
-    RKH_SMA_POST_FIFO(bleMgr, &e_cmdResp, &ssp);
+    RKH_SMA_POST_FIFO(spora, &e_cmdResp, &ssp);
+    RKH_SMA_POST_FIFO(bleMgr, &e_cmdOk, &ssp);
 }
 
 void
