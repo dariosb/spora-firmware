@@ -58,6 +58,10 @@
 #include "frdmbsp.h"
 #endif
 
+#ifdef SPORA_VERSION_A
+#include "sporabsp.h"
+#endif
+
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
 extern "C" {

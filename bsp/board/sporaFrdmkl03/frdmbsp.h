@@ -72,31 +72,41 @@ extern "C" {
 #endif
 
 /* ================================== GPIO ================================= */
-#ifndef BOARD_EXT_WAKE_UP_GPIO
-#define BOARD_EXT_WAKE_UP_GPIO          GPIOB
+#ifndef EXT_WAKE_UP_GPIO
+#define EXT_WAKE_UP_GPIO          GPIOB
 #endif
-#ifndef BOARD_EXT_WAKE_UP_PORT
-#define BOARD_EXT_WAKE_UP_PORT          PORTB
+#ifndef EXT_WAKE_UP_PORT
+#define EXT_WAKE_UP_PORT          PORTB
 #endif
-#ifndef BOARD_EXT_WAKE_UP_GPIO_PIN
-#define BOARD_EXT_WAKE_UP_GPIO_PIN      5U
+#ifndef EXT_WAKE_UP_GPIO_PIN
+#define EXT_WAKE_UP_GPIO_PIN      5U
 #endif
-#define BOARD_EXT_WAKE_UP_IRQ           PORTB_IRQn
-#define BOARD_EXT_WAKE_UP_IRQ_Handler   PORTB_IRQHandler
-#define BOARD_EXT_WAKE_UP_NAME          "EXT_WAKE_UP"
+#define EXT_WAKE_UP_IRQ           PORTB_IRQn
+#define EXT_WAKE_UP_IRQ_Handler   PORTB_IRQHandler
+#define EXT_WAKE_UP_NAME          "EXT_WAKE_UP"
 
-#ifndef BOARD_PUSH_BUTTON_GPIO
-#define BOARD_PUSH_BUTTON_GPIO          GPIOA
+#ifndef PUSH_BUTTON_GPIO
+#define PUSH_BUTTON_GPIO          GPIOA
 #endif
-#ifndef BOARD_PUSH_BUTTON_PORT
-#define BOARD_PUSH_BUTTON_PORT          PORTA
+#ifndef PUSH_BUTTON_PORT
+#define PUSH_BUTTON_PORT          PORTA
 #endif
-#ifndef BOARD_PUSH_BUTTON_GPIO_PIN
-#define BOARD_PUSH_BUTTON_GPIO_PIN      7U
+#ifndef PUSH_BUTTON_GPIO_PIN
+#define PUSH_BUTTON_GPIO_PIN      7U
 #endif
-#define BOARD_PUSH_BUTTON_IRQ           PORTA_IRQn
-#define BOARD_PUSH_BUTTON_IRQ_Handler   PORTA_IRQHandler
-#define BOARD_PUSH_BUTTON_NAME          "PUSH_BUTTON"
+#define PUSH_BUTTON_IRQ           PORTA_IRQn
+#define PUSH_BUTTON_IRQ_Handler   PORTA_IRQHandler
+#define PUSH_BUTTON_NAME          "PUSH_BUTTON"
+
+#define LED_RED_GPIO              BOARD_LED_RED_GPIO
+#define LED_GREEN_GPIO            BOARD_LED_GREEN_GPIO
+#define LED_BLUE_GPIO             BOARD_LED_BLUE_GPIO
+#define LED_RED_PORT              BOARD_LED_RED_PORT
+#define LED_GREEN_PORT            BOARD_LED_GREEN_PORT
+#define LED_BLUE_PORT             BOARD_LED_BLUE_PORT
+#define LED_RED_GPIO_PIN          BOARD_LED_RED_GPIO_PIN
+#define LED_GREEN_GPIO_PIN        BOARD_LED_GREEN_GPIO_PIN
+#define LED_BLUE_GPIO_PIN         BOARD_LED_BLUE_GPIO_PIN
 
 /* ================================= LPUART ================================ */
 #define CODELESS_LPUART                 LPUART0

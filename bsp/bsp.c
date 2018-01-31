@@ -114,9 +114,9 @@ bsp_init(void)
     I2C_releaseBus();
     BOARD_I2C_ConfigurePins();
 
-    GPIO_PinInit(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, &led_config);
-    GPIO_PinInit(BOARD_LED_BLUE_GPIO, BOARD_LED_BLUE_GPIO_PIN, &led_config);
-    GPIO_PinInit(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, &led_config);
+    GPIO_PinInit(LED_RED_GPIO, LED_RED_GPIO_PIN, &led_config);
+    GPIO_PinInit(LED_BLUE_GPIO, LED_BLUE_GPIO_PIN, &led_config);
+    GPIO_PinInit(LED_GREEN_GPIO, LED_GREEN_GPIO_PIN, &led_config);
 
     rkh_fwk_init();
 

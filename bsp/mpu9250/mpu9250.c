@@ -84,14 +84,14 @@ EXT_WAKE_UP_irqEnable(void)
 {
     gpio_pin_config_t gpio_config = {kGPIO_DigitalInput, 0};
 
-    PORT_SetPinInterruptConfig(BOARD_EXT_WAKE_UP_PORT,
-                               BOARD_EXT_WAKE_UP_GPIO_PIN,
+    PORT_SetPinInterruptConfig(EXT_WAKE_UP_PORT,
+                               EXT_WAKE_UP_GPIO_PIN,
                                kPORT_InterruptRisingEdge);
 
-    EnableIRQ(BOARD_EXT_WAKE_UP_IRQ);
+    EnableIRQ(EXT_WAKE_UP_IRQ);
 
-    GPIO_PinInit(BOARD_EXT_WAKE_UP_GPIO,
-                 BOARD_EXT_WAKE_UP_GPIO_PIN,
+    GPIO_PinInit(EXT_WAKE_UP_GPIO,
+                 EXT_WAKE_UP_GPIO_PIN,
                  &gpio_config);
 }
 
@@ -99,10 +99,8 @@ EXT_WAKE_UP_irqEnable(void)
 void
 BOARD_EXT_WAKE_UP_IRQ_Handler(void)
 {
-    uint8_t status;
-
-    GPIO_PortClearInterruptFlags(BOARD_EXT_WAKE_UP_GPIO,
-                                 1U << BOARD_EXT_WAKE_UP_GPIO_PIN);
+    GPIO_PortClearInterruptFlags(EXT_WAKE_UP_GPIO,
+                                 1U << EXT_WAKE_UP_GPIO_PIN);
 
 
     motion.x = mpu9250_readByte(ACCEL_XOUT_H) << 8 |

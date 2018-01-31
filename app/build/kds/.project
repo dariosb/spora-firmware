@@ -222,6 +222,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/board/sporaFrdmkl03</locationURI>
 		</link>
 		<link>
+			<name>source/bsp/board/sporaVersionA</name>
+			<type>2</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/board/sporaVersionA</locationURI>
+		</link>
+		<link>
 			<name>third-party/ksdk/devices/MKL03Z4</name>
 			<type>2</type>
 			<locationURI>PARENT-3-PROJECT_LOC/third-party/ksdk2.3/devices/MKL03Z4</locationURI>

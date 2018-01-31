@@ -58,8 +58,8 @@
 #include "fsl_gpio.h"
 
 /* ----------------------------- Local macros ------------------------------ */
-#define pinRead()               GPIO_PinRead(BOARD_PUSH_BUTTON_GPIO, \
-                                             BOARD_PUSH_BUTTON_GPIO_PIN) 
+#define pinRead()               GPIO_PinRead(PUSH_BUTTON_GPIO, \
+                                             PUSH_BUTTON_GPIO_PIN)
 
 /* ------------------------------- Constants ------------------------------- */
 #define SHORT2LONG_BUTT_TIME    RKH_TIME_MS(3000)
@@ -101,12 +101,12 @@ pushbutton_init(void)
 
     gpio_pin_config_t sw_config = {kGPIO_DigitalInput, 0};
 
-    PORT_SetPinConfig(BOARD_PUSH_BUTTON_PORT,
-                      BOARD_PUSH_BUTTON_GPIO_PIN,
+    PORT_SetPinConfig(PUSH_BUTTON_PORT,
+                      PUSH_BUTTON_GPIO_PIN,
                       &sw_port_config);
 
-    GPIO_PinInit(BOARD_PUSH_BUTTON_GPIO,
-                 BOARD_PUSH_BUTTON_GPIO_PIN,
+    GPIO_PinInit(PUSH_BUTTON_GPIO,
+                 PUSH_BUTTON_GPIO_PIN,
                  &sw_config);
 
     filter = 0;
