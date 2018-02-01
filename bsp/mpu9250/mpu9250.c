@@ -86,7 +86,8 @@ EXT_WAKE_UP_irqEnable(void)
 
     PORT_SetPinInterruptConfig(EXT_WAKE_UP_PORT,
                                EXT_WAKE_UP_GPIO_PIN,
-                               kPORT_InterruptRisingEdge);
+//                               kPORT_InterruptRisingEdge);
+							   kPORT_InterruptLogicOne);
 
     EnableIRQ(EXT_WAKE_UP_IRQ);
 
@@ -97,11 +98,17 @@ EXT_WAKE_UP_irqEnable(void)
 
 /* ---------------------------- Global functions --------------------------- */
 void
-BOARD_EXT_WAKE_UP_IRQ_Handler(void)
+EXT_WAKE_UP_IRQ_Handler(void)
 {
+	uint8_t status;
+
     GPIO_PortClearInterruptFlags(EXT_WAKE_UP_GPIO,
                                  1U << EXT_WAKE_UP_GPIO_PIN);
 
+    status = mpu9250_readByte(INT_STATUS);
+
+    if((status & WOM_INT_STATUS_MASK) == 0)
+    	return;
 
     motion.x = mpu9250_readByte(ACCEL_XOUT_H) << 8 |
             mpu9250_readByte(ACCEL_XOUT_L);
@@ -235,7 +242,7 @@ mpu9250_init(void)
     /* Enable movement detection */
     aux = mpu9250_readByte(MOT_DETECT_CTRL);
     aux |= 0xC0;
-    mpu9250_writeByte(MOT_DETECT_CTRL, aux);
+//    mpu9250_writeByte(MOT_DETECT_CTRL, aux);
 
     /* Step 5: */
     /* Setup Motion detection threshold */
@@ -257,6 +264,10 @@ mpu9250_init(void)
 
     /* Enable Accel an Gyro */
     mpu9250_writeByte(PWR_MGMT_2,0x00);
+
+    aux = mpu9250_readByte(MOT_DETECT_CTRL);
+    aux |= 0xC0;
+    mpu9250_writeByte(MOT_DETECT_CTRL, aux);
 
     return true;
 }

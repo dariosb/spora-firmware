@@ -278,8 +278,9 @@ I2C_writeAccelReg(I2C_Type *base, uint8_t device_addr,
     masterXfer.dataSize = 1;
     masterXfer.flags = kI2C_TransferDefaultFlag;
 
+#if 1
     return I2C_MasterTransferBlocking(BOARD_ACCEL_I2C_BASEADDR, &masterXfer);
-#if 0
+#else
     /*  direction=write : start+device_write;cmdbuff;xBuff; */
     /*  direction=receive :
      * start+device_write;cmdbuff;repeatStart+device_read;xBuff; */
@@ -330,8 +331,9 @@ I2C_readAccelRegs(I2C_Type *base, uint8_t device_addr,
     masterXfer.dataSize = rxSize;
     masterXfer.flags = kI2C_TransferDefaultFlag;
 
+#if 1
     return I2C_MasterTransferBlocking(BOARD_ACCEL_I2C_BASEADDR, &masterXfer);
-#if 0
+#else
     /*  direction=write : start+device_write;cmdbuff;xBuff; */
     /*  direction=recive :
      * start+device_write;cmdbuff;repeatStart+device_read;xBuff; */

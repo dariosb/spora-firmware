@@ -117,6 +117,11 @@ bsp_init(void)
     GPIO_PinInit(LED_RED_GPIO, LED_RED_GPIO_PIN, &led_config);
     GPIO_PinInit(LED_BLUE_GPIO, LED_BLUE_GPIO_PIN, &led_config);
     GPIO_PinInit(LED_GREEN_GPIO, LED_GREEN_GPIO_PIN, &led_config);
+#ifdef MURATA_CODELESS_ON_ROM
+    GPIO_PinInit(BLE_RESET_GPIO, BLE_RESET_GPIO_PIN, &led_config);
+
+    BLE_RESET_SET();
+#endif
 
     rkh_fwk_init();
 
@@ -171,6 +176,14 @@ void
 bsp_uartPutchar(unsigned char c)
 {
     LPUART_WriteBlocking(CODELESS_LPUART, &c, 1);
+}
+
+void
+bsp_bleReset(bool state)
+{
+#ifdef MURATA_CODELESS_ON_ROM
+	state == true ? BLE_RESET_SET() : BLE_RESET_RELEASE();
+#endif
 }
 
 void

@@ -169,12 +169,10 @@ extern "C" {
 #define BLE_RESET_INIT(output) \
     GPIO_PinWrite(BLE_RESET_GPIO, BLE_RESET_GPIO_PIN, output); \
     LED_BLUE_GPIO->PDDR |= (1U << BLE_RESET_GPIO_PIN) 
-#define BLE_RESET_ON() \
+#define BLE_RESET_RELEASE() \
     GPIO_PortClear(BLE_RESET_GPIO, 1U << BLE_RESET_GPIO_PIN)
-#define BLE_RESET_OFF() \
+#define BLE_RESET_SET() \
     GPIO_PortSet(BLE_RESET_GPIO, 1U << BLE_RESET_GPIO_PIN) 
-#define BLE_RESET_TOGGLE() \
-    GPIO_PortToggle(BLE_RESET_GPIO, 1U << BLE_RESET_GPIO_PIN) 
 
 /* Battery */
 #ifndef BATTERY_STATUS_GPIO
@@ -198,11 +196,11 @@ extern "C" {
 
 #define BLE_LPUART_TX_PORT              PORTA
 #define BLE_LPUART_TX_PIN               3U
-#define BLE_LPUART_TX_MUXOPT            kPORT_MuxAlt2
+#define BLE_LPUART_TX_MUXOPT            kPORT_MuxAlt4
 
 #define BLE_LPUART_RX_PORT              PORTA
 #define BLE_LPUART_RX_PIN               4U
-#define BLE_LPUART_RX_MUXOPT            kPORT_MuxAlt2    
+#define BLE_LPUART_RX_MUXOPT            kPORT_MuxAlt4
 
 
 /* ================================= GPIO ================================ */

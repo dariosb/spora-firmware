@@ -154,6 +154,7 @@ bleInit(BleMgr *const me)
     RKH_TMR_INIT(&me->tmr, &e_tmr, NULL);
 
     codeless_init();
+    bsp_bleReset(false);
 }
 
 /* ............................ Effect actions ............................. */
