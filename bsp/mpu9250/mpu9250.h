@@ -65,7 +65,8 @@ extern "C" {
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
 #define TEMP_EMA_ALPHA  2
-#define MAG_EMA_ALPHA  2
+#define MAG_EMA_ALPHA   2
+#define SAMPLE_RATE     RKH_TIME_MS(100)
 
 /* ------------------------------- Data types ------------------------------ */
 typedef struct

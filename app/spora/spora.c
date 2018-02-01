@@ -50,6 +50,7 @@
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
+#include "bleMgr.h"
 #include "spora.h"
 #include "codeless.h"
 #include "mpu9250.h"
@@ -58,13 +59,15 @@
 
 /* ----------------------------- Local macros ------------------------------ */
 #define UNLINKED_TIMEOUT        RKH_TIME_SEC(60)
-#define MOTION_INDICATOR_TIME   RKH_TIME_MS(3000)
+#define MOTION_DET_TIME         RKH_TIME_MS(3000)
 
 /* ......................... Declares active object ........................ */
 typedef struct Spora Spora;
 
 /* ................... Declares states and pseudostates .................... */
-RKH_DCLR_BASIC_STATE unlinked, linked, hiden, motionDetect; 
+RKH_DCLR_COMP_STATE   steady; 
+RKH_DCLR_BASIC_STATE  unlinked, linked, hiden, motionDetect; 
+RKH_DCLR_SHIST_STATE  steadySHist;
 
 /* ........................ Declares initial action ........................ */
 static void init(Spora *const me);
@@ -87,19 +90,25 @@ static void offMotion(Spora *const me);
 
 /* ............................ Declares guards ............................ */
 /* ........................ States and pseudostates ........................ */
-RKH_CREATE_BASIC_STATE(unlinked, unlinkedEntry, unlinkedExit, RKH_ROOT, NULL);
+RKH_CREATE_COMP_STATE(steady, NULL, NULL, RKH_ROOT, &unlinked, &steadySHist);
+RKH_CREATE_TRANS_TABLE(steady)
+    RKH_TRREG(evMotionDetect, NULL, NULL, &motionDetect),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_SHALLOW_HISTORY_STATE(steadySHist, &steady, NULL, NULL, NULL);
+
+RKH_CREATE_BASIC_STATE(unlinked, unlinkedEntry, unlinkedExit, &steady, NULL);
 RKH_CREATE_TRANS_TABLE(unlinked)
-    RKH_TRREG(evMotionDetect, NULL, sendSporaData, &motionDetect),
     RKH_TRREG(evUnlikedTout, NULL, setHiden, &hiden),
     RKH_TRREG(evConnected, NULL, NULL, &linked),
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(hiden, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_BASIC_STATE(hiden, NULL, NULL, &steady, NULL);
 RKH_CREATE_TRANS_TABLE(hiden)
     RKH_TRREG(evPushbuttonLongPress, NULL, setDiscoverable, &unlinked),
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(linked, linkReady, linkLost, RKH_ROOT, NULL);
+RKH_CREATE_BASIC_STATE(linked, linkReady, linkLost, &steady, NULL);
 RKH_CREATE_TRANS_TABLE(linked)
     RKH_TRREG(evMotionDetect, NULL, sendSporaData, &motionDetect),
     RKH_TRREG(evDisconnected, NULL, NULL, &unlinked),
@@ -108,7 +117,7 @@ RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(motionDetect, onMotion, offMotion, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(motionDetect)
-    RKH_TRREG(evMotionIndicatorTout, NULL, NULL, &unlinked),
+    RKH_TRREG(evMotionIndicatorTout, NULL, NULL, &steadySHist),
 RKH_END_TRANS_TABLE
 
 /* ............................. Active object ............................. */
@@ -126,6 +135,8 @@ RKH_SMA_DEF_PTR(spora);
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 static RKH_STATIC_EVENT(e_tmr, evInitTout);
+static RKH_ROM_STATIC_EVENT(e_startAdvertising, evStartAdvertising);
+static RKH_ROM_STATIC_EVENT(e_stopAdvertising, evStopAdvertising);
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -142,13 +153,13 @@ init(Spora *const me)
 static void
 setHiden(Spora *const me, RKH_EVT_T *pe)
 {
-    codeless_advertisingStop();
+    RKH_SMA_POST_FIFO(bleMgr, &e_stopAdvertising, &spora);
 }
 
 static void
 setDiscoverable(Spora *const me, RKH_EVT_T *pe)
 {
-    codeless_advertisingStart();
+    RKH_SMA_POST_FIFO(bleMgr, &e_startAdvertising, &spora);
 }
 
 static void
@@ -181,7 +192,7 @@ onMotion(Spora *const me)
 {
     bsp_setMotionLed(true);
     RKH_SET_STATIC_EVENT(&e_tmr, evMotionIndicatorTout);
-    RKH_TMR_ONESHOT(&me->tmr, spora, MOTION_INDICATOR_TIME);
+    RKH_TMR_ONESHOT(&me->tmr, spora, MOTION_DET_TIME);
 }
 
 /* ............................. Exit actions .............................. */

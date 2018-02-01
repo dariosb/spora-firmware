@@ -73,6 +73,14 @@
         <transition xmi:id="_CN1g4AViEeit67JRAsgWRA" source="_2HCWsAK6Eeiknsfs-jeQ4w" target="_h5iD8AKsEeiwX8FNi-VDBQ">
           <trigger xmi:id="_G94IcAViEeit67JRAsgWRA" name="evCmdTout"/>
         </transition>
+        <transition xmi:id="_eQ2E0Ad0EeiVZe6039K0-w" source="_2HCWsAK6Eeiknsfs-jeQ4w" target="_Y-SmEAd0EeiVZe6039K0-w">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_szICgAd0EeiVZe6039K0-w" name="stopAdvertising()"/>
+          <trigger xmi:id="_jzU18Ad0EeiVZe6039K0-w" name="evStopAdvertising"/>
+        </transition>
+        <transition xmi:id="_e7BDMAd0EeiVZe6039K0-w" source="_Y-SmEAd0EeiVZe6039K0-w" target="_2HCWsAK6Eeiknsfs-jeQ4w">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_uCnUcAd0EeiVZe6039K0-w" name="startAdvertising()"/>
+          <trigger xmi:id="_lRMiIAd0EeiVZe6039K0-w" name="evStartAdvertising"/>
+        </transition>
         <subvertex xmi:type="uml:Pseudostate" xmi:id="_W2VHIAKqEeiwX8FNi-VDBQ" name="Initial1"/>
         <subvertex xmi:type="uml:State" xmi:id="_ZUd9gAKqEeiwX8FNi-VDBQ" name="init">
           <region xmi:id="_ikqDkAK3Eeiknsfs-jeQ4w" name="Starting">
@@ -122,6 +130,7 @@
             <subvertex xmi:type="uml:State" xmi:id="_5Gr5QAXcEei64r585RhGNQ" name="idle"/>
           </region>
         </subvertex>
+        <subvertex xmi:type="uml:State" xmi:id="_Y-SmEAd0EeiVZe6039K0-w" name="pause"/>
       </region>
     </ownedBehavior>
     <ownedOperation xmi:id="_gbhzoAXHEei64r585RhGNQ" name="Operation_1"/>
@@ -160,7 +169,7 @@
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_Q95A8AXHEei64r585RhGNQ" name="Spora">
     <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_n4JrUAXJEei64r585RhGNQ" name="Spora statemachine">
-      <region xmi:id="_n4JrUQXJEei64r585RhGNQ" name="Region1">
+      <region xmi:id="_n4JrUQXJEei64r585RhGNQ" name="spora">
         <transition xmi:id="_IRf7wAXLEei64r585RhGNQ" source="__nTBMAXJEei64r585RhGNQ" target="_uJkdsAXXEei64r585RhGNQ">
           <effect xmi:type="uml:OpaqueBehavior" xmi:id="_RiEvQAXLEei64r585RhGNQ" name="setHiden()"/>
           <trigger xmi:id="_LObMoAXbEei64r585RhGNQ" name="after(UnlinkedTimeout)"/>
@@ -171,12 +180,16 @@
         <transition xmi:id="_bMvf8AXaEei64r585RhGNQ" source="_adHZ0AXaEei64r585RhGNQ" target="_jx31oAXNEei64r585RhGNQ">
           <effect xmi:type="uml:OpaqueBehavior" xmi:id="_kpE3gAXaEei64r585RhGNQ" name="init()"/>
         </transition>
-        <subvertex xmi:type="uml:State" xmi:id="_dQwZYAXKEei64r585RhGNQ" name="discoverable">
-          <region xmi:id="_jw5soAXKEei64r585RhGNQ" name="discoverable"/>
-        </subvertex>
+        <transition xmi:id="_I8wjgAdxEeiVZe6039K0-w" source="_o1eSYAXNEei64r585RhGNQ" target="_yfOmgAdwEeiVZe6039K0-w">
+          <trigger xmi:id="_KsD98AdxEeiVZe6039K0-w" name="evMotionDetec"/>
+        </transition>
+        <transition xmi:id="_ViD3IAdxEeiVZe6039K0-w" source="_yfOmgAdwEeiVZe6039K0-w" target="_TY9coAdxEeiVZe6039K0-w">
+          <trigger xmi:id="_7ijywAdxEeiVZe6039K0-w" name="after(MotionIndicatorTout)"/>
+        </transition>
+        <subvertex xmi:type="uml:State" xmi:id="_dQwZYAXKEei64r585RhGNQ" name="discoverable"/>
         <subvertex xmi:type="uml:State" xmi:id="_jx31oAXNEei64r585RhGNQ" name="init"/>
-        <subvertex xmi:type="uml:State" xmi:id="_o1eSYAXNEei64r585RhGNQ" name="running">
-          <region xmi:id="_tKfK0AXNEei64r585RhGNQ" name="running">
+        <subvertex xmi:type="uml:State" xmi:id="_o1eSYAXNEei64r585RhGNQ" name="steady">
+          <region xmi:id="_tKfK0AXNEei64r585RhGNQ" name="steady">
             <transition xmi:id="_GQPHQAXOEei64r585RhGNQ" source="__AI6kAXJEei64r585RhGNQ" target="__nTBMAXJEei64r585RhGNQ"/>
             <transition xmi:id="_4WabQAXOEei64r585RhGNQ" source="__nTBMAXJEei64r585RhGNQ" target="_AQP3kAXKEei64r585RhGNQ">
               <trigger xmi:id="_Be-iQAXPEei64r585RhGNQ" name="evConnected"/>
@@ -192,29 +205,22 @@
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_hyzsoAXoEei64r585RhGNQ" name="disconnect()"/>
               <trigger xmi:id="_iqFS4AXoEei64r585RhGNQ" name="evPushbuttonLongPress"/>
             </transition>
-            <transition xmi:id="_J4uqYAXuEei64r585RhGNQ" source="_AQP3kAXKEei64r585RhGNQ" target="_zn5QIAXuEei64r585RhGNQ">
+            <transition xmi:id="_J4uqYAXuEei64r585RhGNQ" source="_AQP3kAXKEei64r585RhGNQ" target="_yfOmgAdwEeiVZe6039K0-w">
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_Pn1iQAXuEei64r585RhGNQ" name="sendSporadata()"/>
               <trigger xmi:id="_Pn1iQQXuEei64r585RhGNQ" name="evMotionDetect"/>
-            </transition>
-            <transition xmi:id="_DEhWMAXvEei64r585RhGNQ" source="_zn5QIAXuEei64r585RhGNQ" target="__nTBMAXJEei64r585RhGNQ">
-              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_QuGxUAXvEei64r585RhGNQ" name="turnoffIndicator()"/>
-              <trigger xmi:id="_fTuGIAYLEei64r585RhGNQ" name="after(MotionIndicatorTout)"/>
-            </transition>
-            <transition xmi:id="_A5weEAYLEei64r585RhGNQ" source="__nTBMAXJEei64r585RhGNQ" target="_zn5QIAXuEei64r585RhGNQ">
-              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_JGtRYAYLEei64r585RhGNQ" name="sendSporadata()"/>
-              <trigger xmi:id="_JGtRYQYLEei64r585RhGNQ" name="evMotionDetect"/>
             </transition>
             <subvertex xmi:type="uml:State" xmi:id="__nTBMAXJEei64r585RhGNQ" name="unlinked"/>
             <subvertex xmi:type="uml:Pseudostate" xmi:id="__AI6kAXJEei64r585RhGNQ" name="Initial1"/>
             <subvertex xmi:type="uml:State" xmi:id="_AQP3kAXKEei64r585RhGNQ" name="linked"/>
             <subvertex xmi:type="uml:State" xmi:id="_uJkdsAXXEei64r585RhGNQ" name="hiden"/>
-            <subvertex xmi:type="uml:State" xmi:id="_zn5QIAXuEei64r585RhGNQ" name="motionDetected">
-              <entry xmi:type="uml:OpaqueBehavior" xmi:id="_zWyBQAYKEei64r585RhGNQ" name="onMotion"/>
-              <exit xmi:type="uml:OpaqueBehavior" xmi:id="_4efh8AYKEei64r585RhGNQ" name="offMotion"/>
-            </subvertex>
+            <subvertex xmi:type="uml:Pseudostate" xmi:id="_TY9coAdxEeiVZe6039K0-w" name="ShallowHistory2" kind="shallowHistory"/>
           </region>
         </subvertex>
         <subvertex xmi:type="uml:Pseudostate" xmi:id="_adHZ0AXaEei64r585RhGNQ" name="Initial1"/>
+        <subvertex xmi:type="uml:State" xmi:id="_yfOmgAdwEeiVZe6039K0-w" name="motionDetected">
+          <entry xmi:type="uml:OpaqueBehavior" xmi:id="_jxr-kAdxEeiVZe6039K0-w" name="onMotion"/>
+          <exit xmi:type="uml:OpaqueBehavior" xmi:id="_kwV_MAdxEeiVZe6039K0-w" name="offMotion"/>
+        </subvertex>
       </region>
     </ownedBehavior>
     <ownedOperation xmi:id="_1RadYAXHEei64r585RhGNQ" name="Operation_1"/>

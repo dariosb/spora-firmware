@@ -61,10 +61,11 @@
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
+#define TIME_SEC_COUNTER_RELOAD	RKH_TIME_MS(1000)
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static uint8_t tick_cnt = 1000/RKH_CFG_FWK_TICK_RATE_HZ;
+static uint8_t tick_cnt = TIME_SEC_COUNTER_RELOAD;
 static uint32_t timeSecCounter = 0;
 static Mpu9250Data imuSensor;
 
@@ -97,7 +98,7 @@ SysTick_Handler(void)
     mpu9250_sampler(&imuSensor);
     if(tick_cnt && --tick_cnt == 0)
     {
-        tick_cnt = RKH_CFG_FWK_TICK_RATE_HZ;
+        tick_cnt = TIME_SEC_COUNTER_RELOAD;
         ++timeSecCounter;
     }
 }

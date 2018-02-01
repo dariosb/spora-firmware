@@ -67,7 +67,7 @@ typedef struct BleMgr BleMgr;
 
 /* ................... Declares states and pseudostates .................... */
 RKH_DCLR_BASIC_STATE waitSync, reseting, failure, 
-                     idle, waitConnStatus;
+                     idle, waitConnStatus, pause;
 
 RKH_DCLR_COMP_STATE init, running;
 
@@ -77,6 +77,8 @@ static void bleInit(BleMgr *const me);
 /* ........................ Declares effect actions ........................ */
 static void sendReset(BleMgr *const me, RKH_EVT_T *pe);
 static void sendGetConnStatus(BleMgr *const me, RKH_EVT_T *pe);
+static void startAdvertising(BleMgr *const me, RKH_EVT_T *pe);
+static void stopAdvertising(BleMgr *const me, RKH_EVT_T *pe);
 
 /* ......................... Declares entry actions ........................ */
 static void initEntry(BleMgr *const me);
@@ -117,6 +119,7 @@ RKH_CREATE_COMP_REGION_STATE(running, NULL, NULL, RKH_ROOT, &idle, NULL,
                              RKH_NO_HISTORY, NULL, NULL, NULL, NULL );
 RKH_CREATE_TRANS_TABLE(running)
     RKH_TRREG(evCmdTout, NULL, NULL, &failure),
+    RKH_TRREG(evStopAdvertising, NULL, stopAdvertising, &pause),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(idle, idleEntry, idleExit, &running, NULL);
@@ -127,6 +130,11 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_BASIC_STATE(waitConnStatus, NULL, NULL, &running, NULL);
 RKH_CREATE_TRANS_TABLE(waitConnStatus)
     RKH_TRREG(evOk, NULL, NULL, &idle),
+RKH_END_TRANS_TABLE
+
+RKH_CREATE_BASIC_STATE(pause, NULL, NULL, RKH_ROOT, NULL);
+RKH_CREATE_TRANS_TABLE(pause)
+    RKH_TRREG(evStartAdvertising, NULL, startAdvertising, &running),
 RKH_END_TRANS_TABLE
 
 /* ............................. Active object ............................. */
@@ -174,6 +182,24 @@ sendGetConnStatus(BleMgr *const me, RKH_EVT_T *pe)
     (void)pe;
 
     codeless_getGapStatus();
+}
+
+static void
+stopAdvertising(BleMgr *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+
+    codeless_advertisingStop();
+}
+
+static void
+startAdvertising(BleMgr *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+
+    codeless_advertisingStart();
 }
 
 /* ............................. Entry actions ............................. */

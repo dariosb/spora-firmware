@@ -57,6 +57,7 @@
 #include "mpu9250.h"
 #include "spora.h"
 #include "emafilter.h"
+#include "sporacfg.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -66,7 +67,7 @@ typedef struct
     int16_t x;
     int16_t y;
     int16_t z;
-}InstantMotion;
+}Motion;
 
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
@@ -75,8 +76,9 @@ static rui8_t mpu9250;
 #endif
 
 static RKH_ROM_STATIC_EVENT(e_motion, evMotionDetect);
-
-static InstantMotion motion;
+static Motion motion;
+static uint8_t sampleRateCnt;
+static bool running = false;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -105,6 +107,9 @@ EXT_WAKE_UP_IRQ_Handler(void)
     GPIO_PortClearInterruptFlags(EXT_WAKE_UP_GPIO,
                                  1U << EXT_WAKE_UP_GPIO_PIN);
 
+    if(!running)
+        return;
+
     status = mpu9250_readByte(INT_STATUS);
 
     if((status & WOM_INT_STATUS_MASK) == 0)
@@ -129,6 +134,14 @@ mpu9250_sampler(Mpu9250Data *p)
 {
     uint8_t magnet;
     int16_t value;
+
+    if(!running)
+        return;
+
+    if(sampleRateCnt && --sampleRateCnt)
+        return;
+
+    sampleRateCnt = SAMPLE_RATE;
 
     value = mpu9250_readByte(TEMP_OUT_H)<<8 | mpu9250_readByte(TEMP_OUT_L);
     p->temp = emaFilter_LowPass(value, p->temp, TEMP_EMA_ALPHA);
@@ -221,7 +234,7 @@ mpu9250_init(void)
     /* Step 4: */
     /* Setup Motion detection threshold */
     aux = mpu9250_readByte(WOM_THR);
-    aux = 0xFF;
+    aux = spora_getCfg_motionThr();
     mpu9250_writeByte(WOM_THR, aux);
 
     /* Step 5: */
@@ -246,6 +259,9 @@ mpu9250_init(void)
     aux = mpu9250_readByte(MOT_DETECT_CTRL);
     aux |= 0xC0;
     mpu9250_writeByte(MOT_DETECT_CTRL, aux);
+
+    running = true;
+    sampleRateCnt = SAMPLE_RATE;
 
     return true;
 }
