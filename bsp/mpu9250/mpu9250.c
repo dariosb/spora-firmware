@@ -56,6 +56,7 @@
 #include "bsp.h"
 #include "mpu9250.h"
 #include "spora.h"
+#include "emafilter.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -86,7 +87,6 @@ EXT_WAKE_UP_irqEnable(void)
 
     PORT_SetPinInterruptConfig(EXT_WAKE_UP_PORT,
                                EXT_WAKE_UP_GPIO_PIN,
-//                               kPORT_InterruptRisingEdge);
 							   kPORT_InterruptLogicOne);
 
     EnableIRQ(EXT_WAKE_UP_IRQ);
@@ -125,47 +125,29 @@ EXT_WAKE_UP_IRQ_Handler(void)
 }
 
 void
-mpu9250_read(Mpu9250_data_st *p)
+mpu9250_sampler(Mpu9250Data *p)
 {
-    p->temp = mpu9250_readByte(TEMP_OUT_H) << 8 |
-              mpu9250_readByte(TEMP_OUT_L);
+    uint8_t magnet;
+    int16_t value;
 
-    p->ax = mpu9250_readByte(ACCEL_XOUT_H) << 8 |
-            mpu9250_readByte(ACCEL_XOUT_L);
-    
-    p->ay = mpu9250_readByte(ACCEL_YOUT_H) << 8 |
-            mpu9250_readByte(ACCEL_YOUT_L);
-    
-    p->az = mpu9250_readByte(ACCEL_ZOUT_H) << 8 |
-            mpu9250_readByte(ACCEL_ZOUT_L);
-    
-    p->gx = mpu9250_readByte(GYRO_XOUT_H) << 8 |
-            mpu9250_readByte(GYRO_XOUT_L);
-    
-    p->gy = mpu9250_readByte(GYRO_YOUT_H) << 8 |
-            mpu9250_readByte(GYRO_YOUT_L);
-    
-    p->gz = mpu9250_readByte(GYRO_ZOUT_H) << 8 |
-            mpu9250_readByte(GYRO_ZOUT_L);
-    
-    p->status = mpu9250_readByte(INT_STATUS);
+    value = mpu9250_readByte(TEMP_OUT_H)<<8 | mpu9250_readByte(TEMP_OUT_L);
+    p->temp = emaFilter_LowPass(value, p->temp, TEMP_EMA_ALPHA);
 
-    p->magnet = ak8963_readByte(AK8963_ST1);
+    magnet = ak8963_readByte(AK8963_ST1);
 
-    if(p->magnet != 0x00)
-    {
-        p->mx = ak8963_readByte(AK8963_XOUT_H) << 8 |
-                ak8963_readByte(AK8963_XOUT_L);
+    if(magnet == 0x00)
+        return;
 
-        p->my = ak8963_readByte(AK8963_YOUT_H) << 8 |
-                ak8963_readByte(AK8963_YOUT_L);
+    value = ak8963_readByte(AK8963_XOUT_H)<<8 | ak8963_readByte(AK8963_XOUT_L);
+    p->mx = emaFilter_LowPass(value, p->mx, MAG_EMA_ALPHA);
 
-        p->mz = ak8963_readByte(AK8963_ZOUT_H) << 8 |
-                ak8963_readByte(AK8963_ZOUT_L);
+    value = ak8963_readByte(AK8963_YOUT_H)<<8 | ak8963_readByte(AK8963_YOUT_L);
+    p->my = emaFilter_LowPass(value, p->my, MAG_EMA_ALPHA);
 
-        ak8963_writeByte(AK8963_CNTL, 0x11);
-    }
+    value = ak8963_readByte(AK8963_ZOUT_H)<<8 | ak8963_readByte(AK8963_ZOUT_L);
+    p->mz = emaFilter_LowPass(value, p->mz, MAG_EMA_ALPHA);
 
+    ak8963_writeByte(AK8963_CNTL, 0x11);
 }
 
 bool
@@ -208,8 +190,6 @@ mpu9250_init(void)
     ak8963_writeByte(AK8963_CNTL, 0x11);
     aux = ak8963_readByte(AK8963_CNTL);
 
-    EXT_WAKE_UP_irqEnable();
-
     /* Step 1: */
     /* Verify that is runnig */
     aux = mpu9250_readByte(PWR_MGMT_1);
@@ -239,24 +219,18 @@ mpu9250_init(void)
     mpu9250_writeByte(INT_ENABLE, aux);
 
     /* Step 4: */
-    /* Enable movement detection */
-    aux = mpu9250_readByte(MOT_DETECT_CTRL);
-    aux |= 0xC0;
-//    mpu9250_writeByte(MOT_DETECT_CTRL, aux);
-
-    /* Step 5: */
     /* Setup Motion detection threshold */
     aux = mpu9250_readByte(WOM_THR);
     aux = 0xFF;
     mpu9250_writeByte(WOM_THR, aux);
 
-    /* Step 6: */
+    /* Step 5: */
     /* Set Frequency of Wake-up */
     aux = mpu9250_readByte(LP_ACCEL_ODR);
     aux = 0x08;
     mpu9250_writeByte(LP_ACCEL_ODR, aux);
 
-    /* Step 7: */
+    /* Step 6: */
     /* Enable cycle mode */
     aux = mpu9250_readByte(PWR_MGMT_1);
     aux |= 0x20;
@@ -265,6 +239,10 @@ mpu9250_init(void)
     /* Enable Accel an Gyro */
     mpu9250_writeByte(PWR_MGMT_2,0x00);
 
+    EXT_WAKE_UP_irqEnable();
+
+    /* Step 7: */
+    /* Enable movement detection */
     aux = mpu9250_readByte(MOT_DETECT_CTRL);
     aux |= 0xC0;
     mpu9250_writeByte(MOT_DETECT_CTRL, aux);

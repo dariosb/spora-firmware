@@ -33,10 +33,10 @@
  */
 
 /**
- *  \file       mpu9250.h
- *  \brief      MPU9250 device routines.
+ *  \file       emafilter.c
+ *  \brief      Exponential Moving Average Filter routines.
  *
- *  \ingroup    bsp
+ *  \ingroup    EMA
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -49,44 +49,34 @@
  *  DaBa  Dario Baliña       db@vortexmakes.com
  */
 
-/* --------------------------------- Module -------------------------------- */
-#ifndef __MPU9250_H__
-#define __MPU9250_H__
-
+/* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
-#include "mpu9250_regs.h"
-#include "i2c.h"
+#include "emafilter.h"
 
-/* ---------------------- External C language linkage ---------------------- */
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* --------------------------------- Macros -------------------------------- */
-/* -------------------------------- Constants ------------------------------ */
-#define TEMP_EMA_ALPHA  2
-#define MAG_EMA_ALPHA  2
-
-/* ------------------------------- Data types ------------------------------ */
-typedef struct
+/* ----------------------------- Local macros ------------------------------ */
+/* ------------------------------- Constants ------------------------------- */
+/* ---------------------------- Local data types --------------------------- */
+/* ---------------------------- Global variables --------------------------- */
+/* ---------------------------- Local variables ---------------------------- */
+/* ----------------------- Local function prototypes ----------------------- */
+/* ---------------------------- Local functions ---------------------------- */
+/* ---------------------------- Global functions --------------------------- */
+int emaFilter_LowPass(uint16_t new, uint16_t last, uint8_t alpha)
 {
-    int16_t temp;
-    int16_t mx;
-    int16_t my;
-    int16_t mz;
-}Mpu9250Data;
+    if(alpha == 0)
+        return last;
 
-/* -------------------------- External variables --------------------------- */
-/* -------------------------- Function prototypes -------------------------- */
-bool mpu9250_init(void);
-void mpu9250_sampler(Mpu9250Data *p);
-
-/* -------------------- External C language linkage end -------------------- */
-#ifdef __cplusplus
+    last = new/alpha + last - last/alpha;
+    return last;
 }
-#endif
+ 
+int emaFilter_HighPass(uint16_t new, uint16_t last, uint8_t alpha)
+{
+    if(alpha == 0)
+        return last;
 
-/* ------------------------------ Module end ------------------------------- */
-#endif
+    last = new - emaFilter_LowPass(new, last, alpha);
+    return last;
+}
 
-/* ------------------------------ File footer ------------------------------ */
+/* ------------------------------ End of file ------------------------------ */

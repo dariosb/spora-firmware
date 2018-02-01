@@ -33,10 +33,10 @@
  */
 
 /**
- *  \file       mpu9250.h
- *  \brief      MPU9250 device routines.
+ *  \file       emafilter.h
+ *  \brief      Exponential Moving Average Filter routines.
  *
- *  \ingroup    bsp
+ *  \ingroup    EMA
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -50,12 +50,11 @@
  */
 
 /* --------------------------------- Module -------------------------------- */
-#ifndef __MPU9250_H__
-#define __MPU9250_H__
+#ifndef __EMAFILTER_H__
+#define __EMAFILTER_H__
 
 /* ----------------------------- Include files ----------------------------- */
-#include "mpu9250_regs.h"
-#include "i2c.h"
+#include "stdint.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -64,22 +63,31 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
-#define TEMP_EMA_ALPHA  2
-#define MAG_EMA_ALPHA  2
-
 /* ------------------------------- Data types ------------------------------ */
-typedef struct
-{
-    int16_t temp;
-    int16_t mx;
-    int16_t my;
-    int16_t mz;
-}Mpu9250Data;
-
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-bool mpu9250_init(void);
-void mpu9250_sampler(Mpu9250Data *p);
+
+/**
+ *  \brief
+ *  EMA Low Pass Filter
+ *
+ *  \param[in] new      New sample.
+ *  \param[in] last     Last filtered value.
+ *  \param[in] alph     Filtering hardness [1, 2, 4 ...],
+ *                      as higher is alpha, higher is filtering.
+ */
+int emaFilter_LowPass(uint16_t new, uint16_t last, uint8_t alpha);
+
+/**
+ *  \brief
+ *  EMA High Pass Filter
+ *
+ *  \param[in] new      New sample.
+ *  \param[in] last     Last filtered value.
+ *  \param[in] alph     Filtering hardness [1, 2, 4 ...],
+ *                      as higher is alpha, higher is filtering.
+ */
+int emaFilter_HighPass(uint16_t new, uint16_t last, uint8_t alpha);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

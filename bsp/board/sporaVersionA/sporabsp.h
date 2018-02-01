@@ -55,6 +55,7 @@
 #define __SPORABSP_H__
 
 /* ----------------------------- Include files ----------------------------- */
+#include "clock_config.h"
 #include "fsl_port.h"
 #include "fsl_gpio.h"
 

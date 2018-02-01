@@ -66,6 +66,7 @@
 /* ---------------------------- Local variables ---------------------------- */
 static uint8_t tick_cnt = 1000/RKH_CFG_FWK_TICK_RATE_HZ;
 static uint32_t timeSecCounter = 0;
+static Mpu9250Data imuSensor;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -93,6 +94,7 @@ SysTick_Handler(void)
 {
 	RKH_TIM_TICK(0);
     pushbutton_tick();
+    mpu9250_sampler(&imuSensor);
     if(tick_cnt && --tick_cnt == 0)
     {
         tick_cnt = RKH_CFG_FWK_TICK_RATE_HZ;

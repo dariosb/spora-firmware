@@ -53,6 +53,7 @@
 #include "spora.h"
 #include "codeless.h"
 #include "mpu9250.h"
+#include "pushbutton.h"
 #include "bsp.h"
 
 /* ----------------------------- Local macros ------------------------------ */

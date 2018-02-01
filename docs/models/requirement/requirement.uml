@@ -212,11 +212,11 @@
   <Requirements:Requirement xmi:id="_C7KP4AH_EeiQcbGkhU0FSw" base_Class="_C6_30AH_EeiQcbGkhU0FSw" id="007" text="MOTION_DET_TIME será configurable en tiempo de compilación"/>
   <Requirements:Requirement xmi:id="_FCa3UAH_EeiQcbGkhU0FSw" base_Class="_FCS7gAH_EeiQcbGkhU0FSw" id="008" text="Los valores por defecto de SporaSettings son TBD."/>
   <Requirements:Requirement xmi:id="_WvLM8AH_EeiQcbGkhU0FSw" base_Class="_WvCqEAH_EeiQcbGkhU0FSw" id="009" text="Cuando detecte una aceleración superior a MOTION_THR el Spora calculará el módulo de la aceleración en los tres ejes."/>
-  <Requirements:Requirement xmi:id="_elu5gAH_EeiQcbGkhU0FSw" base_Class="_elnkwAH_EeiQcbGkhU0FSw" id="010" text="El Spora adquirirá el campo magnético y calculará su promedio en cada eje XYZ a MAGNETO_AVG_COUNT muestras cada SAMPLE_TIME seg."/>
-  <Requirements:Requirement xmi:id="_oSWIwAH_EeiQcbGkhU0FSw" base_Class="_oSPbEAH_EeiQcbGkhU0FSw" id="011" text="El Spora adquirirá la temperatura y calculará su promedio a TEMP_AVG_COUNT muestras cada SAMPLE_TIME seg."/>
+  <Requirements:Requirement xmi:id="_elu5gAH_EeiQcbGkhU0FSw" base_Class="_elnkwAH_EeiQcbGkhU0FSw" id="010" text="El Spora adquirirá el campo magnético y aplicará un filtro EMA."/>
+  <Requirements:Requirement xmi:id="_oSWIwAH_EeiQcbGkhU0FSw" base_Class="_oSPbEAH_EeiQcbGkhU0FSw" id="011" text="El Spora adquirirá la temperatura y aplicará un filtro EMA."/>
   <Requirements:Requirement xmi:id="_Cul-EAIAEeiQcbGkhU0FSw" base_Class="_CuepUAIAEeiQcbGkhU0FSw" id="012" text="SAMPLE_TIME será configurable en tiempo de compilación. [100ms]"/>
-  <Requirements:Requirement xmi:id="_Vtq3MAIAEeiQcbGkhU0FSw" base_Class="_Vti7YAIAEeiQcbGkhU0FSw" id="013" text="MAGNETO_AVG_COUNT será configurable en tiempo de compilacion. [10]"/>
-  <Requirements:Requirement xmi:id="_aXPDUAIAEeiQcbGkhU0FSw" base_Class="_aXEEMAIAEeiQcbGkhU0FSw" id="014" text="TEMP_AVG_COUNT será configurable en tiempo de compilacion. [10]"/>
+  <Requirements:Requirement xmi:id="_Vtq3MAIAEeiQcbGkhU0FSw" base_Class="_Vti7YAIAEeiQcbGkhU0FSw" id="013" text="MAGNETO_EMA_ALPHA será configurable en tiempo de compilacion. [2]"/>
+  <Requirements:Requirement xmi:id="_aXPDUAIAEeiQcbGkhU0FSw" base_Class="_aXEEMAIAEeiQcbGkhU0FSw" id="014" text="TEMP_EMA_ALPHA será configurable en tiempo de compilacion. [2]"/>
   <Requirements:Requirement xmi:id="_eekFEAIAEeiQcbGkhU0FSw" base_Class="_eeZF8AIAEeiQcbGkhU0FSw" id="015" text="El Spora mantendrá el tiempo de operación en memoria no persistente."/>
   <Requirements:Requirement xmi:id="_jU_BcAIAEeiQcbGkhU0FSw" base_Class="_jU3ssAIAEeiQcbGkhU0FSw" id="016" text="El Spora registrará el tiempo de operacion con una deriva maxima de TBD"/>
 </xmi:XMI>
