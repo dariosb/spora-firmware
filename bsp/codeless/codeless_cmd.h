@@ -72,8 +72,10 @@ extern "C" {
 #define CODELESS_ERROR          "\r\nERROR\r\n"
 #define GAP_CONNSTAT_OFFSET     2
 #define GAP_CONNECTED           '1'    
+#define SPORA_END_OF_MSJ        "\\EOSM"
+#define SPORA_TX_MSJ_END        SPORA_END_OF_MSJ
 #define SPORA_RX_MSJ_START      "+RCV="
-#define SPORA_RX_MSJ_END        "\\EOSM\r\n"
+#define SPORA_RX_MSJ_END        SPORA_TX_MSJ_END "\r\n"
 
 /*
  * Codeless AT Command Table index

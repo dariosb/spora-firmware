@@ -62,23 +62,16 @@
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
 /* ---------------------------- Local data types --------------------------- */
-typedef struct
-{
-    int16_t x;
-    int16_t y;
-    int16_t z;
-}Motion;
-
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
 #if defined(RKH_USE_TRC_SENDER)
 static rui8_t mpu9250;
 #endif
 
-static RKH_ROM_STATIC_EVENT(e_motion, evMotionDetect);
-static Motion motion;
+static evtMotion e_motion;
 static uint8_t sampleRateCnt;
 static bool running = false;
+static Mpu9250Data samplerData;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -103,6 +96,7 @@ void
 EXT_WAKE_UP_IRQ_Handler(void)
 {
 	uint8_t status;
+    SporaPacket *p;
 
     GPIO_PortClearInterruptFlags(EXT_WAKE_UP_GPIO,
                                  1U << EXT_WAKE_UP_GPIO_PIN);
@@ -115,25 +109,37 @@ EXT_WAKE_UP_IRQ_Handler(void)
     if((status & WOM_INT_STATUS_MASK) == 0)
     	return;
 
-    motion.x = mpu9250_readByte(ACCEL_XOUT_H) << 8 |
+    RKH_SET_STATIC_EVENT(&e_motion, evMotionDetect);
+
+    p = &e_motion.data;
+    p->x = mpu9250_readByte(ACCEL_XOUT_H) << 8 |
             mpu9250_readByte(ACCEL_XOUT_L);
     
-    motion.y = mpu9250_readByte(ACCEL_YOUT_H) << 8 |
+    p->y = mpu9250_readByte(ACCEL_YOUT_H) << 8 |
             mpu9250_readByte(ACCEL_YOUT_L);
     
-    motion.z = mpu9250_readByte(ACCEL_ZOUT_H) << 8 |
+    p->z = mpu9250_readByte(ACCEL_ZOUT_H) << 8 |
             mpu9250_readByte(ACCEL_ZOUT_L);
-    
+
+    p->mx = samplerData.mx;
+    p->my = samplerData.my;
+    p->mz = samplerData.mz;
+
+    p->temp = samplerData.temp;
+
+    p->time = bsp_getTimeSec(); 
+
     mpu9250_readByte(INT_STATUS);
 
-    RKH_SMA_POST_FIFO(spora, &e_motion, &mpu9250);
+    RKH_SMA_POST_FIFO(spora, CE(&e_motion), &mpu9250);
 }
 
 void
-mpu9250_sampler(Mpu9250Data *p)
+mpu9250_sampler(void)
 {
     uint8_t magnet;
     int16_t value;
+    Mpu9250Data *p = &samplerData;
 
     if(!running)
         return;
@@ -142,6 +148,10 @@ mpu9250_sampler(Mpu9250Data *p)
         return;
 
     sampleRateCnt = SAMPLE_RATE;
+
+    p->ax = mpu9250_readByte(ACCEL_XOUT_H)<<8 | mpu9250_readByte(ACCEL_XOUT_L);
+    p->ay = mpu9250_readByte(ACCEL_YOUT_H)<<8 | mpu9250_readByte(ACCEL_YOUT_L);
+    p->az = mpu9250_readByte(ACCEL_ZOUT_H)<<8 | mpu9250_readByte(ACCEL_ZOUT_L);
 
     value = mpu9250_readByte(TEMP_OUT_H)<<8 | mpu9250_readByte(TEMP_OUT_L);
     p->temp = emaFilter_LowPass(value, p->temp, TEMP_EMA_ALPHA);
@@ -161,6 +171,12 @@ mpu9250_sampler(Mpu9250Data *p)
     p->mz = emaFilter_LowPass(value, p->mz, MAG_EMA_ALPHA);
 
     ak8963_writeByte(AK8963_CNTL, 0x11);
+}
+
+Mpu9250Data *
+mpu9250_getSamplerData(void)
+{
+    return &samplerData;
 }
 
 bool

@@ -100,9 +100,9 @@ SSP_END_BR_TABLE
 /*
  * ATr+PRINT
  */
-SSP_CREATE_TRN_NODE(rPrint, inRPrint);
+SSP_CREATE_TRN_NODE(rPrint, NULL);
 SSP_CREATE_BR_TABLE(rPrint)
-	SSPBR("\\EOSM",  rPrintOk,    &root),
+	SSPBR(SPORA_TX_MSJ_END,  rPrintOk,    &root),
 	SSPBR(CODELESS_ERROR,    cmdError,    &root),
 SSP_END_BR_TABLE
 

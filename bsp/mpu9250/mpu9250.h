@@ -71,16 +71,20 @@ extern "C" {
 /* ------------------------------- Data types ------------------------------ */
 typedef struct
 {
-    int16_t temp;
+    int16_t ax;
+    int16_t ay;
+    int16_t az;
     int16_t mx;
     int16_t my;
     int16_t mz;
+    int16_t temp;
 }Mpu9250Data;
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 bool mpu9250_init(void);
-void mpu9250_sampler(Mpu9250Data *p);
+void mpu9250_sampler(void);
+Mpu9250Data *mpu9250_getSamplerData(void);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

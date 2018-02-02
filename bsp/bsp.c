@@ -67,7 +67,6 @@
 /* ---------------------------- Local variables ---------------------------- */
 static uint8_t tick_cnt = TIME_SEC_COUNTER_RELOAD;
 static uint32_t timeSecCounter = 0;
-static Mpu9250Data imuSensor;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -95,7 +94,7 @@ SysTick_Handler(void)
 {
 	RKH_TIM_TICK(0);
     pushbutton_tick();
-    mpu9250_sampler(&imuSensor);
+    mpu9250_sampler();
     if(tick_cnt && --tick_cnt == 0)
     {
         tick_cnt = TIME_SEC_COUNTER_RELOAD;

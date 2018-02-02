@@ -70,7 +70,6 @@ void codeless_sspInit(void);
 
 void cmdOk(unsigned char pos);
 void cmdError(unsigned char pos);
-void inRPrint(unsigned char data);
 void rPrintOk(unsigned char pos);
 void gapStatusCollect(unsigned char data);
 void gapStatusOk(unsigned char pos);

@@ -79,7 +79,6 @@
       <packagedElement xmi:type="uml:Class" xmi:id="_Vti7YAIAEeiQcbGkhU0FSw" name="QoS013"/>
       <packagedElement xmi:type="uml:Class" xmi:id="_aXEEMAIAEeiQcbGkhU0FSw" name="QoS014"/>
       <packagedElement xmi:type="uml:Class" xmi:id="_eeZF8AIAEeiQcbGkhU0FSw" name="QoS015"/>
-      <packagedElement xmi:type="uml:Class" xmi:id="_jU3ssAIAEeiQcbGkhU0FSw" name="QoS016"/>
     </packagedElement>
     <packagedElement xmi:type="uml:UseCase" xmi:id="_NHPVAAKREeiF855AqW9WJA" name="Recibir Configuración">
       <include xmi:type="uml:Include" xmi:id="_pPHeUAKUEeiF855AqW9WJA" addition="_-pw3cAKTEeiF855AqW9WJA"/>
@@ -218,5 +217,4 @@
   <Requirements:Requirement xmi:id="_Vtq3MAIAEeiQcbGkhU0FSw" base_Class="_Vti7YAIAEeiQcbGkhU0FSw" id="013" text="MAGNETO_EMA_ALPHA será configurable en tiempo de compilacion. [2]"/>
   <Requirements:Requirement xmi:id="_aXPDUAIAEeiQcbGkhU0FSw" base_Class="_aXEEMAIAEeiQcbGkhU0FSw" id="014" text="TEMP_EMA_ALPHA será configurable en tiempo de compilacion. [2]"/>
   <Requirements:Requirement xmi:id="_eekFEAIAEeiQcbGkhU0FSw" base_Class="_eeZF8AIAEeiQcbGkhU0FSw" id="015" text="El Spora mantendrá el tiempo de operación en memoria no persistente."/>
-  <Requirements:Requirement xmi:id="_jU_BcAIAEeiQcbGkhU0FSw" base_Class="_jU3ssAIAEeiQcbGkhU0FSw" id="016" text="El Spora registrará el tiempo de operacion con una deriva maxima de TBD"/>
 </xmi:XMI>

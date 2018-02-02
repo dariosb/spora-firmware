@@ -125,15 +125,13 @@ void
 codeless_gapDisconnect(void)
 {
     bsp_uartPutstring(ClessDisconnect.cmd);
-//    RKH_TMR_ONESHOT(&cmdTout, bleMgr, ClessDisconnect.tout);
 }
 
 void codeless_sendData(char *p)
 {
-	/*
-    LPUART_WriteBlocking(CODELESS_LPUART, ClessSendData.cmd, 
-                                            strlen(ClessSendData.cmd));
-    lpuart_tx(p);*/
+    bsp_uartPutstring(ClessSendData.cmd);
+    bsp_uartPutstring(p);
+    bsp_uartPutchar('\r');
 }
 
 /* ------------------------------ End of file ------------------------------ */

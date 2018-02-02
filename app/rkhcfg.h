@@ -17,7 +17,7 @@
  *	Specify the maximum number of state machine applications (SMA) to be used
  *	by the application (can be a number in the range [1..64]).
  */
-#define RKH_CFG_FWK_MAX_SMA             3u
+#define RKH_CFG_FWK_MAX_SMA             2u
 
 /**
  *	If the dynamic event support (see #RKH_CFG_FWK_DYN_EVT_EN) is set to
@@ -138,7 +138,7 @@
  *  when is put a trace event into the stream buffer.
  *  When this is set the application must provide the hook function.
  */
-#define RKH_CFG_HOOK_PUT_TRCEVT_EN        RKH_DISABLED
+#define RKH_CFG_HOOK_PUT_TRCEVT_EN       RKH_DISABLED
 
 /**
  *  Specify the frequency of the framework tick interrupt (number of ticks
@@ -202,7 +202,7 @@
  *	If the #RKH_CFG_SMA_DEEP_HIST_EN and #RKH_CFG_SMA_PSEUDOSTATE_EN are
  *	set to 1, the RKH allows deep history pseudostate usage.
  */
-#define RKH_CFG_SMA_DEEP_HIST_EN        RKH_ENABLED
+#define RKH_CFG_SMA_DEEP_HIST_EN        RKH_DISABLED
 
 /**
  *	If the #RKH_CFG_SMA_SHALLOW_HIST_EN and #RKH_CFG_SMA_PSEUDOSTATE_EN

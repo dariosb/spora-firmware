@@ -65,7 +65,7 @@
 #define rxBufferEnd     (rxBuffer+sizeof(rxBuffer)/sizeof(char)-1)
 
 /* ------------------------------- Constants ------------------------------- */
-#define CLESS_RXBUFF_SIZE   20
+#define CLESS_RXBUFF_SIZE   40
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
@@ -105,15 +105,10 @@ cmdError(unsigned char pos)
 }
 
 void
-inRPrint(unsigned char data)
-{
-
-}
-
-void
 rPrintOk(unsigned char pos)
 {
-
+    RKH_SMA_POST_FIFO(bleMgr, &e_cmdOk, &ssp);
+    codeless_stopCmdTimer();
 }
 
 void

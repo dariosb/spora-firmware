@@ -117,11 +117,6 @@
 			<locationURI>PARENT-3-PROJECT_LOC/third-party/ksdk2.3/drivers</locationURI>
 		</link>
 		<link>
-			<name>third-party/ksdk/utilities</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/third-party/ksdk2.3/utilities</locationURI>
-		</link>
-		<link>
 			<name>third-party/rkh/include</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>

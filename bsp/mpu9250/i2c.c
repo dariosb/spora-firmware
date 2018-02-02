@@ -235,30 +235,20 @@ I2C_readAccelWhoAmI(uint8_t reg, uint8_t value)
             completionFlag = false;
             if (who_am_i_value == value)
             {
-                PRINTF(
-                    "Found an MPU9250 on board , the device address is 0x%x . \r\n",
-                    masterXfer.slaveAddress);
                 return true;
             }
             else
             {
-                PRINTF("Found a device, the WhoAmI value is 0x%x\r\n",
-                       who_am_i_value);
-                PRINTF("It's not MPU9250. \r\n");
-                PRINTF("The device address is 0x%x. \r\n",
-                       masterXfer.slaveAddress);
                 return false;
             }
         }
         else
         {
-            PRINTF("Not a successful i2c communication \r\n");
             return false;
         }
     }
     else
     {
-        PRINTF("\r\n Do not find an accelerometer device ! \r\n");
         return false;
     }
 }

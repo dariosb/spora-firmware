@@ -118,7 +118,7 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_COMP_REGION_STATE(running, NULL, NULL, RKH_ROOT, &idle, NULL,
                              RKH_NO_HISTORY, NULL, NULL, NULL, NULL );
 RKH_CREATE_TRANS_TABLE(running)
-    RKH_TRREG(evCmdTout, NULL, NULL, &failure),
+//    RKH_TRREG(evCmdTout, NULL, NULL, &failure),
     RKH_TRREG(evStopAdvertising, NULL, stopAdvertising, &pause),
 RKH_END_TRANS_TABLE
 
@@ -130,6 +130,7 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_BASIC_STATE(waitConnStatus, NULL, NULL, &running, NULL);
 RKH_CREATE_TRANS_TABLE(waitConnStatus)
     RKH_TRREG(evOk, NULL, NULL, &idle),
+    RKH_TRREG(evCmdTout, NULL, NULL, &idle),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(pause, NULL, NULL, RKH_ROOT, NULL);

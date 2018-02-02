@@ -54,6 +54,7 @@
 
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
+#include "mpu9250.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -89,6 +90,24 @@ typedef enum Signals
 RKH_SMA_DCLR(spora);
 
 /* ------------------------------- Data types ------------------------------ */
+typedef struct
+{
+    int16_t x;
+    int16_t y;
+    int16_t z;
+    int16_t mx;
+    int16_t my;
+    int16_t mz;
+    int16_t temp;
+    uint32_t time;
+}SporaPacket;
+
+typedef struct
+{
+	RKH_EVT_T e;
+    SporaPacket data;
+} evtMotion;
+
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 /* -------------------- External C language linkage end -------------------- */
