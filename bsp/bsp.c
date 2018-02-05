@@ -112,6 +112,7 @@ bsp_init(void)
     BOARD_BootClockRUN();
 
     SysTick_Config(SystemCoreClock/RKH_CFG_FWK_TICK_RATE_HZ);
+    NVIC_SetPriority (SysTick_IRQn, RKH_PORT_IRQ_PRIO);
 
     I2C_releaseBus();
     BOARD_I2C_ConfigurePins();

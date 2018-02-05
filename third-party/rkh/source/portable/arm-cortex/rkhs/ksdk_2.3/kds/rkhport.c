@@ -88,7 +88,7 @@ rkhport_enter_critical(void)
     (
         "	mov r0, %0		\n"
         "	msr basepri, r0	\n"
-        ::"i" (((HIGHEST_IRQ_PRI << (8 - __NVIC_PRIO_BITS)) & 0xFF)) : "r0"
+        ::"i" (((RKH_PORT_IRQ_PRIO << (8 - __NVIC_PRIO_BITS)) & 0xFF)) : "r0"
     );
     critical_nesting++;
 }

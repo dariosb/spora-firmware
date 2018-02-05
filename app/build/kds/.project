@@ -304,7 +304,7 @@
 		<link>
 			<name>third-party/rkh/include/rkhport.h</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/third-party/rkh/source/portable/arm-cortex/rkhs/ksdk/kds/rkhport.h</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/third-party/rkh/source/portable/arm-cortex/rkhs/ksdk_2.3/kds/rkhport.h</locationURI>
 		</link>
 		<link>
 			<name>third-party/rkh/include/rkhqueue.h</name>
@@ -334,7 +334,7 @@
 		<link>
 			<name>third-party/rkh/include/rkht.h</name>
 			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/third-party/rkh/source/portable/arm-cortex/rkhs/ksdk/kds/rkht.h</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/third-party/rkh/source/portable/arm-cortex/rkhs/ksdk_2.3/kds/rkht.h</locationURI>
 		</link>
 		<link>
 			<name>third-party/rkh/include/rkhtmr.h</name>

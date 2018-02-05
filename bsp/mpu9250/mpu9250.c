@@ -85,6 +85,7 @@ EXT_WAKE_UP_irqEnable(void)
 							   kPORT_InterruptLogicOne);
 
     EnableIRQ(EXT_WAKE_UP_IRQ);
+    NVIC_SetPriority(EXT_WAKE_UP_IRQ, RKH_PORT_IRQ_PRIO);
 
     GPIO_PinInit(EXT_WAKE_UP_GPIO,
                  EXT_WAKE_UP_GPIO_PIN,

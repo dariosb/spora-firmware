@@ -71,9 +71,7 @@ extern "C" {
 #define RKH_EXIT_CRITICAL(dummy)          rkhport_exit_critical()
 
 /* ------------------------------- Constants ------------------------------- */
-
-#define KERNEL_IRQ_PRIO		6
-#define HIGHEST_IRQ_PRI		5
+#define RKH_PORT_IRQ_PRIO         ((1UL << __NVIC_PRIO_BITS) - 1UL)
     
 /**
  *	If the #RKH_CFGPORT_SMA_THREAD_EN is set to 1,
