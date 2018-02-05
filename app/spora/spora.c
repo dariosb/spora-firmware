@@ -90,7 +90,7 @@ typedef struct Spora Spora;
 RKH_DCLR_COMP_STATE   steady; 
 RKH_DCLR_BASIC_STATE  unlinked, linked, hiden, motionDetect; 
 RKH_DCLR_SHIST_STATE  steadySHist;
-static char txBuff[100];
+static char txBuff[150];
 
 /* ........................ Declares initial action ........................ */
 static void init(Spora *const me);
@@ -193,12 +193,28 @@ disconnect(Spora *const me, RKH_EVT_T *pe)
     codeless_gapDisconnect();
 }
 
+#include "jwrite.h"
+
 static void
 sendMotion(Spora *const me, RKH_EVT_T *pe)
 {
     evtMotion *m = (evtMotion *)(pe);
 
-    SPORA_PACKET_FORMAT(m->data, txBuff, BUTTON_NOT_PRESS);
+//    SPORA_PACKET_FORMAT(m->data, txBuff, BUTTON_NOT_PRESS);
+
+	jwOpen( txBuff, sizeof(txBuff), JW_OBJECT, JW_COMPACT );		// start root object
+    jwObj_int( "t", m->data.time );
+    jwObj_int( "x", m->data.x );
+    jwObj_int( "y", m->data.y );
+    jwObj_int( "z", m->data.z );
+    jwObj_int( "u", m->data.mx );
+    jwObj_int( "v", m->data.my );
+    jwObj_int( "w", m->data.mz );
+    jwObj_int( "c", m->data.temp );
+    jwObj_int( "b", BUTTON_NOT_PRESS );
+    jwObj_int( "h", spora_getCfg_motionThr );
+    jwObj_string( "n", spora_getCfg_name() );
+    jwClose();
 
     codeless_sendData(txBuff);
 }
@@ -220,7 +236,7 @@ sendButton(Spora *const me, RKH_EVT_T *pe)
     packet.temp = q->temp;
     packet.time = bsp_getTimeSec();
 
-    SPORA_PACKET_FORMAT(packet, txBuff, BUTTON_IS_PRESS);
+//    SPORA_PACKET_FORMAT(packet, txBuff, BUTTON_IS_PRESS);
 
     codeless_sendData(txBuff);
 }

@@ -131,6 +131,7 @@ void codeless_sendData(char *p)
 {
     bsp_uartPutstring(ClessSendData.cmd);
     bsp_uartPutstring(p);
+    bsp_uartPutstring(SPORA_TX_MSJ_END);
     bsp_uartPutchar('\r');
 }
 

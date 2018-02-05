@@ -47,6 +47,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>third-party/jWrite</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>third-party/rkh</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -110,6 +115,16 @@
 			<name>source/bsp/pushbutton</name>
 			<type>2</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/pushbutton</locationURI>
+		</link>
+		<link>
+			<name>third-party/jWrite/jWrite.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/third-party/jWrite/jWrite/jWrite.c</locationURI>
+		</link>
+		<link>
+			<name>third-party/jWrite/jWrite.h</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/third-party/jWrite/jWrite/jWrite.h</locationURI>
 		</link>
 		<link>
 			<name>third-party/ksdk/drivers</name>
