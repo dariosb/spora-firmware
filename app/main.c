@@ -72,8 +72,8 @@ main(void)
 {
     bsp_init();
 
-    RKH_SMA_ACTIVATE(spora, qSpora, QSTO_SIZE, 0, 0);
     RKH_SMA_ACTIVATE(bleMgr, qBleMgr, QSTO_SIZE, 0, 0);
+    RKH_SMA_ACTIVATE(spora, qSpora, QSTO_SIZE, 0, 0);
     rkh_fwk_enter();
 
     RKH_TRC_CLOSE();

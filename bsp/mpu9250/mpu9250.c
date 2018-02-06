@@ -105,13 +105,12 @@ EXT_WAKE_UP_IRQ_Handler(void)
     if(!running)
         return;
 
-    status = mpu9250_readByte(INT_STATUS);
-
-    if((status & WOM_INT_STATUS_MASK) == 0)
-    	return;
-
     RKH_SET_STATIC_EVENT(&e_motion, evMotionDetect);
 
+    /* 
+     * For getting accelerometer latched values, first read 
+     * output registers before interrupt acknowledge.
+     */
     p = &e_motion.data;
     p->x = mpu9250_readByte(ACCEL_XOUT_H) << 8 |
             mpu9250_readByte(ACCEL_XOUT_L);
@@ -130,7 +129,13 @@ EXT_WAKE_UP_IRQ_Handler(void)
 
     p->time = bsp_getTimeSec(); 
 
-    mpu9250_readByte(INT_STATUS);
+    /* 
+     * Now reads and verify interrupt source 
+     */
+    status = mpu9250_readByte(INT_STATUS);
+
+    if((status & WOM_INT_STATUS_MASK) == 0)
+    	return;
 
     RKH_SMA_POST_FIFO(spora, CE(&e_motion), &mpu9250);
 }
@@ -183,7 +188,7 @@ mpu9250_getSamplerData(void)
 bool
 mpu9250_init(void)
 {
-    uint8_t aux;
+    static uint8_t aux;
 
     I2C_init();
     if (I2C_readAccelWhoAmI(WHO_AM_I_MPU9250, MPU9250_WHOAMI) != true)
@@ -200,8 +205,12 @@ mpu9250_init(void)
 
     aux = mpu9250_readByte(GYRO_CONFIG);
     /* settup accelerometers range */
-    mpu9250_writeByte(ACCEL_CONFIG, ACC_FULL_SCALE_16_G);
+    mpu9250_writeByte(ACCEL_CONFIG, ACC_FULL_SCALE_2_G);//ACC_FULL_SCALE_16_G);
     aux = mpu9250_readByte(ACCEL_CONFIG);
+//    bsp_uartPutchar(aux);
+//    if(aux!=ACC_FULL_SCALE_16_G)
+//    	return 0;
+
 
     /*
      * INT Pin/Bypass:
