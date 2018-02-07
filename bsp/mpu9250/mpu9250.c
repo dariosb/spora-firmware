@@ -199,13 +199,15 @@ mpu9250_init(void)
     /* MPU reset */
     mpu9250_writeByte( PWR_MGMT_1, 0x80 );
 
+    BSP_MSLEEP(MPU9250_RESET_TIME);
+
     aux = mpu9250_readByte(INT_STATUS);
     /* MPU general settings */
     mpu9250_writeByte(GYRO_CONFIG, GYRO_FULL_SCALE_250_DPS);
 
     aux = mpu9250_readByte(GYRO_CONFIG);
     /* settup accelerometers range */
-    mpu9250_writeByte(ACCEL_CONFIG, ACC_FULL_SCALE_2_G);//ACC_FULL_SCALE_16_G);
+    mpu9250_writeByte(ACCEL_CONFIG, ACC_FULL_SCALE_16_G);//ACC_FULL_SCALE_16_G);
     aux = mpu9250_readByte(ACCEL_CONFIG);
 //    bsp_uartPutchar(aux);
 //    if(aux!=ACC_FULL_SCALE_16_G)

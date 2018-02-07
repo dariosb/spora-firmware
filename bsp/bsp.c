@@ -65,7 +65,8 @@
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static uint8_t tick_cnt = TIME_SEC_COUNTER_RELOAD;
+static uint8_t tickCounter = TIME_SEC_COUNTER_RELOAD;
+static uint32_t sleepCount;
 static uint32_t timeSecCounter = 0;
 
 /* ----------------------- Local function prototypes ----------------------- */
@@ -95,11 +96,15 @@ SysTick_Handler(void)
 	RKH_TIM_TICK(0);
     pushbutton_tick();
     mpu9250_sampler();
-    if(tick_cnt && --tick_cnt == 0)
+    
+    if(tickCounter && --tickCounter == 0)
     {
-        tick_cnt = TIME_SEC_COUNTER_RELOAD;
+        tickCounter = TIME_SEC_COUNTER_RELOAD;
         ++timeSecCounter;
     }
+
+    if(sleepCount)
+        --sleepCount;
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -167,6 +172,16 @@ bsp_uartInit(void)
     LPUART_EnableInterrupts(CODELESS_LPUART, 
                             kLPUART_RxDataRegFullInterruptEnable);
     EnableIRQ(CODELESS_LPUART_IRQn);
+}
+
+void
+bsp_sleep(uint16_t mdelay)
+{
+    RKH_ENTER_CRITICAL();
+    sleepCount = mdelay;
+    RKH_EXIT_CRITICAL();
+
+    while(sleepCount);
 }
 
 void

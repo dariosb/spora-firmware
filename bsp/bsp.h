@@ -68,11 +68,14 @@ extern "C" {
 #endif
 
 /* --------------------------------- Macros -------------------------------- */
+#define BSP_MSLEEP(t)       bsp_sleep(RKH_TIME_MS(t))
+
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 void bsp_init(void);
+void bsp_sleep(uint16_t mdelay);
 void bsp_uartInit(void);
 void bsp_uartPutstring(const char *s);
 void bsp_uartPutchar(unsigned char c);
