@@ -206,8 +206,6 @@ I2C_readAccelWhoAmI(uint8_t reg, uint8_t value)
             g_accel_addr_found = masterXfer.slaveAddress;
             break;
         }
-        if( I2C_MasterTransferBlocking(BOARD_ACCEL_I2C_BASEADDR, &masterXfer) == kStatus_Success )
-            find_device = true;
     }
 
     if (find_device == true)
@@ -268,9 +266,6 @@ I2C_writeAccelReg(I2C_Type *base, uint8_t device_addr,
     masterXfer.dataSize = 1;
     masterXfer.flags = kI2C_TransferDefaultFlag;
 
-#if 0
-    return I2C_MasterTransferBlocking(BOARD_ACCEL_I2C_BASEADDR, &masterXfer);
-#else
     /*  direction=write : start+device_write;cmdbuff;xBuff; */
     /*  direction=receive :
      * start+device_write;cmdbuff;repeatStart+device_read;xBuff; */
@@ -295,7 +290,6 @@ I2C_writeAccelReg(I2C_Type *base, uint8_t device_addr,
     {
         return false;
     }
-#endif
 }
 
 uint8_t
@@ -321,9 +315,6 @@ I2C_readAccelRegs(I2C_Type *base, uint8_t device_addr,
     masterXfer.dataSize = rxSize;
     masterXfer.flags = kI2C_TransferDefaultFlag;
 
-#if 0
-    return I2C_MasterTransferBlocking(BOARD_ACCEL_I2C_BASEADDR, &masterXfer);
-#else
     /*  direction=write : start+device_write;cmdbuff;xBuff; */
     /*  direction=recive :
      * start+device_write;cmdbuff;repeatStart+device_read;xBuff; */
@@ -348,7 +339,6 @@ I2C_readAccelRegs(I2C_Type *base, uint8_t device_addr,
     {
         return false;
     }
-#endif
 }
 
 void
