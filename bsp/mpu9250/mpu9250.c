@@ -207,12 +207,8 @@ mpu9250_init(void)
 
     aux = mpu9250_readByte(GYRO_CONFIG);
     /* settup accelerometers range */
-    mpu9250_writeByte(ACCEL_CONFIG, ACC_FULL_SCALE_16_G);//ACC_FULL_SCALE_16_G);
+    mpu9250_writeByte(ACCEL_CONFIG, ACC_FULL_SCALE_16_G);
     aux = mpu9250_readByte(ACCEL_CONFIG);
-//    bsp_uartPutchar(aux);
-//    if(aux!=ACC_FULL_SCALE_16_G)
-//    	return 0;
-
 
     /*
      * INT Pin/Bypass:

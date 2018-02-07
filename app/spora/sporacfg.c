@@ -55,7 +55,7 @@
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
-#define MOTION_THR_DFT  0xFE
+#define MOTION_THR_DFT  0xEE
 #define USER_NAME_DFT   "User Spora"
 /* ---------------------------- Local data types --------------------------- */
 static SporaCfg sporaCfg =

@@ -74,9 +74,9 @@ extern "C" {
  *  \param[in] new      New sample.
  *  \param[in] last     Last filtered value.
  *  \param[in] alph     Filtering hardness [1, 2, 4 ...],
- *                      as higher is alpha, higher is filtering.
+ *                      as higher is alpha, filtering is harder.
  */
-int emaFilter_LowPass(uint16_t new, uint16_t last, uint8_t alpha);
+int16_t emaFilter_LowPass(int16_t new, int16_t last, uint8_t alpha);
 
 /**
  *  \brief
@@ -85,9 +85,9 @@ int emaFilter_LowPass(uint16_t new, uint16_t last, uint8_t alpha);
  *  \param[in] new      New sample.
  *  \param[in] last     Last filtered value.
  *  \param[in] alph     Filtering hardness [1, 2, 4 ...],
- *                      as higher is alpha, higher is filtering.
+ *                      as higher is alpha, filtering is harder.
  */
-int emaFilter_HighPass(uint16_t new, uint16_t last, uint8_t alpha);
+int16_t emaFilter_HighPass(int16_t new, int16_t last, uint8_t alpha);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

@@ -71,6 +71,22 @@ spora_wakeup(void)
     spora_running = true;
 }
 
+
+int16_t emaFilter_LowPass(int16_t new, int16_t last, uint8_t alpha)
+{
+	int16_t out;
+
+    if(alpha == 0)
+        return new;
+
+    out = (new / alpha);
+    out += last;
+    out -= (last / alpha);
+    return out;
+}
+
+Mpu9250_data_st data_fil;
+
 void
 spora_task(void)
 {
@@ -94,6 +110,13 @@ spora_task(void)
 
     PRINTF("AK8963_ST1: 0x%x\r\n", data.magnet);
     PRINTF("\tMag: %i\t%i\t%i\r\n", data.mx, data.my, data.mz);
+
+    data_fil.mx = emaFilter_LowPass(data.mx, data_fil.mx, 2);
+    data_fil.my = emaFilter_LowPass(data.my, data_fil.my, 2);
+    data_fil.mz = emaFilter_LowPass(data.mz, data_fil.mz, 2);
+
+    PRINTF("\tFMag: %i\t%i\t%i\r\n", data_fil.mx, data_fil.my, data_fil.mz);
+
 }
 
 /* ------------------------------ End of file ------------------------------ */

@@ -61,19 +61,23 @@
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
-int emaFilter_LowPass(uint16_t new, uint16_t last, uint8_t alpha)
+int16_t emaFilter_LowPass(int16_t new, int16_t last, uint8_t alpha)
 {
-    if(alpha == 0)
-        return last;
+	int16_t out;
 
-    last = new/alpha + last - last/alpha;
-    return last;
+    if(alpha == 0)
+        return new;
+
+    out = (new / alpha);
+    out += last;
+    out -= (last / alpha);
+    return out;
 }
  
-int emaFilter_HighPass(uint16_t new, uint16_t last, uint8_t alpha)
+int16_t emaFilter_HighPass(int16_t new, int16_t last, uint8_t alpha)
 {
     if(alpha == 0)
-        return last;
+        return new;
 
     last = new - emaFilter_LowPass(new, last, alpha);
     return last;
