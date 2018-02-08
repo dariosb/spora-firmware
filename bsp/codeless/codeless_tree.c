@@ -120,6 +120,7 @@ SSP_END_BR_TABLE
  */
 SSP_CREATE_TRN_NODE(rcv, rcvCollect);
 SSP_CREATE_BR_TABLE(rcv)
+	SSPBR(";", rcvChgJSonSep,  &rcv),
 	SSPBR(SPORA_RX_MSJ_END, rcvOk,  &root),
 SSP_END_BR_TABLE
 

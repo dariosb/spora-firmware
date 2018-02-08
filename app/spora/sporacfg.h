@@ -68,7 +68,7 @@ extern "C" {
 typedef struct
 {
     int16_t motionThr;
-    char name[MAX_NAME_SIZE];
+    char name[MAX_NAME_SIZE+1];
 }SporaCfg;
 
 /* -------------------------- External variables --------------------------- */
@@ -76,6 +76,7 @@ typedef struct
 void spora_getCfg(SporaCfg *p);
 uint8_t spora_getCfg_motionThr(void);
 char *spora_getCfg_name(void);
+void spora_setCfg(SporaCfg *p);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

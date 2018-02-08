@@ -87,4 +87,10 @@ spora_getCfg_name(void)
     return sporaCfg.name;
 }
 
+void
+spora_setCfg(SporaCfg *p)
+{
+    sporaCfg = *p;
+}
+
 /* ------------------------------ End of file ------------------------------ */

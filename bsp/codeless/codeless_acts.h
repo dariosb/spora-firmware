@@ -74,6 +74,7 @@ void rPrintOk(unsigned char pos);
 void gapStatusCollect(unsigned char data);
 void gapStatusOk(unsigned char pos);
 void rcvCollect(unsigned char data);
+void rcvChgJSonSep(unsigned char data );
 void rcvOk(unsigned char data);
 
 /* -------------------- External C language linkage end -------------------- */

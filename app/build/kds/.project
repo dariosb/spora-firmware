@@ -47,6 +47,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>third-party/jRead</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>third-party/jWrite</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -115,6 +120,16 @@
 			<name>source/bsp/pushbutton</name>
 			<type>2</type>
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/pushbutton</locationURI>
+		</link>
+		<link>
+			<name>third-party/jRead/jRead.c</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/third-party/jRead/jRead/jRead.c</locationURI>
+		</link>
+		<link>
+			<name>third-party/jRead/jRead.h</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/third-party/jRead/jRead/jRead.h</locationURI>
 		</link>
 		<link>
 			<name>third-party/jWrite/jWrite.c</name>

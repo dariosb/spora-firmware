@@ -56,7 +56,9 @@
 #include <stdlib.h>
 #include "rkh.h"
 #include "spora.h"
+#include "sporacfg.h"
 #include "blemgr.h"
+#include "jRead.h"
 #include "codeless_acts.h"
 #include "codeless_cmd.h"
 #include "codeless_tree.h"
@@ -65,7 +67,7 @@
 #define rxBufferEnd     (rxBuffer+sizeof(rxBuffer)/sizeof(char)-1)
 
 /* ------------------------------- Constants ------------------------------- */
-#define CLESS_RXBUFF_SIZE   40
+#define CLESS_RXBUFF_SIZE   50
 
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
@@ -142,17 +144,38 @@ void
 rcvCollect(unsigned char data)
 {
     if(prx < rxBufferEnd)
+    {
         *prx++ = data;
+    }
+    else
+    {
+    	codeless_sspInit();
+    }
 }
+
+void
+rcvChgJSonSep(unsigned char data )
+{
+	*(prx-1) = ',';
+}
+
+
+static SporaCfg newCfg;
 
 void
 rcvOk(unsigned char data)
 {
-    *prx = '\0';
-    prx = rxBuffer;
     /* an valid received packet from SporaApk
      * the packet must be processed here
      */
+
+    *prx = '\0';
+    prx = rxBuffer;
+
+    newCfg.motionThr = jRead_int(rxBuffer, "{'h'", NULL);
+    jRead_string( rxBuffer, "{'n'", newCfg.name, MAX_NAME_SIZE+1, NULL);
+
+    spora_setCfg(&newCfg);
 }
 
 /* ------------------------------ End of file ------------------------------ */

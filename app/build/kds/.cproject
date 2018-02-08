@@ -512,6 +512,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/tmr/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/rkh/source/trc/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/jWrite/jWrite/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../third-party/jRead/jRead/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../..&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../blemgr&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../spora&quot;"/>
