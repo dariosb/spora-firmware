@@ -107,7 +107,7 @@ extern "C" {
 
 #define MPU9250_WHOAMI 0x71U
 
-#define WOM_INT_STATUS_MASK       0x40
+#define WOM_INT_MASK       0x40
 /* See also MPU-9250 Register Map and Descriptions, */
 /* Revision 4.0, RM-MPU-9250A-00, */
 /* Rev. 1.4, 9/9/2013 for registers not listed in above document; */

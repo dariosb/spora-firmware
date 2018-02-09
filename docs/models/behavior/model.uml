@@ -187,6 +187,10 @@
         <transition xmi:id="_OYZJUAe_EeicwMZx6sE2Ig" source="_adHZ0AXaEei64r585RhGNQ" target="_o1eSYAXNEei64r585RhGNQ">
           <trigger xmi:id="_yfkL0Ae_EeicwMZx6sE2Ig" name="init()"/>
         </transition>
+        <transition xmi:id="_zQTvkA2OEeiY0vWdPh000g" kind="internal" source="_yfOmgAdwEeiVZe6039K0-w" target="_yfOmgAdwEeiVZe6039K0-w">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_z4slQA2OEeiY0vWdPh000g" name="updateCfg(cfg)"/>
+          <trigger xmi:id="_z4tMUA2OEeiY0vWdPh000g" name="evSporaCfg(cfg)"/>
+        </transition>
         <subvertex xmi:type="uml:State" xmi:id="_o1eSYAXNEei64r585RhGNQ" name="steady">
           <region xmi:id="_tKfK0AXNEei64r585RhGNQ" name="steady">
             <transition xmi:id="_GQPHQAXOEei64r585RhGNQ" source="__AI6kAXJEei64r585RhGNQ" target="__nTBMAXJEei64r585RhGNQ"/>
@@ -211,6 +215,10 @@
             <transition xmi:id="_hT1EIAe1EeicwMZx6sE2Ig" source="_AQP3kAXKEei64r585RhGNQ" target="_yfOmgAdwEeiVZe6039K0-w">
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_uq_SgAe1EeicwMZx6sE2Ig" name="sendButton()"/>
               <trigger xmi:id="_Yc2_QAe8EeicwMZx6sE2Ig" name="evPushButtonShortPress"/>
+            </transition>
+            <transition xmi:id="_MoxpIA2OEeiY0vWdPh000g" kind="internal" source="_o1eSYAXNEei64r585RhGNQ" target="_o1eSYAXNEei64r585RhGNQ">
+              <effect xmi:type="uml:OpaqueBehavior" xmi:id="_NO-tgA2OEeiY0vWdPh000g" name="updateCfg(cfg)"/>
+              <trigger xmi:id="_NO-tgQ2OEeiY0vWdPh000g" name="evSporaCfg(cfg)"/>
             </transition>
             <subvertex xmi:type="uml:State" xmi:id="__nTBMAXJEei64r585RhGNQ" name="unlinked"/>
             <subvertex xmi:type="uml:Pseudostate" xmi:id="__AI6kAXJEei64r585RhGNQ" name="Initial1"/>

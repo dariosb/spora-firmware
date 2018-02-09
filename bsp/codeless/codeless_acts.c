@@ -81,6 +81,8 @@ static char *prx;
 
 static RKH_ROM_STATIC_EVENT(e_cmdOk, evOk);
 static RKH_STATIC_EVENT(e_cmdResp, evOk);
+static SporaCfg newCfg;
+static evtCfg e_cfg;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -159,23 +161,17 @@ rcvChgJSonSep(unsigned char data )
 	*(prx-1) = ',';
 }
 
-
-static SporaCfg newCfg;
-
 void
 rcvOk(unsigned char data)
 {
-    /* an valid received packet from SporaApk
-     * the packet must be processed here
-     */
-
     *prx = '\0';
     prx = rxBuffer;
 
-    newCfg.motionThr = jRead_int(rxBuffer, "{'h'", NULL);
-    jRead_string( rxBuffer, "{'n'", newCfg.name, MAX_NAME_SIZE+1, NULL);
+    RKH_SET_STATIC_EVENT(&e_cfg, evSporaCfg);
+    e_cfg.cfg.motionThr = jRead_int(rxBuffer, "{'h'", NULL); 
+    jRead_string( rxBuffer, "{'n'", e_cfg.cfg.name, MAX_NAME_SIZE+1, NULL);
 
-    spora_setCfg(&newCfg);
+    RKH_SMA_POST_FIFO(spora, CE(&e_cfg), &ssp);
 }
 
 /* ------------------------------ End of file ------------------------------ */

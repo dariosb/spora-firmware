@@ -103,6 +103,7 @@ static void setDiscoverable(Spora *const me, RKH_EVT_T *pe);
 static void disconnect(Spora *const me, RKH_EVT_T *pe);
 static void sendMotion(Spora *const me, RKH_EVT_T *pe);
 static void sendButton(Spora *const me, RKH_EVT_T *pe);
+static void updateCfg(Spora *const me, RKH_EVT_T *pe);
 
 /* ......................... Declares entry actions ........................ */
 static void unlinkedEntry(Spora *const me);
@@ -118,6 +119,7 @@ static void offMotion(Spora *const me);
 /* ........................ States and pseudostates ........................ */
 RKH_CREATE_COMP_STATE(steady, NULL, NULL, RKH_ROOT, &unlinked, &steadySHist);
 RKH_CREATE_TRANS_TABLE(steady)
+    RKH_TRINT(evSporaCfg, NULL, &updateCfg),
     RKH_TRREG(evMotionDetect, NULL, NULL, &motionDetect),
 RKH_END_TRANS_TABLE
 
@@ -144,6 +146,7 @@ RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(motionDetect, onMotion, offMotion, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(motionDetect)
+    RKH_TRINT(evSporaCfg, NULL, &updateCfg),
     RKH_TRREG(evMotionIndicatorTout, NULL, NULL, &steadySHist),
 RKH_END_TRANS_TABLE
 
@@ -242,6 +245,15 @@ sendButton(Spora *const me, RKH_EVT_T *pe)
     packet.time = bsp_getTimeSec();
 
     codeless_sendData(formatSporaData(&packet, PRESS));
+}
+
+static void
+updateCfg(Spora *const me, RKH_EVT_T *pe)
+{
+    evtCfg *p = (evtCfg *)(pe);
+
+    spora_setCfg(&p->cfg);
+    mpu9250_setMotionThreshold(p->cfg.motionThr);    
 }
 
 /* ............................. Entry actions ............................. */

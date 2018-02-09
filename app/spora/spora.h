@@ -55,6 +55,7 @@
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
 #include "mpu9250.h"
+#include "sporaCfg.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -82,6 +83,7 @@ typedef enum Signals
     evPushbuttonLongPress,
     evForceDisconnect,
     evMotionDetect,
+    evSporaCfg,
 
 	SPORA_NUM_EVENTS
 }Signals;
@@ -107,6 +109,12 @@ typedef struct
 	RKH_EVT_T e;
     SporaPacket data;
 } evtMotion;
+
+typedef struct
+{
+	RKH_EVT_T e;
+    SporaCfg cfg;
+} evtCfg;
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */

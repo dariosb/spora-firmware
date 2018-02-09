@@ -134,7 +134,7 @@ EXT_WAKE_UP_IRQ_Handler(void)
      */
     status = mpu9250_readByte(INT_STATUS);
 
-    if((status & WOM_INT_STATUS_MASK) == 0)
+    if((status & WOM_INT_MASK) == 0)
     	return;
 
     RKH_SMA_POST_FIFO(spora, CE(&e_motion), &mpu9250);
@@ -203,12 +203,8 @@ mpu9250_init(void)
 
     aux = mpu9250_readByte(INT_STATUS);
     /* MPU general settings */
-    mpu9250_writeByte(GYRO_CONFIG, GYRO_FULL_SCALE_250_DPS);
-
-    aux = mpu9250_readByte(GYRO_CONFIG);
     /* settup accelerometers range */
     mpu9250_writeByte(ACCEL_CONFIG, ACC_FULL_SCALE_16_G);
-    aux = mpu9250_readByte(ACCEL_CONFIG);
 
     /*
      * INT Pin/Bypass:
@@ -218,14 +214,12 @@ mpu9250_init(void)
     aux = mpu9250_readByte(INT_PIN_CFG);
     aux |= 0x22;
     mpu9250_writeByte(INT_PIN_CFG, aux);
-    aux = mpu9250_readByte(INT_PIN_CFG);
 
     /* Test AK8963 reading Who am I */
     aux = ak8963_readByte(WHO_AM_I_AK8963);
 
     /* Sets magnetometer in 16bit continuos mode */
     ak8963_writeByte(AK8963_CNTL, 0x11);
-    aux = ak8963_readByte(AK8963_CNTL);
 
     /* Step 1: */
     /* Verify that is runnig */
@@ -237,9 +231,7 @@ mpu9250_init(void)
     mpu9250_writeByte(PWR_MGMT_2,0x6C);
 
     /* Enable Axis */
-    aux = mpu9250_readByte(PWR_MGMT_2);
-    aux = 0x00; /*clear all bits */
-    mpu9250_writeByte(PWR_MGMT_2,aux);
+    mpu9250_writeByte(PWR_MGMT_2,0);
 
     /* Step 2: */
     /* Setup bandwidth */
@@ -250,22 +242,16 @@ mpu9250_init(void)
 
     /* Step 3: */
     /* Enable movement interrupt */
-    aux = mpu9250_readByte(INT_ENABLE);
-    aux = 0x40;
-    /*aux = 0xC0; */
-    mpu9250_writeByte(INT_ENABLE, aux);
+    mpu9250_writeByte(INT_ENABLE, WOM_INT_MASK);
 
     /* Step 4: */
     /* Setup Motion detection threshold */
-    aux = mpu9250_readByte(WOM_THR);
     aux = spora_getCfg_motionThr();
     mpu9250_writeByte(WOM_THR, aux);
 
     /* Step 5: */
     /* Set Frequency of Wake-up */
-    aux = mpu9250_readByte(LP_ACCEL_ODR);
-    aux = 0x08;
-    mpu9250_writeByte(LP_ACCEL_ODR, aux);
+    mpu9250_writeByte(LP_ACCEL_ODR, 0x08);
 
     /* Step 6: */
     /* Enable cycle mode */
@@ -288,6 +274,26 @@ mpu9250_init(void)
     sampleRateCnt = SAMPLE_RATE;
 
     return true;
+}
+
+void
+mpu9250_setMotionThreshold(uint8_t th)
+{
+    static uint8_t aux;
+
+    RKH_ENTER_CRITICAL();
+   
+    aux = mpu9250_readByte(MOT_DETECT_CTRL);
+    aux &= ~0xC0;
+    mpu9250_writeByte(MOT_DETECT_CTRL, aux);    
+
+    mpu9250_writeByte(WOM_THR, th);
+
+    aux = mpu9250_readByte(MOT_DETECT_CTRL);
+    aux |= 0xC0;
+    mpu9250_writeByte(MOT_DETECT_CTRL, aux);    
+
+    RKH_EXIT_CRITICAL();
 }
 
 /* ------------------------------ End of file ------------------------------ */

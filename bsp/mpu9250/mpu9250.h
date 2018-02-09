@@ -86,6 +86,7 @@ typedef struct
 bool mpu9250_init(void);
 void mpu9250_sampler(void);
 Mpu9250Data *mpu9250_getSamplerData(void);
+void mpu9250_setMotionThreshold(uint8_t th);    
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
