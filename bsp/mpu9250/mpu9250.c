@@ -92,6 +92,45 @@ EXT_WAKE_UP_irqEnable(void)
                  &gpio_config);
 }
 
+static void
+EXT_WAKE_UP_irqDisable(void)
+{
+    DisableIRQ(EXT_WAKE_UP_IRQ);
+}
+
+static
+void
+setMotionIRQ(uint8_t motionThr, uint8_t freq)
+{
+    RKH_ENTER_CRITICAL();
+
+    EXT_WAKE_UP_irqDisable();
+
+    /* Enter full-power accel-only mode, no FIFO/DMP. */    
+    mpu9250_writeByte(USER_CTRL, 0);
+    mpu9250_writeByte(PWR_MGMT_1, 0);
+    mpu9250_writeByte(PWR_MGMT_2, BIT_STBY_XYZG);
+
+    /* Setup Motion detection threshold */
+    mpu9250_writeByte(WOM_THR, motionThr);
+
+    /* Set wake frequency. */
+    mpu9250_writeByte(LP_ACCEL_ODR, freq);
+
+    /* Enable motion interrupt. */
+    mpu9250_writeByte(MOT_DETECT_CTRL, BITS_WOM_EN);
+
+    /* Enable cycle mode. */
+    mpu9250_writeByte(PWR_MGMT_1, BIT_LPA_CYCLE);
+
+    /* Enable interrupt. */
+    mpu9250_writeByte(INT_ENABLE, BIT_MOT_INT_EN);
+     
+    EXT_WAKE_UP_irqEnable();
+
+    RKH_EXIT_CRITICAL();
+}
+
 /* ---------------------------- Global functions --------------------------- */
 void
 EXT_WAKE_UP_IRQ_Handler(void)
@@ -134,7 +173,7 @@ EXT_WAKE_UP_IRQ_Handler(void)
      */
     status = mpu9250_readByte(INT_STATUS);
 
-    if((status & WOM_INT_MASK) == 0)
+    if((status & BIT_MOT_INT_EN) == 0)
     	return;
 
     RKH_SMA_POST_FIFO(spora, CE(&e_motion), &mpu9250);
@@ -221,54 +260,7 @@ mpu9250_init(void)
     /* Sets magnetometer in 16bit continuos mode */
     ak8963_writeByte(AK8963_CNTL, 0x11);
 
-    /* Step 1: */
-    /* Verify that is runnig */
-    aux = mpu9250_readByte(PWR_MGMT_1);
-    aux &= 0x8F; /*clear bits 4 5 y 6 */
-    mpu9250_writeByte(PWR_MGMT_1,aux);
-
-    /* Disable Accel an Gyro */
-    mpu9250_writeByte(PWR_MGMT_2,0x6C);
-
-    /* Enable Axis */
-    mpu9250_writeByte(PWR_MGMT_2,0);
-
-    /* Step 2: */
-    /* Setup bandwidth */
-    aux = mpu9250_readByte(ACCEL_CONFIG2);
-    aux &= 0xF0;
-    aux |= 0x09;
-    mpu9250_writeByte(ACCEL_CONFIG2, aux);
-
-    /* Step 3: */
-    /* Enable movement interrupt */
-    mpu9250_writeByte(INT_ENABLE, WOM_INT_MASK);
-
-    /* Step 4: */
-    /* Setup Motion detection threshold */
-    aux = spora_getCfg_motionThr();
-    mpu9250_writeByte(WOM_THR, aux);
-
-    /* Step 5: */
-    /* Set Frequency of Wake-up */
-    mpu9250_writeByte(LP_ACCEL_ODR, 0x08);
-
-    /* Step 6: */
-    /* Enable cycle mode */
-    aux = mpu9250_readByte(PWR_MGMT_1);
-    aux |= 0x20;
-    mpu9250_writeByte(PWR_MGMT_1, aux);
-
-    /* Enable Accel an Gyro */
-    mpu9250_writeByte(PWR_MGMT_2,0x00);
-
-    EXT_WAKE_UP_irqEnable();
-
-    /* Step 7: */
-    /* Enable movement detection */
-    aux = mpu9250_readByte(MOT_DETECT_CTRL);
-    aux |= 0xC0;
-    mpu9250_writeByte(MOT_DETECT_CTRL, aux);
+    setMotionIRQ(spora_getCfg_motionThr(), INV_LPA_80HZ);
 
     running = true;
     sampleRateCnt = SAMPLE_RATE;
@@ -279,21 +271,7 @@ mpu9250_init(void)
 void
 mpu9250_setMotionThreshold(uint8_t th)
 {
-    static uint8_t aux;
-
-    RKH_ENTER_CRITICAL();
-   
-    aux = mpu9250_readByte(MOT_DETECT_CTRL);
-    aux &= ~0xC0;
-    mpu9250_writeByte(MOT_DETECT_CTRL, aux);    
-
-    mpu9250_writeByte(WOM_THR, th);
-
-    aux = mpu9250_readByte(MOT_DETECT_CTRL);
-    aux |= 0xC0;
-    mpu9250_writeByte(MOT_DETECT_CTRL, aux);    
-
-    RKH_EXIT_CRITICAL();
+    setMotionIRQ(th, INV_LPA_80HZ);
 }
 
 /* ------------------------------ End of file ------------------------------ */
