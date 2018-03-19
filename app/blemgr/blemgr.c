@@ -72,7 +72,7 @@ RKH_DCLR_BASIC_STATE waitSync, reseting, failure,
 RKH_DCLR_COMP_STATE init, running;
 
 /* ........................ Declares initial action ........................ */
-static void bleInit(BleMgr *const me);
+static void bleInit(BleMgr *const me, RKH_EVT_T *pe);
 
 /* ........................ Declares effect actions ........................ */
 static void sendReset(BleMgr *const me, RKH_EVT_T *pe);
@@ -158,7 +158,7 @@ static RKH_STATIC_EVENT(e_tmr, evInitTout);
 /* ---------------------------- Local functions ---------------------------- */
 /* ............................ Initial action ............................. */
 static void
-bleInit(BleMgr *const me)
+bleInit(BleMgr *const me, RKH_EVT_T *pe)
 {
     RKH_TMR_INIT(&me->tmr, &e_tmr, NULL);
 

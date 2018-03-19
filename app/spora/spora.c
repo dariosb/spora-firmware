@@ -95,7 +95,7 @@ RKH_DCLR_SHIST_STATE  steadySHist;
 static char jBuff[150];
 
 /* ........................ Declares initial action ........................ */
-static void init(Spora *const me);
+static void init(Spora *const me, RKH_EVT_T *pe);
 
 /* ........................ Declares effect actions ........................ */
 static void setHiden(Spora *const me, RKH_EVT_T *pe);
@@ -193,7 +193,7 @@ formatSporaData(SporaPacket *p, PushButton_t bst)
 
 /* ............................ Initial action ............................. */
 static void
-init(Spora *const me)
+init(Spora *const me, RKH_EVT_T *pe)
 {
     pushbutton_init();
     mpu9250_init();
