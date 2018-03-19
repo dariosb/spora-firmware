@@ -24,8 +24,10 @@
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
- *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
- *  e-mail:         francuccilea@gmail.com
+ *  RKH site: http://vortexmakes.com/que-es/
+ *  RKH GitHub: https://github.com/vortexmakes/RKH
+ *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail: lf@vortexmakes.com
  *  ---------------------------------------------------------------------------
  */
 
@@ -43,7 +45,7 @@
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
  *  DaBa  Dario Baliña       dariosb@gmail.com
  */
 
@@ -83,7 +85,7 @@ extern "C" {
  *	are set to 1, each SMA (active object) has its own thread of execution
  *	and its own object data.
  */
-#define RKH_CFGPORT_SMA_THREAD_DATA_EN      RKH_ENABLED
+#define RKH_CFGPORT_SMA_THREAD_DATA_EN      RKH_DISABLED
 
 /**
  *  If the #RKH_CFGPORT_NATIVE_SCHEDULER_EN is set to 1 then RKH will
@@ -166,13 +168,16 @@ extern "C" {
 /**
  * Operating system blocking primitive.
  */
-#define RKH_OSSIGNAL_TYPE                   void*
+#define RKH_OSSIGNAL_TYPE
 
 /**
  * Thread handle type for definition
  */
 #define RKH_THREAD_TYPE                     OS_TCB
 
+/**
+ *  Data type to declare thread stack 
+ */
 #define RKH_THREAD_STK_TYPE                 rui8_t
 
 /* ------------------------------- Data types ------------------------------ */

@@ -24,8 +24,10 @@
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
- *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
- *  e-mail:         francuccilea@gmail.com
+ *  RKH site: http://vortexmakes.com/que-es/
+ *  RKH GitHub: https://github.com/vortexmakes/RKH
+ *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail: lf@vortexmakes.com
  *  ---------------------------------------------------------------------------
  */
 
@@ -44,7 +46,7 @@
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -115,21 +117,27 @@ extern "C" {
  *                      (RKH_DHISTORY) or without history (RKH_NO_HISTORY).
  *                      When it is defined as RKH_NO_HISTORY each of 
  *                      parameters related to history default transition are 
- *                      ignored.
+ *                      ignored. The name of this history pseudostate is 
+ *                      automatically generated from the name of composite 
+ *                      state parent as "<composite_state_name>Hist".
  *  \param[in] hDftTrnGuard	
- *                      pointer to guard function. This argument is
- *					    optional, thus it could be declared as NULL.
+ *                      Pointer to guard function associated to history default 
+ *                      transition. 
+ *                      This argument is optional, thus it could be declared 
+ *                      as NULL.
  *  \param[in] hDftTrnAction
- *                      pointer to action function. This argument is
- *					    optional, thus it could be declared as NULL.
+ *                      Pointer to effect action function associated to 
+ *                      history default transition. 
+ *                      This argument is optional, thus it could be declared 
+ *                      as NULL.
  *  \param[in] hDftTarget
- *                      pointer to target state. If a default history 
- *                      Transition is defined (the target parameter is not 
- *                      NULL) originating from the History Pseudostate, it 
- *                      will be taken. Otherwise, default State entry is 
- *                      applied. 
+ *                      Pointer to target vertex of history default transition.
+ *                      If a default history transition is defined 
+ *                      (the target parameter is not NULL) originating from 
+ *                      the History Pseudostate, it will be taken. Otherwise, 
+ *                      default State entry is applied. 
  *  \param[in] hRamMem
- *                      pointer to a RAM location which maintains the last 
+ *                      Pointer to a RAM location which maintains the last 
  *                      visited state of this region. If composite state don't 
  *                      include the history pseudostate then this parameter 
  *                      should be passed as NULL.
@@ -628,7 +636,7 @@ extern "C" {
  *  \param[in] name		submachine name. Represents a submachine structure.
  *  \param[in] defchild	pointer to default child state.
  *  \param[in] iact		pointer to initialization action (optional). The
- *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      function prototype is defined as RKH_TRN_ACT_T. This
  *                      argument is optional, thus it could be declared as
  *                      NULL.
  *
@@ -1309,7 +1317,7 @@ extern "C" {
  *                      either composite or basic (not pseudo-state).
  *  \param[in] initialAction
  *                      Pointer to initialization action (optional). The
- *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      function prototype is defined as RKH_TRN_ACT_T. This
  *                      argument is optional, thus it could be declared as
  *                      NULL.
  *  \param[in] initialEvt
@@ -1355,7 +1363,7 @@ extern "C" {
  *                      either composite or basic (not pseudo-state).
  *  \param[in] initialAction_ 
  *                      Pointer to initialization action (optional). The
- *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      function prototype is defined as RKH_TRN_ACT_T. This
  *                      argument is optional, thus it could be declared as
  *                      NULL.
  *  \param[in] initialEvt_ 
@@ -1400,7 +1408,7 @@ extern "C" {
  *                      either composite or basic (not pseudo-state).
  *  \param[in] initialAction
  *                      Pointer to initialization action (optional). The
- *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      function prototype is defined as RKH_TRN_ACT_T. This
  *                      argument is optional, thus it could be declared as
  *                      NULL.
  *  \param[in] initialEvt
@@ -1598,204 +1606,6 @@ typedef enum
 
 /**
  *  \brief
- *  Initialization action.
- *
- *  Frequently, the state transition originating at the black ball is called
- *  the initial transition. Such transition designates the first active state
- *  after the state machine object is created. An initial transition can have
- *  associated actions, which in the UML notation are enlisted after the
- *  forward slash (/). In RKH framework, the application code must trigger
- *  the initial transition explicitly by invoking rkh_sma_activate() function.
- */
-#if (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
-     RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    typedef void (*RKH_INIT_ACT_T)(const RKH_SM_T *me,
-                                   const struct RKH_EVT_T *e);
-#elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
-       RKH_CFG_SMA_INIT_EVT_EN == RKH_DISABLED)
-    typedef void (*RKH_INIT_ACT_T)(const RKH_SM_T *me);
-#elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
-       RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    typedef void (*RKH_INIT_ACT_T)(const struct RKH_EVT_T *e);
-#else
-    typedef void (*RKH_INIT_ACT_T)(void);
-#endif
-
-#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
-/**
- *  \brief
- *  Constant parameters of state machine.
- *
- *	The constant key parameters of a state machine are allocated within.
- *
- *	\sa
- *	RKH_SMA_T structure definition for more information. Also,
- *	\link RKH_EVT_T single inheritance in C \endlink, and
- *	\link RKH_CREATE_BASIC_STATE another example \endlink.
- */
-struct RKH_ROM_T
-{
-    /**
-     *  \brief
-     *  SMA (a.k.a Active Object) priority.
-     *
-     *  A unique priority number must be assigned to each SMA from 0 to
-     *  RKH_LOWEST_PRIO. The lower the number, the higher the priority.
-     */
-    rui8_t prio;
-
-    /**
-     *  \brief
-     *  State machine properties.
-     *
-     *  The available properties are enumerated in RKH_HPPTY_T enumeration in
-     *  the rkh.h file.
-     */
-    rui8_t ppty;
-
-    /**
-     *  \brief
-     *  Name of State Machine Application (a.k.a Active Object).
-     *
-     *  Pointer to an ASCII string (NULL terminated) to assign a name to the
-     *	State Machine Application (a.k.a Active Object). The name can be
-     *	displayed by debuggers or by Trazer.
-     */
-#if R_TRC_AO_NAME_EN == RKH_ENABLED
-    const char *name;
-#endif
-
-    /**
-     *  \brief
-     *  Points to initial state.
-     *
-     *  This state could be defined either composite or basic
-     *  (not pseudo-state).
-     */
-    RKHROM RKH_ST_T *istate;
-
-    /**
-     *  \brief
-     *  Points to initializing action (optional).
-     *
-     *  The function prototype is defined as RKH_INIT_ACT_T. This argument is
-     *  optional, thus it could be declared as NULL.
-     */
-    RKH_INIT_ACT_T iaction;
-
-    /**
-     *  \brief
-     *	Pointer to an event that will be passed to state machine application
-     *	when it starts. Could be used to pass arguments to the state machine
-     *	like an argc/argv. This argument is optional, thus it could be
-     *	declared as NULL or eliminated in compile-time with
-     *	RKH_CFG_SMA_INIT_EVT_EN = 0.
-     */
-#if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
-    const RKH_EVT_T *ievent;
-#endif
-};
-#endif
-
-/**
- *  \brief
- *  Describes the state machine.
- *
- *  RKH_SM_T is not intended to be instantiated directly, but rather
- *  serves as the base structure for derivation of state machines in the
- *  application code. Also, is the base structure of active object structure 
- *  RKH_SMA_T.
- *
- *  \ingroup apiSM
- */
-#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
-struct RKH_SM_T
-{
-    /**
-     *  \brief
-     *  Points to constant parameters of state machine.
-     */
-    RKHROM RKH_ROM_T *romrkh;
-
-    /**
-     *  \brief
-     *  Points to current stable state (simple or final state).
-     */
-    RKHROM RKH_ST_T *state;
-};
-#else
-struct RKH_SM_T
-{
-    /**
-     *  \brief
-     *  SMA (a.k.a Active Object) priority.
-     *
-     *  A unique priority number must be assigned to each SMA from 0 to
-     *  RKH_LOWEST_PRIO. The lower the number, the higher the priority.
-     */
-    rui8_t prio;
-
-    /**
-     *  \brief
-     *  State machine properties.
-     *
-     *  The available properties are enumerated in RKH_HPPTY_T enumeration in
-     *  the rkh.h file.
-     */
-    rui8_t ppty;
-
-    /**
-     *  \brief
-     *  Name of State Machine Application (a.k.a Active Object).
-     *
-     *  Pointer to an ASCII string (NULL terminated) to assign a name to the
-     *	State Machine Application (a.k.a Active Object). The name can be
-     *	displayed by debuggers or by Trazer.
-     */
-#if R_TRC_AO_NAME_EN == RKH_ENABLED
-    const char *name;
-#endif
-
-    /**
-     *  \brief
-     *  Points to initial state.
-     *
-     *  This state could be defined either composite or basic
-     *  (not pseudo-state).
-     */
-    RKHROM RKH_ST_T *istate;
-
-    /**
-     *  \brief
-     *  Points to initializing action (optional).
-     *
-     *  The function prototype is defined as RKH_INIT_ACT_T. This argument is
-     *  optional, thus it could be declared as NULL.
-     */
-    RKH_INIT_ACT_T iaction;
-
-    /**
-     *  \brief
-     *	Pointer to an event that will be passed to state machine application
-     *	when it starts. Could be used to pass arguments to the state machine
-     *	like an argc/argv. This argument is optional, thus it could be
-     *	declared as NULL or eliminated in compile-time with
-     *	RKH_CFG_SMA_INIT_EVT_EN = 0.
-     */
-#if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
-    const RKH_EVT_T *ievent;
-#endif
-
-    /**
-     *  \brief
-     *  Points to current stable state (simple or final state).
-     */
-    RKHROM RKH_ST_T *state;
-};
-#endif
-
-/**
- *  \brief
  *  Entry action.
  *
  *  The actions that are always executed when a state is entered
@@ -1982,6 +1792,179 @@ struct RKH_SM_T
     typedef rbool_t (*RKH_GUARD_T)(const RKH_SM_T *me);
 #else
     typedef rbool_t (*RKH_GUARD_T)(void);
+#endif
+
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+/**
+ *  \brief
+ *  Constant parameters of state machine.
+ *
+ *	The constant key parameters of a state machine are allocated within.
+ *
+ *	\sa
+ *	RKH_SMA_T structure definition for more information. Also,
+ *	\link RKH_EVT_T single inheritance in C \endlink, and
+ *	\link RKH_CREATE_BASIC_STATE another example \endlink.
+ */
+struct RKH_ROM_T
+{
+    /**
+     *  \brief
+     *  SMA (a.k.a Active Object) priority.
+     *
+     *  A unique priority number must be assigned to each SMA from 0 to
+     *  RKH_LOWEST_PRIO. The lower the number, the higher the priority.
+     */
+    rui8_t prio;
+
+    /**
+     *  \brief
+     *  State machine properties.
+     *
+     *  The available properties are enumerated in RKH_HPPTY_T enumeration in
+     *  the rkh.h file.
+     */
+    rui8_t ppty;
+
+    /**
+     *  \brief
+     *  Name of State Machine Application (a.k.a Active Object).
+     *
+     *  Pointer to an ASCII string (NULL terminated) to assign a name to the
+     *	State Machine Application (a.k.a Active Object). The name can be
+     *	displayed by debuggers or by Trazer.
+     */
+#if R_TRC_AO_NAME_EN == RKH_ENABLED
+    const char *name;
+#endif
+
+    /**
+     *  \brief
+     *  Points to initial state.
+     *
+     *  This state could be defined either composite or basic
+     *  (not pseudo-state).
+     */
+    RKHROM RKH_ST_T *istate;
+
+    /**
+     *  \brief
+     *  Points to initializing action (optional).
+     *
+     *  The function prototype is defined as RKH_TRN_ACT_T. This argument is
+     *  optional, thus it could be declared as NULL.
+     */
+    RKH_TRN_ACT_T iaction;
+
+    /**
+     *  \brief
+     *	Pointer to an event that will be passed to state machine application
+     *	when it starts. Could be used to pass arguments to the state machine
+     *	like an argc/argv. This argument is optional, thus it could be
+     *	declared as NULL or eliminated in compile-time with
+     *	RKH_CFG_SMA_INIT_EVT_EN = 0.
+     */
+#if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
+    const RKH_EVT_T *ievent;
+#endif
+};
+#endif
+
+/**
+ *  \brief
+ *  Describes the state machine.
+ *
+ *  RKH_SM_T is not intended to be instantiated directly, but rather
+ *  serves as the base structure for derivation of state machines in the
+ *  application code. Also, is the base structure of active object structure 
+ *  RKH_SMA_T.
+ *
+ *  \ingroup apiSM
+ */
+#if RKH_CFG_SMA_SM_CONST_EN == RKH_ENABLED
+struct RKH_SM_T
+{
+    /**
+     *  \brief
+     *  Points to constant parameters of state machine.
+     */
+    RKHROM RKH_ROM_T *romrkh;
+
+    /**
+     *  \brief
+     *  Points to current stable state (simple or final state).
+     */
+    RKHROM RKH_ST_T *state;
+};
+#else
+struct RKH_SM_T
+{
+    /**
+     *  \brief
+     *  SMA (a.k.a Active Object) priority.
+     *
+     *  A unique priority number must be assigned to each SMA from 0 to
+     *  RKH_LOWEST_PRIO. The lower the number, the higher the priority.
+     */
+    rui8_t prio;
+
+    /**
+     *  \brief
+     *  State machine properties.
+     *
+     *  The available properties are enumerated in RKH_HPPTY_T enumeration in
+     *  the rkh.h file.
+     */
+    rui8_t ppty;
+
+    /**
+     *  \brief
+     *  Name of State Machine Application (a.k.a Active Object).
+     *
+     *  Pointer to an ASCII string (NULL terminated) to assign a name to the
+     *	State Machine Application (a.k.a Active Object). The name can be
+     *	displayed by debuggers or by Trazer.
+     */
+#if R_TRC_AO_NAME_EN == RKH_ENABLED
+    const char *name;
+#endif
+
+    /**
+     *  \brief
+     *  Points to initial state.
+     *
+     *  This state could be defined either composite or basic
+     *  (not pseudo-state).
+     */
+    RKHROM RKH_ST_T *istate;
+
+    /**
+     *  \brief
+     *  Points to initializing action (optional).
+     *
+     *  The function prototype is defined as RKH_TRN_ACT_T. This argument is
+     *  optional, thus it could be declared as NULL.
+     */
+    RKH_TRN_ACT_T iaction;
+
+    /**
+     *  \brief
+     *	Pointer to an event that will be passed to state machine application
+     *	when it starts. Could be used to pass arguments to the state machine
+     *	like an argc/argv. This argument is optional, thus it could be
+     *	declared as NULL or eliminated in compile-time with
+     *	RKH_CFG_SMA_INIT_EVT_EN = 0.
+     */
+#if RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED
+    const RKH_EVT_T *ievent;
+#endif
+
+    /**
+     *  \brief
+     *  Points to current stable state (simple or final state).
+     */
+    RKHROM RKH_ST_T *state;
+};
 #endif
 
 /**
@@ -2212,7 +2195,7 @@ struct RKH_SCMP_T
      *  \brief
      *  Points to state's initial action.
      */
-    RKH_INIT_ACT_T initialAction;
+    RKH_TRN_ACT_T initialAction;
 
     /**
      *  \brief

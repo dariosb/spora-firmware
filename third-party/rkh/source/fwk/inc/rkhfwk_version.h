@@ -24,8 +24,10 @@
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
- *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
- *  e-mail:         francuccilea@gmail.com
+ *  RKH site: http://vortexmakes.com/que-es/
+ *  RKH GitHub: https://github.com/vortexmakes/RKH
+ *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail: lf@vortexmakes.com
  *  ---------------------------------------------------------------------------
  */
 
@@ -38,11 +40,12 @@
 /* -------------------------- Development history -------------------------- */
 /*
  *  2017.21.04  LeFr  v2.4.05  Initial version
+ *  2018.03.05  LeFr  v3.1.00  ...
  */
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -69,9 +72,9 @@ extern "C" {
  *	denoted the minor revision, and the number C (2-digit) indicated the
  *	release number. For example, the code for 2.2.04 is 0x2204.
  *
- *  \releasedate 08/01/2017
+ *  \releasedate 03/05/2018
  */
-#define RKH_VERSION_CODE            0x3000u
+#define RKH_VERSION_CODE            0x3100u
 
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */

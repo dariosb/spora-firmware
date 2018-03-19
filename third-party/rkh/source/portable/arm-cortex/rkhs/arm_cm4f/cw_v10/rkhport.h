@@ -24,8 +24,10 @@
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
- *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
- *  e-mail:         francuccilea@gmail.com
+ *  RKH site: http://vortexmakes.com/que-es/
+ *  RKH GitHub: https://github.com/vortexmakes/RKH
+ *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail: lf@vortexmakes.com
  *  ---------------------------------------------------------------------------
  */
 
@@ -43,7 +45,7 @@
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
  *  DaBa  Dario Baliña       dariosb@gmail.com
  */
 
@@ -164,7 +166,22 @@ extern "C" {
 /**
  * Native event queue data type
  */
-#define RKH_EQ_TYPE                     RKH_QUEUE_T
+/* #define RKH_EQ_TYPE */
+
+/**
+ * Operating system blocking primitive.
+ */
+#define RKH_OSSIGNAL_TYPE
+
+/**
+ * Thread handle type for definition
+ */
+#define RKH_THREAD_TYPE
+
+/**
+ *  Data type to declare thread stack 
+ */
+#define RKH_THREAD_STK_TYPE
 
 /* ------------------------------- Data types ------------------------------ */
 /* -------------------------- External variables --------------------------- */

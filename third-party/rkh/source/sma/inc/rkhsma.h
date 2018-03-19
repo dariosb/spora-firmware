@@ -24,8 +24,10 @@
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
- *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
- *  e-mail:         francuccilea@gmail.com
+ *  RKH site: http://vortexmakes.com/que-es/
+ *  RKH GitHub: https://github.com/vortexmakes/RKH
+ *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail: lf@vortexmakes.com
  *  ---------------------------------------------------------------------------
  */
 
@@ -49,7 +51,7 @@
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -316,16 +318,13 @@ extern "C" {
  *                      either composite or basic (not pseudo-state).
  *  \param[in] initialAction
  *                      Pointer to initialization action (optional). The
- *                      function prototype is defined as RKH_INIT_ACT_T. This
+ *                      function prototype is defined as RKH_TRN_ACT_T. This
  *                      argument is optional, thus it could be declared as
  *                      NULL.
  *  \param[in] initialEvt
- *                      Pointer to an event that will be passed to state
- *                      machine application when it starts. Could be used to
- *                      pass arguments to the state machine like an argc/argv.
- *                      This argument is optional, thus it could be declared
- *                      as NULL or eliminated in compile-time with
- *                      RKH_CFG_SMA_INIT_EVT_EN = 0.
+ *                      This parameter is now deprecated and not recommended 
+ *                      for new designs. It remains supported for backwards 
+ *                      compatibility.
  *
  *  \sa RKH_SM_CONST_CREATE(), RKH_SM_GET_CONST(), RKH_SM_GET_CONST(),
  *      RKH_SMA_DEF_PTR(), RKH_SMA_DEF_PTR_TYPE()

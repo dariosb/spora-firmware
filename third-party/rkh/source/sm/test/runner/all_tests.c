@@ -24,8 +24,10 @@
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
- *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
- *  e-mail:         francuccilea@gmail.com
+ *  RKH site: http://vortexmakes.com/que-es/
+ *  RKH GitHub: https://github.com/vortexmakes/RKH
+ *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail: lf@vortexmakes.com
  *  ---------------------------------------------------------------------------
  */
 
@@ -43,7 +45,7 @@
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -66,9 +68,10 @@ void
 runAllTests(void)
 {
 	RUN_TEST_GROUP(transition);
-	RUN_TEST_GROUP(pseudostate);
 	RUN_TEST_GROUP(trnWoutUnitrazer);
 	RUN_TEST_GROUP(pseudostateConditional);
+	RUN_TEST_GROUP(pseudostate);
+	RUN_TEST_GROUP(InitPseudostate);
 }
 
 /* ---------------------------- Global functions --------------------------- */

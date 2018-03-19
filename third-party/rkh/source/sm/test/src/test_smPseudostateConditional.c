@@ -24,8 +24,10 @@
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
- *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
- *  e-mail:         francuccilea@gmail.com
+ *  RKH site: http://vortexmakes.com/que-es/
+ *  RKH GitHub: https://github.com/vortexmakes/RKH
+ *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail: lf@vortexmakes.com
  *  ---------------------------------------------------------------------------
  */
 
@@ -48,7 +50,7 @@
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -58,7 +60,7 @@
 #include "rkhfwk_dynevt.h"
 #include "common.h"
 #include "smPseudoConditionalTest.h"
-#include "MocksmPseudoConditionalTestAct.h"
+#include "Mock_smPseudoConditionalTestAct.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
@@ -117,7 +119,8 @@ setRKHTraceFilters(void)
 TEST_SETUP(pseudostateConditional)
 {
     sm_init();
-    MocksmPseudoConditionalTestAct_Init();
+    sm_ntrnact_ignore();
+    Mock_smPseudoConditionalTestAct_Init();
     loadStateMachineSymbols();
     setRKHTraceFilters();
 }
@@ -127,8 +130,8 @@ TEST_TEAR_DOWN(pseudostateConditional)
     sm_verify(); /* Makes sure there are no unused expectations, if */
                  /* there are, this function causes the test to fail. */
     sm_cleanup();
-    MocksmPseudoConditionalTestAct_Verify();
-    MocksmPseudoConditionalTestAct_Destroy();
+    Mock_smPseudoConditionalTestAct_Verify();
+    Mock_smPseudoConditionalTestAct_Destroy();
 }
 
 /**
@@ -141,8 +144,14 @@ TEST(pseudostateConditional, firstStateAfterInit)
 {
     UtrzProcessOut *p;
 
-	sm_init_expect(RKH_STATE_CAST(&smPCT_waiting));
-	sm_enstate_expect(RKH_STATE_CAST(&smPCT_waiting));
+    sm_init_expect(RKH_STATE_CAST(&smPCT_waiting));
+    sm_trn_expect(RKH_STATE_CAST(&smPCT_waiting), 
+                                 RKH_STATE_CAST(&smPCT_waiting));
+    sm_tsState_expect(RKH_STATE_CAST(&smPCT_waiting));
+    sm_enstate_expect(RKH_STATE_CAST(&smPCT_waiting));
+    sm_nenex_expect(1, 0);
+    sm_state_expect(RKH_STATE_CAST(&smPCT_waiting));
+    sm_evtProc_expect();
 
     rkh_sm_init((RKH_SM_T *)smPseudoConditionalTest);
 
@@ -165,26 +174,25 @@ TEST(pseudostateConditional, trnToChoiceWithTrueCondition)
     smPCT_tr1_Expect(
         RKH_CAST(SmPseudoConditionalTest, me), &evA);
     /* Expect init state machine */
-    sm_init_expect(RKH_STATE_CAST(
-        RKH_SMA_ACCESS_CONST(me, istate)));
-    sm_enstate_expect(RKH_STATE_CAST(
-        RKH_SMA_ACCESS_CONST(me, istate)));
+    expInitSm(me, RKH_STATE_CAST(&smPCT_waiting));
     /* Expect first transition segment */
 	sm_dch_expect(evA.e, RKH_STATE_CAST(&smPCT_s0));
 	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice1));
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice1));
-	sm_ntrnact_expect(1, 1);
+	//sm_ntrnact_expect(1, 1);
     /* Expect target state of last (second) transition */
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_s1));
     /* Expect solve compoused transition */
     sm_exstate_expect(RKH_STATE_CAST(&smPCT_s0));
-	sm_ntrnact_expect(1, 2);
+	//sm_ntrnact_expect(1, 2);
     sm_enstate_expect(RKH_STATE_CAST(&smPCT_s1));
+    sm_tsState_expect(RKH_STATE_CAST(&smPCT_s11));
     sm_enstate_expect(RKH_STATE_CAST(&smPCT_s11));
     sm_nenex_expect(2, 1);
     /* Expect main target state */
     sm_state_expect(RKH_STATE_CAST(&smPCT_s11));
 	sm_evtProc_expect();
+
     /* Initialize and set state */
     rkh_sm_init((RKH_SM_T *)me);
     setState((RKH_SMA_T *)me, RKH_STATE_CAST(&smPCT_s0));
@@ -213,20 +221,17 @@ TEST(pseudostateConditional, trnToChoiceWithFalseCondition)
     smPCT_tr2_Expect(
         RKH_CAST(SmPseudoConditionalTest, me), &evB);
     /* Expect init state machine */
-    sm_init_expect(RKH_STATE_CAST(
-        RKH_SMA_ACCESS_CONST(me, istate)));
-    sm_enstate_expect(RKH_STATE_CAST(
-        RKH_SMA_ACCESS_CONST(me, istate)));
+    expInitSm(me, RKH_STATE_CAST(&smPCT_waiting));
     /* Expect first transition segment */
 	sm_dch_expect(evB.e, RKH_STATE_CAST(&smPCT_s0));
 	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice1));
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice1));
-	sm_ntrnact_expect(1, 1);
+	//sm_ntrnact_expect(1, 1);
     /* Expect target state of last (second) transition */
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_s12));
     /* Expect solve compoused transition */
     sm_exstate_expect(RKH_STATE_CAST(&smPCT_s0));
-	sm_ntrnact_expect(1, 2);
+	//sm_ntrnact_expect(1, 2);
     sm_enstate_expect(RKH_STATE_CAST(&smPCT_s1));
     sm_enstate_expect(RKH_STATE_CAST(&smPCT_s12));
     sm_nenex_expect(2, 1);
@@ -254,15 +259,12 @@ TEST(pseudostateConditional, trnToChoiceWithoutElse)
         RKH_CAST(SmPseudoConditionalTest, me), 
         &evC, RKH_FALSE);
     /* Expect init state machine */
-    sm_init_expect(RKH_STATE_CAST(
-        RKH_SMA_ACCESS_CONST(me, istate)));
-    sm_enstate_expect(RKH_STATE_CAST(
-        RKH_SMA_ACCESS_CONST(me, istate)));
+    expInitSm(me, RKH_STATE_CAST(&smPCT_waiting));
     /* Expect first transition segment */
 	sm_dch_expect(evC.e, RKH_STATE_CAST(&smPCT_s0));
 	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice2));
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice2));
-	sm_ntrnact_expect(0, 1);
+	//sm_ntrnact_expect(0, 1);
 	sm_cndNotFound_expect();
     /* Initialize and set state */
     rkh_sm_init((RKH_SM_T *)me);
@@ -287,18 +289,17 @@ TEST(pseudostateConditional, trnToChoiceReturnToSource)
                                    &evD, RKH_TRUE);
     smPCT_tr4_Expect(RKH_CAST(SmPseudoConditionalTest, me), &evD);
     /* Expect init state machine */
-    sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
-    sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    expInitSm(me, RKH_STATE_CAST(&smPCT_waiting));
     /* Expect first transition segment */
 	sm_dch_expect(evD.e, RKH_STATE_CAST(&smPCT_s0));
 	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice1));
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice1));
-	sm_ntrnact_expect(0, 1);
+	//sm_ntrnact_expect(0, 1);
     /* Expect target state of last (second) transition */
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_s0));
     /* Expect solve compoused transition */
     sm_exstate_expect(RKH_STATE_CAST(&smPCT_s0));
-	sm_ntrnact_expect(1, 2);
+	//sm_ntrnact_expect(1, 2);
     sm_enstate_expect(RKH_STATE_CAST(&smPCT_s0));
     sm_nenex_expect(1, 1);
     /* Expect main target state */
@@ -335,25 +336,25 @@ TEST(pseudostateConditional, failsTrnSegmentsExceeded)
                                     &evE, RKH_TRUE);
     smPCT_tr1_Expect(RKH_CAST(SmPseudoConditionalTest, me), &evE);
     /* Expect init state machine */
-    sm_init_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
-    sm_enstate_expect(RKH_STATE_CAST(RKH_SMA_ACCESS_CONST(me, istate)));
+    expInitSm(me, RKH_STATE_CAST(&smPCT_waiting));
     /* Expect first transition segment */
 	sm_dch_expect(evE.e, RKH_STATE_CAST(&smPCT_s0));
 	sm_trn_expect(RKH_STATE_CAST(&smPCT_s0), RKH_STATE_CAST(&smPCT_choice3));
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice3));
-	sm_ntrnact_expect(1, 1);
+	//sm_ntrnact_expect(1, 1);
     /* Expect target state of next transition */
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice4));
-	sm_ntrnact_expect(1, 2);
+	//sm_ntrnact_expect(1, 2);
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice5));
-	sm_ntrnact_expect(1, 3);
+	//sm_ntrnact_expect(1, 3);
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_choice6));
-	sm_ntrnact_expect(1, 4);
+	//sm_ntrnact_expect(1, 4);
     sm_tsState_expect(RKH_STATE_CAST(&smPCT_s1));
     /* Expect solve compoused transition */
     sm_exstate_expect(RKH_STATE_CAST(&smPCT_s0));
-	sm_ntrnact_expect(1, 5);
+	//sm_ntrnact_expect(1, 5);
     sm_enstate_expect(RKH_STATE_CAST(&smPCT_s1));
+    sm_tsState_expect(RKH_STATE_CAST(&smPCT_s11));
     sm_enstate_expect(RKH_STATE_CAST(&smPCT_s11));
     sm_nenex_expect(2, 1);
     /* Expect main target state */

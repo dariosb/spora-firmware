@@ -24,8 +24,10 @@
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
- *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
- *  e-mail:         francuccilea@gmail.com
+ *  RKH site: http://vortexmakes.com/que-es/
+ *  RKH GitHub: https://github.com/vortexmakes/RKH
+ *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail: lf@vortexmakes.com
  *  ---------------------------------------------------------------------------
  */
 
@@ -42,7 +44,7 @@
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
  */
 
 /* --------------------------------- Notes --------------------------------- */
@@ -143,6 +145,18 @@ extern "C" {
 
 /**
  *  \brief
+ *	This macro is used to indicate the State Machine creation event.
+ *  
+ *  Upon creation, a State Machine will perform its initialization during 
+ *  which it executes an initial compound transition prompted by the 
+ *  creation, after which it enters a wait point, which is represented by 
+ *  a stable state configuration. It remains thus until an Event stored in 
+ *  its event pool is dispatched.
+ */
+#define RKH_SM_CREATION_EVENT       (RKH_ANY - 2)
+
+/**
+ *  \brief
  *  RKH allows up to RKH_CFG_FWK_MAX_SMA different priority levels
  *  (see rkhcfg.h).
  *
@@ -190,7 +204,6 @@ extern "C" {
 #define CV(p)           ((void *)(p))
 #define CSMA(p)         ((const RKH_SMA_T *)(p))
 #define CQ(p)           ((RKH_QUEUE_T *)(p))
-#define CIA(s)          ((RKH_INIT_ACT_T)(RKH_SMA_ACCESS_CONST(sma, iaction)))
 #define CTA(ta)         ((RKH_TRN_ACT_T)(ta))
 
 /**
@@ -662,19 +675,6 @@ extern "C" {
 #elif   ((RKH_CFG_SMA_TRC_SNDR_EN != RKH_ENABLED) && \
     (RKH_CFG_SMA_TRC_SNDR_EN != RKH_DISABLED))
     #error "RKH_CFG_SMA_TRC_SNDR_EN         illegally #define'd in 'rkhcfg.h'"
-    #error "                                    [MUST be  RKH_ENABLED ]      "
-    #error "                                    [     ||  RKH_DISABLED]      "
-
-#endif
-
-#ifndef RKH_CFG_SMA_INIT_ARG_SMA_EN
-    #error "RKH_CFG_SMA_INIT_ARG_SMA_EN           not #define'd in 'rkhcfg.h'"
-    #error "                                    [MUST be RKH_ENABLED ]       "
-    #error "                                    [     || RKH_DISABLED]       "
-
-#elif   ((RKH_CFG_SMA_INIT_ARG_SMA_EN != RKH_ENABLED) && \
-    (RKH_CFG_SMA_INIT_ARG_SMA_EN != RKH_DISABLED))
-    #error "RKH_CFG_SMA_INIT_ARG_SMA_EN     illegally #define'd in 'rkhcfg.h'"
     #error "                                    [MUST be  RKH_ENABLED ]      "
     #error "                                    [     ||  RKH_DISABLED]      "
 
@@ -1708,13 +1708,13 @@ extern "C" {
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
                 (prio), (ppty), #name, (RKHROM RKH_ST_T*)initialState, \
-                ((RKH_INIT_ACT_T)initialAction), (initialEvt), \
+                ((RKH_TRN_ACT_T)initialAction), (initialEvt), \
                 (RKHROM RKH_ST_T*)initialState
         #else
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
                 (prio), (ppty), (RKHROM RKH_ST_T*)initialState, \
-                ((RKH_INIT_ACT_T)initialAction), (initialEvt), \
+                ((RKH_TRN_ACT_T)initialAction), (initialEvt), \
                 (RKHROM RKH_ST_T*)initialState
         #endif
     #else
@@ -1722,13 +1722,13 @@ extern "C" {
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
                 (prio), (ppty), #name, (RKHROM RKH_ST_T*)initialState, \
-                ((RKH_INIT_ACT_T)initialAction), \
+                ((RKH_TRN_ACT_T)initialAction), \
                 (RKHROM RKH_ST_T*)initialState
         #else
             #define MKSM(name, prio, ppty, initialState, initialAction, \
                          initialEvt) \
                 (prio), (ppty), (RKHROM RKH_ST_T*)initialState, \
-                ((RKH_INIT_ACT_T)initialAction), \
+                ((RKH_TRN_ACT_T)initialAction), \
                 (RKHROM RKH_ST_T*)initialState
         #endif
     #endif
@@ -1755,7 +1755,7 @@ extern "C" {
         ((RKH_SM_T *)(sm_))->ppty = ppty_; \
         MKSM_NAME(sm_, name_); \
         ((RKH_SM_T *)(sm_))->istate = (RKHROM RKH_ST_T*)initialState_; \
-        ((RKH_SM_T *)(sm_))->iaction = (RKH_INIT_ACT_T)initialAction_; \
+        ((RKH_SM_T *)(sm_))->iaction = (RKH_TRN_ACT_T)initialAction_; \
         MKSM_IEVENT(sm_, initialEvt_); \
         ((RKH_SM_T *)(sm_))->state = (RKHROM RKH_ST_T*)initialState_
 
@@ -1787,13 +1787,13 @@ extern "C" {
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
             { \
                 (prio), (ppty), # name, (RKHROM RKH_ST_T *)is, \
-                (RKH_INIT_ACT_T)(ia), (ie) \
+                (RKH_TRN_ACT_T)(ia), (ie) \
             }
     #else
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
             { \
                 (prio), (ppty), (RKHROM RKH_ST_T *)is, \
-                (RKH_INIT_ACT_T)(ia), (ie) \
+                (RKH_TRN_ACT_T)(ia), (ie) \
             }
     #endif
 #else
@@ -1801,13 +1801,13 @@ extern "C" {
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
             { \
                 (prio), (ppty), # name, (RKHROM RKH_ST_T *)is, \
-                (RKH_INIT_ACT_T)(ia) \
+                (RKH_TRN_ACT_T)(ia) \
             }
     #else
         #define MKRRKH(name, prio, ppty, is, ia, ie) \
             { \
                 (prio), (ppty), (RKHROM RKH_ST_T *)is, \
-                (RKH_INIT_ACT_T)(ia) \
+                (RKH_TRN_ACT_T)(ia) \
             }
     #endif
 #endif
@@ -1823,7 +1823,7 @@ extern "C" {
         #if defined(RKH_HISTORY_ENABLED)
             #define MKBASIC(n,pp)               n##_trtbl, (RKH_PPRO_T)pp
             #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, NULL, d, \
-                                                (RKH_INIT_ACT_T)dftTrn_, h
+                                                (RKH_TRN_ACT_T)dftTrn_, h
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem) \
                 RKHROM RKH_SHIST_T name##Hist = \
                 { \
@@ -1845,7 +1845,7 @@ extern "C" {
         #else
             #define MKBASIC(n,pp)               n##_trtbl, (RKH_PPRO_T)pp
             #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, NULL, d, \
-                                                (RKH_INIT_ACT_T)dftTrn_
+                                                (RKH_TRN_ACT_T)dftTrn_
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem)
             #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem)
             #define MKFINAL(name_) \
@@ -1857,7 +1857,7 @@ extern "C" {
         #if defined(RKH_HISTORY_ENABLED)
             #define MKBASIC(n,pp)               n##_trtbl
             #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, d, \
-                                                (RKH_INIT_ACT_T)dftTrn_, h
+                                                (RKH_TRN_ACT_T)dftTrn_, h
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem) \
                 RKHROM RKH_SHIST_T name##Hist = \
                 { \
@@ -1879,7 +1879,7 @@ extern "C" {
         #else
             #define MKBASIC(n,pp)               n##_trtbl
             #define MKCOMP(n, d, dftTrn_, h)    n##_trtbl, d, \
-                                                (RKH_INIT_ACT_T)dftTrn_
+                                                (RKH_TRN_ACT_T)dftTrn_
             #define MKHIST_INCOMP(name, kOfH, dTG, dTA, dTT, ramMem)
             #define MKHISTORY(name, parent, kOfH, dTG, dTA, dTT, ramMem)
             #define MKFINAL(name_) \
@@ -1943,6 +1943,87 @@ extern "C" {
 #endif
 
 #if RKH_EN_DOXYGEN == RKH_ENABLED
+    /** @{
+     *  \brief
+     *  RKH need to disable interrupts in order to access critical sections
+     *  of code, and re-enable interrupts when done. This allows RKH to
+     *  protect critical code from being entered simultaneously. To hide the
+     *  implementation method chosen by the processor, compiler, etc, RKH
+     *  defines two macros to unconditionally disable and enable interrupts:
+     *  RKH_DIS_INTERRUPT() and RKH_ENA_INTERRUPT() respectively. Obviously,
+     *  they resides in \c rkhport.h file, which the user always need to
+     *  provide.
+     *
+     *  \n <EM>Example for HCS08 CW6.3</EM>
+     *  \code
+     *  #define RKH_DIS_INTERRUPT()			DisableInterrupts
+     *  #define RKH_ENA_INTERRUPT()			EnableInterrupts
+     *  \endcode
+     *  <EM>Example for uC/OS-III and KSDK</EM>
+     *  \code
+     *  #define RKH_DIS_INTERRUPT()         INT_SYS_DisableIRQGlobal()
+     *  #define RKH_ENA_INTERRUPT()         INT_SYS_EnableIRQGlobal()
+     *  \endcode
+     */
+    #define RKH_DIS_INTERRUPT()
+    #define RKH_ENA_INTERRUPT()
+    /*@}*/
+
+    /** @{
+     *  \brief
+     *  RKH need to disable interrupts in order to access critical sections of
+     *  code, and re-enable interrupts when done.
+     *
+     *  This allows RKH to protect
+     *  critical code from being entered simultaneously from either multiple
+     *  SMAs or ISRs. Every processor generally provide instructions to
+     *  disable/enable interrupts and the C compiler must have a mechanism to
+     *  perform these operations directly from C. Some compilers will allows
+     *  to insert in-line assembly language statements in the C source code.
+     *  This makes it quite easy to insert processor instructions to enable and
+     *  disable interrupts. Other compilers will actually contain language
+     *  extensions to enable and disable interrupts directly from C. To hide
+     *  the implementation method chosen by the compiler manufacturer, RKH
+     *  defines two macros to disable and enable interrupts:
+     *  RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL().
+     *
+     *  The RKH_ENTER_CRITICAL() macro saves the interrupt disable status onto
+     *  the stack and then, disable interrupts.
+     *  RKH_EXIT_CRITICAL() would simply be implemented by restoring the
+     *  interrupt status from the stack. Using this scheme, if it's called a
+     *  RKH service with either interrupts enabled or disabled then, the
+     *  status would be preserved across the call. If calls a RKH service with
+     *  interrupts disabled, is potentially extending the interrupt latency of
+     *  application. The application can use RKH_ENTER_CRITICAL() and
+     *  RKH_EXIT_CRITICAL() to also protect critical sections of code. As a
+     *  general rule, should always call RKH services with interrupts enabled!.
+     *
+     *  \note
+     *  These macros are internal to RKH and the user application should
+     *  not call it.
+     *
+     *  <EM>Example for x86, VC2008, and win32 single thread:</EM>
+     *  \code
+     *  //#define RKH_CPUSR_TYPE
+     *  #define RKH_ENTER_CRITICAL(dummy)		EnterCriticalSection(&csection)
+     *  #define RKH_EXIT_CRITICAL(dummy)		LeaveCriticalSection(&csection)
+     *  \endcode
+     *  <EM>Example for uC/OS-III and KSDK</EM>
+     *  \code
+     *  //#define RKH_CPUSR_TYPE
+     *  #define RKH_ENTER_CRITICAL(dummy)         \
+     *              OSA_EnterCritical(kCriticalDisableInt)
+     *  #define RKH_EXIT_CRITICAL(dummy)          \
+     *              OSA_ExitCritical(kCriticalDisableInt)
+     *  \endcode
+     */
+    #define RKH_CPUSR_TYPE
+    #define RKH_SR_ALLOC() \
+        RKH_CPUSR_TYPE sr = (RKH_CPUSR_TYPE)0
+    #define RKH_ENTER_CRITICAL(dummy)
+    #define RKH_EXIT_CRITICAL(dummy)
+    /*@}*/
+
     /**
      *  \addtogroup config
      *  @{
@@ -1967,6 +2048,9 @@ extern "C" {
      *	If the #RKH_CFGPORT_SMA_THREAD_EN and
      *	#RKH_CFGPORT_SMA_THREAD_DATA_EN are set to 1, each SMA (active
      *	object) has its own thread of execution and its own object data.
+     *  When enabling it, the option RKH_OSSIGNAL_TYPE must be defined. 
+     *
+     *  \copybrief RKH_OSSIGNAL_TYPE
      *
      * \type       Boolean 
      * \range      
@@ -2159,73 +2243,25 @@ extern "C" {
      */
     #define RKH_OSSIGNAL_TYPE
 
-    /**@{
+    /**
      *  \brief
-     *  RKH need to disable interrupts in order to access critical sections
-     *  of code, and re-enable interrupts when done. This allows RKH to
-     *  protect critical code from being entered simultaneously. To hide the
-     *  implementation method chosen by the processor, compiler, etc, RKH
-     *  defines two macros to unconditionally disable and enable interrupts:
-     *  RKH_DIS_INTERRUPT() and RKH_ENA_INTERRUPT() respectively. Obviously,
-     *  they resides in \b rkhport.h file, which the user always need to
-     *  provide.
-     *
-     *  <EM>Example for HCS08 CW6.3 from C:</EM>
-     *  \code
-     *  #define RKH_DIS_INTERRUPT()			DisableInterrupts
-     *  #define RKH_ENA_INTERRUPT()			EnableInterrupts
-     *  \endcode
-     */
-    #define RKH_DIS_INTERRUPT()
-    #define RKH_ENA_INTERRUPT()
-    /*@}*/
+     *  Data type to declare thread stack, which is only used when the 
+     *  underlying OS does not internally allocate the RAM storage to its 
+     *  threads, in this case must be enabled RKH_CFGPORT_SMA_STK_EN option in 
+     *  \c rkhport.h file.
 
-    /**@{
-     *  \brief
-     *  RKH need to disable interrupts in order to access critical sections of
-     *  code, and re-enable interrupts when done.
-     *
-     *  This allows RKH to protect
-     *  critical code from being entered simultaneously from either multiple
-     *  SMAs or ISRs. Every processor generally provide instructions to
-     *  disable/enable interrupts and the C compiler must have a mechanism to
-     *  perform these operations directly from C. Some compilers will allows
-     *  to insert in-line assembly language statements in the C source code.
-     *  This makes it quite easy to insert processor instructions to enable and
-     *  disable interrupts. Other compilers will actually contain language
-     *  extensions to enable and disable interrupts directly from C. To hide
-     *  the implementation method chosen by the compiler manufacturer, RKH
-     *  defines two macros to disable and enable interrupts:
-     *  RKH_ENTER_CRITICAL() and RKH_EXIT_CRITICAL().
-     *
-     *  The RKH_ENTER_CRITICAL() macro saves the interrupt disable status onto
-     *  the stack and then, disable interrupts.
-     *  RKH_EXIT_CRITICAL() would simply be implemented by restoring the
-     *  interrupt status from the stack. Using this scheme, if it's called a
-     *  RKH service with either interrupts enabled or disabled then, the
-     *  status would be preserved across the call. If calls a RKH service with
-     *  interrupts disabled, is potentially extending the interrupt latency of
-     *  application. The application can use RKH_ENTER_CRITICAL() and
-     *  RKH_EXIT_CRITICAL() to also protect critical sections of code. As a
-     *  general rule, should always call RKH services with interrupts enabled!.
-     *
-     *  \note
-     *  These macros are internal to RKH and the user application should
-     *  not call it.
-     *
-     *  <EM>Example for x86, VC2008, and win32 single thread:</EM>
+     *  <EM>Example</EM>
      *  \code
-     *  //#define RKH_CPUSR_TYPE
-     *  #define RKH_ENTER_CRITICAL( dummy )		EnterCriticalSection(&csection)
-     *  #define RKH_EXIT_CRITICAL( dummy )		LeaveCriticalSection(&csection)
+     *  // In rkhport.h
+     *  #define RKH_THREAD_STK_TYPE     rui8_t
+     *
+     *  // In application code
+     *  // Defines the task's stack for active object 'server'
+     *  static RKH_THREAD_STK_TYPE serverStk[SERVER_STK_SIZE];
      *  \endcode
      */
-    #define RKH_CPUSR_TYPE
-    #define RKH_SR_ALLOC() \
-        RKH_CPUSR_TYPE sr = (RKH_CPUSR_TYPE)0
-    #define RKH_ENTER_CRITICAL(dummy)
-    #define RKH_EXIT_CRITICAL(dummy)
-    /*@}*/
+    #define RKH_THREAD_STK_TYPE 
+
 #endif
 
 #ifdef RKH_CPUSR_TYPE
@@ -2238,60 +2274,6 @@ extern "C" {
     #define RKH_SR_ALLOC()
     #define RKH_ENTER_CRITICAL_()       RKH_ENTER_CRITICAL(dummy)
     #define RKH_EXIT_CRITICAL_()        RKH_EXIT_CRITICAL(dummy)
-#endif
-
-#if (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
-     RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    #define RKH_EXEC_INIT(me_, action_) \
-        if ((RKH_INIT_ACT_T)action_) \
-        { \
-            (*(RKH_INIT_ACT_T)action_)((me_), \
-                                      RKH_SMA_ACCESS_CONST(CM(me_), ievent)); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (me_), \
-                              0, \
-                              CM(me_)); \
-        }
-    #define RKH_EXEC_STATE_INIT(me_, action_) \
-        RKH_EXEC_INIT(me_, action_)
-#elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_ENABLED && \
-       RKH_CFG_SMA_INIT_EVT_EN == RKH_DISABLED)
-    #define RKH_EXEC_INIT(me_, action_) \
-        if ((RKH_INIT_ACT_T)action_) \
-        { \
-            (*(RKH_INIT_ACT_T)action_)((me_)); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (me_), \
-                              0, \
-                              CM(me_)); \
-        }
-    #define RKH_EXEC_STATE_INIT(me_, action_) \
-        RKH_EXEC_INIT(me_, action_)
-#elif (RKH_CFG_SMA_INIT_ARG_SMA_EN == RKH_DISABLED && \
-       RKH_CFG_SMA_INIT_EVT_EN == RKH_ENABLED)
-    #define RKH_EXEC_INIT(me_, action_) \
-        if ((RKH_INIT_ACT_T)action_) \
-        { \
-            (*(RKH_INIT_ACT_T)action_)(RKH_SMA_ACCESS_CONST(CM(me_), ievent)); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (me_), \
-                              0, \
-                              CM(me_)); \
-        }
-    #define RKH_EXEC_STATE_INIT(me_, action_) \
-        RKH_EXEC_INIT(me_, action_)
-#else
-    #define RKH_EXEC_INIT(me_, action_) \
-        if ((RKH_INIT_ACT_T)action_) \
-        { \
-            (*(RKH_INIT_ACT_T)action_)(); \
-            RKH_TR_SM_EXE_ACT(RKH_SUBTE_SM_EXE_ACT_INI, \
-                              (me_), \
-                              0, \
-                              CM(me_)); \
-        }
-    #define RKH_EXEC_STATE_INIT(me_, action_) \
-        RKH_EXEC_INIT(me_, action_)
 #endif
 
 #if RKH_CFG_SMA_ENT_ARG_SMA_EN == RKH_ENABLED

@@ -1,4 +1,5 @@
-# Overview
+Overview
+========
 
 RKH is a generic, flexible, modular, highly portable, ANSI-C compliant, 
 and open-source development tool for implementing hierarchical 
@@ -6,8 +7,8 @@ state machines based on modern state machine concepts. This modern
 techniques are used to give an abstract description of the dynamic 
 behavior of a system in a substantial manner.
 
-------------------------------------------------------------------------------
-## The main features of RKH
+The main features of RKH
+========================
 
 - State machines representation is based on state tables.
 - Representing a state machine with RKH is intuitive, and easy.
@@ -33,6 +34,8 @@ behavior of a system in a substantial manner.
 - Support submachine state.
 - Support local, internal and completion transitions.
 - Support entry and exit actions.
+- Support any kind of vertex as target of a default transition 
+  in both composite state region or root region, according to UML 2.x.
 - Implement the traditional transition sequence.
 - Include mechanism for deferring events.
 - Support event dispatching with parameters.
@@ -41,8 +44,8 @@ behavior of a system in a substantial manner.
 - Support systems-friendly assertion macros like assert, allege, error, 
 require, and ensure.
 
-------------------------------------------------------------------------------
-## Purpose and inspiration
+Purpose and inspiration
+=======================
 
 For many years, I had been used the traditional state-machine concepts 
 based on state-table strategy for modeling the dynamic behavior of several 
@@ -58,15 +61,15 @@ a solid, and efficient implementation. Broadly speaking, the RKH
 implementation has been designed from the ground up to be used in 8-bits 
 platforms but can be easily adapted to 16 or 32-bits platforms.
 
-------------------------------------------------------------------------------
-## Other implementations
+Other implementations
+=====================
 
 Open-source frameworks that support Statecharts.
 
 Quantum Leap - [http://www.state-machine.com/](http://www.state-machine.com/)
 
-------------------------------------------------------------------------------
-## Licensing
+Licensing
+=========
 
 Copyright (C) 2010 Leandro Francucci. All rights reserved.
 
@@ -83,26 +86,29 @@ You should have received a copy of the GNU General Public License along with
 RKH package. If not, see <http://www.gnu.org/licenses/>.
 
 (*)  Observe that, the GPLv3 can be used for research & development and 
-     educational purposes (academic purposes). 
+     educational purposes (academic purposes).
+
 (**) When the source code of your application should not be published under 
      the GNU GPLv3 license (closed source code), please, contact contact me. 
      See Contact information section.
 
-------------------------------------------------------------------------------
-## Contact information:
+Contact information
+===================
 
-RKH web site: http://sourceforge.net/projects/rkh-reactivesys/
+RKH site: http://vortexmakes.com/que-es/
+
+RKH GitHub: https://github.com/vortexmakes/RKH
+
+RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+
 e-mail: lf@vortexmakes.com
-e-mail: francuccilea@gmail.com
 
-------------------------------------------------------------------------------
-## RKH Release notes
+RKH Release notes
+=================
 
-Changes between V2.4.6 and V3.0.0 released 08/01/2017
+Changes between V3.0.0 and V3.1.0 released 03/05/2018
 
-- Added unit test cases of trace, sma and fwk modules.
-- Added test harness of framework's modules to test for.
-- Added Ceedling submodule
-- Rearranged files and directories (modules, ports and demo apps).
-- Improved trace module
-- Improved doc files (doxygen) and comments.
+- Added support for using any kind of vertex as target of a default transition 
+  in both composite state region or root region, according to UML 2.x.
+- The RKH_TE_SM_NTRNACT trace record is now deprecated and not recommended 
+  for new designs. It remains supported for backwards compatibility.

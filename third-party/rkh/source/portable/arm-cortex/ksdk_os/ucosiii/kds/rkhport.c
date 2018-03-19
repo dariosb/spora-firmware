@@ -24,8 +24,10 @@
  *  with RKH, see copying.txt file.
  *
  *  Contact information:
- *  RKH web site:   http://sourceforge.net/projects/rkh-reactivesys/
- *  e-mail:         francuccilea@gmail.com
+ *  RKH site: http://vortexmakes.com/que-es/
+ *  RKH GitHub: https://github.com/vortexmakes/RKH
+ *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail: lf@vortexmakes.com
  *  ---------------------------------------------------------------------------
  */
 
@@ -43,7 +45,7 @@
 
 /* -------------------------------- Authors -------------------------------- */
 /*
- *  LeFr  Leandro Francucci  francuccilea@gmail.com
+ *  LeFr  Leandro Francucci  lf@vortexmakes.com
  *  DaBa  Dario Baliña       dariosb@gmail.com
  */
 
@@ -170,36 +172,16 @@ OSA_MsgQPutLifo(msg_queue_handler_t handler, void* pMessage)
 #endif
 
 /* ---------------------------- Global functions --------------------------- */
-const
-char *
+const char *
 rkhport_get_version(void)
 {
     return RKH_MODULE_GET_VERSION();
 }
 
-const
-char *
+const char *
 rkhport_get_desc(void)
 {
     return RKH_MODULE_GET_DESC();
-}
-
-void
-rkh_sma_block(RKH_SMA_T *const me)
-{
-    (void)me;
-}
-
-void
-rkh_sma_setReady(RKH_SMA_T *const me)
-{
-    (void)me;
-}
-
-void
-rkh_sma_setUnready(RKH_SMA_T *const me)
-{
-    (void)me;
 }
 
 void

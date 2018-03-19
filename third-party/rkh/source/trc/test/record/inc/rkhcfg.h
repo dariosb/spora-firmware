@@ -24,10 +24,11 @@
  *  You should have received a copy of the GNU General Public License along 
  *  with RKH, see copying.txt file.
  *
- * 	Contact information:
- * 	RKH web site:	http://sourceforge.net/projects/rkh-reactivesys/
- * 	e-mail:			francuccilea@gmail.com
- *
+ *  Contact information:
+ *  RKH site: http://vortexmakes.com/que-es/
+ *  RKH GitHub: https://github.com/vortexmakes/RKH
+ *  RKH Sourceforge: https://sourceforge.net/projects/rkh-reactivesys/
+ *  e-mail: lf@vortexmakes.com
  *  --------------------------------------------------------------------------
  *  File                     : rkhcfg.h
  *	Last updated for version : v2.4.04
@@ -315,14 +316,6 @@
 
 
 /* --- Configuration options related to SMA action featues ---------------- */
-
-/**
- *	If the #RKH_CFG_SMA_INIT_ARG_SMA_EN is set to 1 then the initial action 
- *	prototype will add as argument a pointer to state machine structure 
- *	#RKH_SMA_T. See #RKH_INIT_ACT_T definition.
- */
-
-#define RKH_CFG_SMA_INIT_ARG_SMA_EN		RKH_ENABLED
 
 /**
  *	If the #RKH_CFG_SMA_ENT_ARG_SMA_EN is set to 1 then the entry action 
