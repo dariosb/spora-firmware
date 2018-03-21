@@ -175,6 +175,7 @@ char *
 formatSporaData(SporaPacket *p, PushButton_t bst)
 {
 	jwOpen( jBuff, sizeof(jBuff), JW_OBJECT, JW_COMPACT );
+    jwObj_int( "cmd", SporaData );
     jwObj_int( "t", p->time );
     jwObj_int( "x", p->x );
     jwObj_int( "y", p->y );
@@ -186,6 +187,17 @@ formatSporaData(SporaPacket *p, PushButton_t bst)
     jwObj_int( "b", bst );
     jwObj_int( "h", spora_getCfg_motionThr() );
     jwObj_string( "n", spora_getCfg_name() );
+    jwClose();
+
+    return jBuff;
+}
+
+static
+char *
+formatSporaAck(void)
+{
+	jwOpen( jBuff, sizeof(jBuff), JW_OBJECT, JW_COMPACT );
+    jwObj_int( "cmd", SporaAck );
     jwClose();
 
     return jBuff;
@@ -254,6 +266,8 @@ updateCfg(Spora *const me, RKH_EVT_T *pe)
 
     spora_setCfg(&p->cfg);
     mpu9250_setMotionThreshold(p->cfg.motionThr);    
+
+    codeless_sendData(formatSporaAck());
 }
 
 /* ............................. Entry actions ............................. */

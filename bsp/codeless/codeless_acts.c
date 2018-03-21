@@ -81,7 +81,6 @@ static char *prx;
 
 static RKH_ROM_STATIC_EVENT(e_cmdOk, evOk);
 static RKH_STATIC_EVENT(e_cmdResp, evOk);
-static SporaCfg newCfg;
 static evtCfg e_cfg;
 
 /* ----------------------- Local function prototypes ----------------------- */
@@ -167,11 +166,21 @@ rcvOk(unsigned char data)
     *prx = '\0';
     prx = rxBuffer;
 
-    RKH_SET_STATIC_EVENT(&e_cfg, evSporaCfg);
-    e_cfg.cfg.motionThr = jRead_int(rxBuffer, "{'h'", NULL); 
-    jRead_string( rxBuffer, "{'n'", e_cfg.cfg.name, MAX_NAME_SIZE+1, NULL);
+    switch(jRead_int(rxBuffer, "{'cmd'", NULL))
+    {
+        case SporaConfig:
+            RKH_SET_STATIC_EVENT(&e_cfg, evSporaCfg);
+            e_cfg.cfg.motionThr = jRead_int(rxBuffer, "{'h'", NULL); 
+            jRead_string( rxBuffer, "{'n'", e_cfg.cfg.name, MAX_NAME_SIZE+1, NULL);
 
-    RKH_SMA_POST_FIFO(spora, CE(&e_cfg), &ssp);
+            RKH_SMA_POST_FIFO(spora, CE(&e_cfg), &ssp);
+            break;
+        
+        default:
+            break;
+    }
+
+
 }
 
 /* ------------------------------ End of file ------------------------------ */

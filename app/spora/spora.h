@@ -92,6 +92,13 @@ typedef enum Signals
 RKH_SMA_DCLR(spora);
 
 /* ------------------------------- Data types ------------------------------ */
+typedef enum
+{
+    SporaAck,
+    SporaData,
+    SporaConfig
+}SporaCommand;
+
 typedef struct
 {
     int16_t x;
