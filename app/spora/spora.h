@@ -84,6 +84,7 @@ typedef enum Signals
     evForceDisconnect,
     evMotionDetect,
     evSporaCfg,
+    evSporaGetCfg,
 
 	SPORA_NUM_EVENTS
 }Signals;
@@ -96,7 +97,8 @@ typedef enum
 {
     SporaAck,
     SporaData,
-    SporaConfig
+    SporaConfig,
+    SporaGetConfig
 }SporaCommand;
 
 typedef struct

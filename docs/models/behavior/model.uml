@@ -191,6 +191,10 @@
           <effect xmi:type="uml:OpaqueBehavior" xmi:id="_z4slQA2OEeiY0vWdPh000g" name="updateCfg(cfg)"/>
           <trigger xmi:id="_z4tMUA2OEeiY0vWdPh000g" name="evSporaCfg(cfg)"/>
         </transition>
+        <transition xmi:id="_31LMQC0nEeiI7ukfNdXgtQ" kind="internal" source="_yfOmgAdwEeiVZe6039K0-w" target="_yfOmgAdwEeiVZe6039K0-w">
+          <effect xmi:type="uml:OpaqueBehavior" xmi:id="_46MTkC0nEeiI7ukfNdXgtQ" name="sendCfg()"/>
+          <trigger xmi:id="_46M6oC0nEeiI7ukfNdXgtQ" name="evSporaGetCfg"/>
+        </transition>
         <subvertex xmi:type="uml:State" xmi:id="_o1eSYAXNEei64r585RhGNQ" name="steady">
           <region xmi:id="_tKfK0AXNEei64r585RhGNQ" name="steady">
             <transition xmi:id="_GQPHQAXOEei64r585RhGNQ" source="__AI6kAXJEei64r585RhGNQ" target="__nTBMAXJEei64r585RhGNQ"/>

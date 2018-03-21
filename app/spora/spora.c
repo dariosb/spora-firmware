@@ -104,6 +104,7 @@ static void disconnect(Spora *const me, RKH_EVT_T *pe);
 static void sendMotion(Spora *const me, RKH_EVT_T *pe);
 static void sendButton(Spora *const me, RKH_EVT_T *pe);
 static void updateCfg(Spora *const me, RKH_EVT_T *pe);
+static void sendCfg(Spora *const me, RKH_EVT_T *pe);
 
 /* ......................... Declares entry actions ........................ */
 static void unlinkedEntry(Spora *const me);
@@ -120,6 +121,7 @@ static void offMotion(Spora *const me);
 RKH_CREATE_COMP_STATE(steady, NULL, NULL, RKH_ROOT, &unlinked, &steadySHist);
 RKH_CREATE_TRANS_TABLE(steady)
     RKH_TRINT(evSporaCfg, NULL, &updateCfg),
+    RKH_TRINT(evSporaGetCfg, NULL, &sendCfg),
     RKH_TRREG(evMotionDetect, NULL, NULL, &motionDetect),
 RKH_END_TRANS_TABLE
 
@@ -147,6 +149,7 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_BASIC_STATE(motionDetect, onMotion, offMotion, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(motionDetect)
     RKH_TRINT(evSporaCfg, NULL, &updateCfg),
+    RKH_TRINT(evSporaGetCfg, NULL, &sendCfg),
     RKH_TRREG(evMotionIndicatorTout, NULL, NULL, &steadySHist),
 RKH_END_TRANS_TABLE
 
@@ -198,6 +201,19 @@ formatSporaAck(void)
 {
 	jwOpen( jBuff, sizeof(jBuff), JW_OBJECT, JW_COMPACT );
     jwObj_int( "cmd", SporaAck );
+    jwClose();
+
+    return jBuff;
+}
+
+static
+char *
+formatSporaCfg(void)
+{
+	jwOpen( jBuff, sizeof(jBuff), JW_OBJECT, JW_COMPACT );
+    jwObj_int( "cmd", SporaConfig );
+    jwObj_int( "h", spora_getCfg_motionThr() );
+    jwObj_string( "n", spora_getCfg_name() );
     jwClose();
 
     return jBuff;
@@ -268,6 +284,12 @@ updateCfg(Spora *const me, RKH_EVT_T *pe)
     mpu9250_setMotionThreshold(p->cfg.motionThr);    
 
     codeless_sendData(formatSporaAck());
+}
+
+static void
+sendCfg(Spora *const me, RKH_EVT_T *pe)
+{
+    codeless_sendData(formatSporaCfg());
 }
 
 /* ............................. Entry actions ............................. */

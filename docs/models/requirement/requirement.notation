@@ -1119,7 +1119,7 @@
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Ou8X0AW0Eei64r585RhGNQ"/>
       </children>
       <element xmi:type="uml:Class" href="requirement.uml#_FCS7gAH_EeiQcbGkhU0FSw"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Ou7wsQW0Eei64r585RhGNQ" x="1360" y="100"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Ou7wsQW0Eei64r585RhGNQ" x="1300" y="80" width="140" height="121"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_OvHW4wW0Eei64r585RhGNQ" type="StereotypeComment">
       <styles xmi:type="notation:TitleStyle" xmi:id="_OvHW5AW0Eei64r585RhGNQ"/>
