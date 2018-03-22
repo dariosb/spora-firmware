@@ -105,6 +105,7 @@ static void sendMotion(Spora *const me, RKH_EVT_T *pe);
 static void sendButton(Spora *const me, RKH_EVT_T *pe);
 static void updateCfg(Spora *const me, RKH_EVT_T *pe);
 static void sendCfg(Spora *const me, RKH_EVT_T *pe);
+static void sendData(Spora *const me, RKH_EVT_T *pe);
 
 /* ......................... Declares entry actions ........................ */
 static void unlinkedEntry(Spora *const me);
@@ -140,6 +141,7 @@ RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(linked, linkReady, linkLost, &steady, NULL);
 RKH_CREATE_TRANS_TABLE(linked)
+    RKH_TRINT(evSporaGetData, NULL, &sendData),
     RKH_TRREG(evMotionDetect, NULL, sendMotion, &motionDetect),
     RKH_TRREG(evDisconnected, NULL, NULL, &unlinked),
     RKH_TRREG(evPushbuttonLongPress, NULL, disconnect, &unlinked),
@@ -290,6 +292,26 @@ static void
 sendCfg(Spora *const me, RKH_EVT_T *pe)
 {
     codeless_sendData(formatSporaCfg());
+}
+
+static void
+sendData(Spora *const me, RKH_EVT_T *pe)
+{
+    static SporaPacket packet;
+    Mpu9250Data *q;
+    
+    q = mpu9250_getSamplerData();
+
+    packet.x = q->ax;
+    packet.y = q->ay;
+    packet.z = q->az;
+    packet.mx = q->mx;
+    packet.my = q->my;
+    packet.mz = q->mz;
+    packet.temp = q->temp;
+    packet.time = bsp_getTimeSec();
+
+    codeless_sendData(formatSporaData(&packet, RELEASE));
 }
 
 /* ............................. Entry actions ............................. */

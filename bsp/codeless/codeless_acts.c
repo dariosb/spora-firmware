@@ -81,6 +81,7 @@ static char *prx;
 
 static RKH_ROM_STATIC_EVENT(e_cmdOk, evOk);
 static RKH_ROM_STATIC_EVENT(e_sporaGetCfg, evSporaGetCfg);
+static RKH_ROM_STATIC_EVENT(e_sporaGetData, evSporaGetData);
 static RKH_STATIC_EVENT(e_cmdResp, evOk);
 static evtCfg e_cfg;
 
@@ -176,8 +177,13 @@ rcvOk(unsigned char data)
 
             RKH_SMA_POST_FIFO(spora, CE(&e_cfg), &ssp);
             break;
+
         case SporaGetConfig: 
             RKH_SMA_POST_FIFO(spora, CE(&e_sporaGetCfg), &ssp);
+            break;
+
+        case SporaGetData: 
+            RKH_SMA_POST_FIFO(spora, CE(&e_sporaGetData), &ssp);
             break;
 
         default:
