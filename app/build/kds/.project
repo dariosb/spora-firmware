@@ -122,6 +122,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/pushbutton</locationURI>
 		</link>
 		<link>
+			<name>source/bsp/rwflash</name>
+			<type>2</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/rwflash</locationURI>
+		</link>
+		<link>
 			<name>third-party/jRead/jRead.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/third-party/jRead/jRead/jRead.c</locationURI>

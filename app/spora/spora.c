@@ -225,6 +225,8 @@ formatSporaCfg(void)
 static void
 init(Spora *const me, RKH_EVT_T *pe)
 {
+    spora_initCfg();
+
     pushbutton_init();
     mpu9250_init();
     RKH_TMR_INIT(&me->tmr, &e_tmr, NULL);

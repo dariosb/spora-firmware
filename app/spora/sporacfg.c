@@ -51,46 +51,59 @@
 
 /* --------------------------------- Notes --------------------------------- */
 /* ----------------------------- Include files ----------------------------- */
+#include "fsl_common.h"
 #include "sporacfg.h"
+#include "rwflash.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 /* ------------------------------- Constants ------------------------------- */
-#define MOTION_THR_DFT  0xFE
-#define USER_NAME_DFT   "User Spora"
 /* ---------------------------- Local data types --------------------------- */
-static SporaCfg sporaCfg =
-{
-    MOTION_THR_DFT,
-    USER_NAME_DFT
-};
-
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
+static SporaCfg *sporaCfg;
+
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
 /* ---------------------------- Global functions --------------------------- */
 void
+spora_initCfg(void)
+{
+    if( rwflash_init() != true )
+    {
+        return;
+    }
+
+    if( rwflash_verify() != true )
+    {
+        rwflash_setDefaults();
+    }
+
+    sporaCfg = &RWFlashROM->cfg;
+}
+
+void
 spora_getCfg(SporaCfg *p)
 {
-    *p = sporaCfg;
+    *p = *sporaCfg;
 }
 
 uint8_t
 spora_getCfg_motionThr(void)
 {
-    return sporaCfg.motionThr;
+    return sporaCfg->motionThr;
 }
 
 char *
 spora_getCfg_name(void)
 {
-    return sporaCfg.name;
+    return sporaCfg->name;
 }
 
 void
 spora_setCfg(SporaCfg *p)
 {
-    sporaCfg = *p;
+    /* Working On It */
+    //*sporaCfg = *p;
 }
 
 /* ------------------------------ End of file ------------------------------ */

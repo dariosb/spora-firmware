@@ -33,10 +33,10 @@
  */
 
 /**
- *  \file       sporacfg.h
- *  \brief      This module handle configuration message an settings.
+ *  \file       rwflash.h
+ *  \brief      This module handle Read/Write Internal Flash Memory.
  *
- *  \ingroup    sporaCfg
+ *  \ingroup    rwflash
  */
 
 /* -------------------------- Development history -------------------------- */
@@ -50,11 +50,12 @@
  */
 
 /* --------------------------------- Module -------------------------------- */
-#ifndef __SPORACFG_H__
-#define __SPORACFG_H__
+#ifndef __RWFLASH_H__
+#define __RWFLASH_H__
 
 /* ----------------------------- Include files ----------------------------- */
 #include "rkh.h"
+#include "sporacfg.h"
 
 /* ---------------------- External C language linkage ---------------------- */
 #ifdef __cplusplus
@@ -63,23 +64,32 @@ extern "C" {
 
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
-#define MAX_NAME_SIZE   20
-#define MOTION_THR_DFT  0xFE
-#define USER_NAME_DFT   "User Spora"
+#define FLASH_SIZE          (FSL_FEATURE_FLASH_PFLASH_BLOCK_COUNT * \
+                                 FSL_FEATURE_FLASH_PFLASH_BLOCK_SIZE)
 
+#define RWFLASH_SIZE        FSL_FEATURE_FLASH_PFLASH_BLOCK_SECTOR_SIZE
+#define RWFLASH_START       (FLASH_SIZE-RWFLASH_SIZE)
+#define RWFLASH_END         (void *)(RWFLASH_START+sizeof(RWFlash))
+
+#define RWFLASH_CRC_START   (void *)(RWFLASH_START)
+#define RWFLASH_DATA_START  (void *)((RWFLASH_START + offsetof(RWFlash, cfg)))
+
+#define RWFlashROM          ((RWFlash *)(RWFLASH_START))
+    
 /* ------------------------------- Data types ------------------------------ */
-typedef struct
-{
-    int16_t motionThr;
-    char name[MAX_NAME_SIZE+1];
-}SporaCfg;
+typedef unsigned short RWFlashCRC;
 
+typedef struct 
+{
+    RWFlashCRC crc;
+    SporaCfg cfg;
+} __attribute__((aligned(4),packed)) RWFlash;
+    
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
-void spora_getCfg(SporaCfg *p);
-uint8_t spora_getCfg_motionThr(void);
-char *spora_getCfg_name(void);
-void spora_setCfg(SporaCfg *p);
+bool rwflash_init(void);
+bool rwflash_verify(void);
+bool rwflash_setDefaults(void);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus
