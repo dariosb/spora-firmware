@@ -60,50 +60,74 @@
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static SporaCfg *sporaCfg;
+static void *pCfg;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
+static
+void
+setDefaults(SporaCfg *p)
+{
+    memset(p, 0, sizeof(SporaCfg));
+
+    p->motionThr = MOTION_THR_DFT;
+
+    if (sizeof(USER_NAME_DFT) > MAX_NAME_SIZE)
+    	memcpy(p->name, USER_NAME_DFT, MAX_NAME_SIZE);
+    else
+    	memcpy(p->name, USER_NAME_DFT, sizeof(USER_NAME_DFT));
+}
+
+
+
 /* ---------------------------- Global functions --------------------------- */
 void
 spora_initCfg(void)
 {
-    if( rwflash_init() != true )
-    {
-        return;
-    }
+    rwflash_init(); 
 
-    if( rwflash_verify() != true )
+    if (rwflash_verify(&pCfg) != true)
     {
-        rwflash_setDefaults();
-    }
+        setDefaults(pCfg);
 
-    sporaCfg = &RWFlashROM->cfg;
+        RKH_ENTER_CRITICAL();
+        rwflash_program(pCfg, sizeof(SporaCfg));
+        RKH_EXIT_CRITICAL();
+    }
 }
 
 void
 spora_getCfg(SporaCfg *p)
 {
-    *p = *sporaCfg;
+    *p = *(SporaCfg *)pCfg;
 }
 
 uint8_t
 spora_getCfg_motionThr(void)
 {
-    return sporaCfg->motionThr;
+    return ((SporaCfg *)(pCfg))->motionThr;
 }
 
 char *
 spora_getCfg_name(void)
 {
-    return sporaCfg->name;
+    return ((SporaCfg *)(pCfg))->name;
 }
 
 void
 spora_setCfg(SporaCfg *p)
 {
-    /* Working On It */
-    //*sporaCfg = *p;
+    RKH_ENTER_CRITICAL();
+
+    if (rwflash_program(p, sizeof(SporaCfg)) != true)
+    {
+        if( rwflash_verify(&pCfg) != true )
+        {
+            setDefaults(pCfg);
+        }
+    }
+
+    RKH_EXIT_CRITICAL();
 }
 
 /* ------------------------------ End of file ------------------------------ */

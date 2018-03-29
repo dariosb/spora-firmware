@@ -74,7 +74,7 @@ extern "C" {
 #define RWFLASH_CRC_START   (void *)(RWFLASH_START)
 #define RWFLASH_DATA_START  (void *)((RWFLASH_START + offsetof(RWFlash, cfg)))
 
-#define RWFlashROM          ((RWFlash *)(RWFLASH_START))
+#define RomRWFlash           ((RWFlash *)(RWFLASH_START))
     
 /* ------------------------------- Data types ------------------------------ */
 typedef unsigned short RWFlashCRC;
@@ -88,8 +88,8 @@ typedef struct
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 bool rwflash_init(void);
-bool rwflash_verify(void);
-bool rwflash_setDefaults(void);
+bool rwflash_verify(void **p);
+bool rwflash_program(void *p, uint32_t len);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

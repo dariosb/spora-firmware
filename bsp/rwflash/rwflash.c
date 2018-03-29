@@ -61,7 +61,7 @@
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
 /* ---------------------------- Local variables ---------------------------- */
-static RWFlash rwFlashRAM;
+static RWFlash RamRWFlash;
 static flash_config_t mFlash;
 
 /* ----------------------- Local function prototypes ----------------------- */
@@ -79,20 +79,6 @@ getCRC(void *start, unsigned size)
     }
 
     return (~sum + 1);
-}
-
-static
-void
-setDefaults(RWFlash *p)
-{
-    memset(p, 0, sizeof(RWFlash));
-
-    p->cfg.motionThr = MOTION_THR_DFT;
-
-    if(sizeof(USER_NAME_DFT) > MAX_NAME_SIZE)
-    	memcpy(p->cfg.name, USER_NAME_DFT, MAX_NAME_SIZE);
-    else
-    	memcpy(p->cfg.name, USER_NAME_DFT, sizeof(USER_NAME_DFT));
 }
 
 /* ---------------------------- Global functions --------------------------- */
@@ -130,20 +116,33 @@ rwflash_init(void)
 }
 
 bool
-rwflash_verify(void)
+rwflash_verify(void **p)
 {
-    return (getCRC(RWFLASH_DATA_START, sizeof(SporaCfg)) != RWFlashROM->crc) ?
-           false : true;
+    if (getCRC(RWFLASH_DATA_START, sizeof(SporaCfg)) != RomRWFlash->crc)
+    {
+        *p = &RamRWFlash.cfg;
+        return false;
+    }
+    
+    *p = &RomRWFlash->cfg;
+    return true;
 }
 
 bool
-rwflash_program(RWFlash *p)
+rwflash_program(void *p, uint32_t len)
 {
     status_t result; 
     uint32_t failAddr, failDat;    
 
-    p->crc = getCRC(&p->cfg, sizeof(SporaCfg));
+    if(len > RWFLASH_SIZE)
+        return false;
     
+    if(p == NULL)
+        return false;
+
+    RamRWFlash.crc = getCRC(p, len);
+    RamRWFlash.cfg = *(SporaCfg*)(p);
+
     result = FLASH_Erase(&mFlash, RWFLASH_START, RWFLASH_SIZE,
                                                    kFLASH_ApiEraseKey);
     if (kStatus_FLASH_Success != result)
@@ -158,34 +157,22 @@ rwflash_program(RWFlash *p)
         return false;
     }
     
-    result = FLASH_Program(&mFlash, RWFLASH_START, (uint32_t *)p, 
-                                                   sizeof(rwFlashRAM));
+    result = FLASH_Program(&mFlash, RWFLASH_START, &RamRWFlash, 
+                                                    sizeof(RamRWFlash));
     if (kStatus_FLASH_Success != result)
     {
         return false;
     }
 
     result = FLASH_VerifyProgram(&mFlash, RWFLASH_START, sizeof(RWFlash),
-                                  (uint32_t *)p,
-                                  kFLASH_MarginValueUser, &failAddr, &failDat);
+                                  &RamRWFlash, kFLASH_MarginValueUser, 
+                                  &failAddr, &failDat);
     if (kStatus_FLASH_Success != result)
     {
         return false;
     } 
 
     return true;
-    
-}
-
-bool
-rwflash_setDefaults(void)
-{
-    status_t result;
-    uint32_t failAddr, failDat;
-
-    setDefaults(&rwFlashRAM);
-
-    rwflash_program(&rwFlashRAM);
 }
 
 /* ------------------------------ End of file ------------------------------ */
