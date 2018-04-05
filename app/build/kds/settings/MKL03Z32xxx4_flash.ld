@@ -49,7 +49,7 @@
 ENTRY(Reset_Handler)
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0200;
-STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0100;
+STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0050;
 
 /* Specify the memory areas */
 MEMORY

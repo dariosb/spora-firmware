@@ -90,9 +90,9 @@ spora_initCfg(void)
     {
         setDefaults(pCfg);
 
-        RKH_ENTER_CRITICAL();
+        RKH_DIS_INTERRUPT();
         rwflash_program(pCfg, sizeof(SporaCfg));
-        RKH_EXIT_CRITICAL();
+        RKH_ENA_INTERRUPT();
     }
 }
 
@@ -117,7 +117,7 @@ spora_getCfg_name(void)
 void
 spora_setCfg(SporaCfg *p)
 {
-    RKH_ENTER_CRITICAL();
+	RKH_DIS_INTERRUPT();
 
     if (rwflash_program(p, sizeof(SporaCfg)) != true)
     {
@@ -127,7 +127,7 @@ spora_setCfg(SporaCfg *p)
         }
     }
 
-    RKH_EXIT_CRITICAL();
+    RKH_ENA_INTERRUPT();
 }
 
 /* ------------------------------ End of file ------------------------------ */

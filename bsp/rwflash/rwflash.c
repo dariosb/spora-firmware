@@ -157,7 +157,7 @@ rwflash_program(void *p, uint32_t len)
         return false;
     }
     
-    result = FLASH_Program(&mFlash, RWFLASH_START, &RamRWFlash, 
+    result = FLASH_Program(&mFlash, RWFLASH_START, (uint32_t *)&RamRWFlash,
                                                     sizeof(RamRWFlash));
     if (kStatus_FLASH_Success != result)
     {
@@ -165,8 +165,8 @@ rwflash_program(void *p, uint32_t len)
     }
 
     result = FLASH_VerifyProgram(&mFlash, RWFLASH_START, sizeof(RWFlash),
-                                  &RamRWFlash, kFLASH_MarginValueUser, 
-                                  &failAddr, &failDat);
+    		       (const uint32_t *)&RamRWFlash, kFLASH_MarginValueUser,
+                   &failAddr, &failDat);
     if (kStatus_FLASH_Success != result)
     {
         return false;

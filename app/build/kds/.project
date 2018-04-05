@@ -222,19 +222,9 @@
 			<locationURI>PARENT-3-PROJECT_LOC/third-party/rkh/source/tmr/src/rkhtmr.c</locationURI>
 		</link>
 		<link>
-			<name>third-party/rkh/rkhtrc_filter.c</name>
-			<type>1</type>
-			<location>F:/vortex/spora/spora-firmware/third-party/rkh/source/trc/src/rkhtrc_filter.c</location>
-		</link>
-		<link>
 			<name>third-party/rkh/rkhtrc_record.c</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/third-party/rkh/source/trc/src/rkhtrc_record.c</locationURI>
-		</link>
-		<link>
-			<name>third-party/rkh/rkhtrc_stream.c</name>
-			<type>1</type>
-			<location>F:/vortex/spora/spora-firmware/third-party/rkh/source/trc/src/rkhtrc_stream.c</location>
 		</link>
 		<link>
 			<name>third-party/ssp/ssp.c</name>

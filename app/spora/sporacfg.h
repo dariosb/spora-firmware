@@ -76,6 +76,7 @@ typedef struct
 
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
+void spora_initCfg(void);
 void spora_getCfg(SporaCfg *p);
 uint8_t spora_getCfg_motionThr(void);
 char *spora_getCfg_name(void);
