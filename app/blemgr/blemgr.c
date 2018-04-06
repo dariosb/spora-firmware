@@ -75,6 +75,7 @@ RKH_DCLR_COMP_STATE init, running;
 static void bleInit(BleMgr *const me, RKH_EVT_T *pe);
 
 /* ........................ Declares effect actions ........................ */
+static void cmdTout(BleMgr *const me, RKH_EVT_T *pe);
 static void sendReset(BleMgr *const me, RKH_EVT_T *pe);
 static void sendGetConnStatus(BleMgr *const me, RKH_EVT_T *pe);
 static void startAdvertising(BleMgr *const me, RKH_EVT_T *pe);
@@ -118,19 +119,19 @@ RKH_END_TRANS_TABLE
 RKH_CREATE_COMP_REGION_STATE(running, NULL, NULL, RKH_ROOT, &idle, NULL,
                              RKH_NO_HISTORY, NULL, NULL, NULL, NULL );
 RKH_CREATE_TRANS_TABLE(running)
-//    RKH_TRREG(evCmdTout, NULL, NULL, &failure),
     RKH_TRREG(evStopAdvertising, NULL, stopAdvertising, &pause),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(idle, idleEntry, idleExit, &running, NULL);
 RKH_CREATE_TRANS_TABLE(idle)
+    RKH_TRINT(evCmdTout, NULL, cmdTout),
     RKH_TRREG(evConnStatusTout, NULL, sendGetConnStatus, &waitConnStatus),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(waitConnStatus, NULL, NULL, &running, NULL);
 RKH_CREATE_TRANS_TABLE(waitConnStatus)
     RKH_TRREG(evOk, NULL, NULL, &idle),
-    RKH_TRREG(evCmdTout, NULL, NULL, &idle),
+    RKH_TRREG(evCmdTout, NULL, cmdTout, &idle),
 RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(pause, NULL, NULL, RKH_ROOT, NULL);
@@ -167,6 +168,16 @@ bleInit(BleMgr *const me, RKH_EVT_T *pe)
 }
 
 /* ............................ Effect actions ............................. */
+static void
+cmdTout(BleMgr *const me, RKH_EVT_T *pe)
+{
+    (void)me;
+    (void)pe;
+        
+    codeless_init();
+//    BSP_MSLEEP(100);
+}
+
 static void
 sendReset(BleMgr *const me, RKH_EVT_T *pe)
 {
