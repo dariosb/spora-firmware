@@ -86,6 +86,7 @@ void bsp_toggleMotionLed(void);
 #define bsp_setBleFailureLed(x) bsp_setMotionLed(x)
 #define bsp_toggleBleFailureLed(x) bsp_toggleMotionLed(x)
 void bsp_setBleConnectionLed(bool state);
+void bsp_setBatteryLed(bool state);
 
 uint32_t bsp_getTimeSec(void);
 

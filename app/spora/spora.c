@@ -60,6 +60,7 @@
 #include "codeless_cmd.h"
 #include "mpu9250.h"
 #include "pushbutton.h"
+#include "battery.h"
 #include "bsp.h"
 
 /* ----------------------------- Local macros ------------------------------ */
@@ -109,13 +110,15 @@ static void sendData(Spora *const me, RKH_EVT_T *pe);
 
 /* ......................... Declares entry actions ........................ */
 static void unlinkedEntry(Spora *const me);
-static void linkReady(Spora *const me);
+static void linkStatusOn(Spora *const me);
 static void onMotion(Spora *const me);
+static void battStatEnable(Spora *const me);
 
 /* ......................... Declares exit actions ......................... */
 static void unlinkedExit(Spora *const me);
-static void linkLost(Spora *const me);
+static void linkStatusOff(Spora *const me);
 static void offMotion(Spora *const me);
+static void battStatDisable(Spora *const me);
 
 /* ............................ Declares guards ............................ */
 /* ........................ States and pseudostates ........................ */
@@ -134,12 +137,12 @@ RKH_CREATE_TRANS_TABLE(unlinked)
     RKH_TRREG(evConnected, NULL, NULL, &linked),
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(hiden, NULL, NULL, &steady, NULL);
+RKH_CREATE_BASIC_STATE(hiden, battStatEnable, battStatDisable, &steady, NULL);
 RKH_CREATE_TRANS_TABLE(hiden)
     RKH_TRREG(evPushbuttonLongPress, NULL, setDiscoverable, &unlinked),
 RKH_END_TRANS_TABLE
 
-RKH_CREATE_BASIC_STATE(linked, linkReady, linkLost, &steady, NULL);
+RKH_CREATE_BASIC_STATE(linked, linkStatusOn, linkStatusOff, &steady, NULL);
 RKH_CREATE_TRANS_TABLE(linked)
     RKH_TRINT(evSporaGetData, NULL, &sendData),
     RKH_TRREG(evMotionDetect, NULL, sendMotion, &motionDetect),
@@ -150,6 +153,7 @@ RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(motionDetect, onMotion, offMotion, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(motionDetect)
+    RKH_TRREG(evConnected, NULL, NULL, &linked),
     RKH_TRINT(evSporaCfg, NULL, &updateCfg),
     RKH_TRINT(evSporaGetCfg, NULL, &sendCfg),
     RKH_TRREG(evMotionIndicatorTout, NULL, NULL, &steadySHist),
@@ -229,6 +233,7 @@ init(Spora *const me, RKH_EVT_T *pe)
 
     pushbutton_init();
     mpu9250_init();
+    battery_init();
     RKH_TMR_INIT(&me->tmr, &e_tmr, NULL);
 }
 
@@ -320,12 +325,13 @@ sendData(Spora *const me, RKH_EVT_T *pe)
 static void
 unlinkedEntry(Spora *const me)
 {
+    battStatEnable(me);
     RKH_SET_STATIC_EVENT(&e_tmr, evUnlikedTout);
     RKH_TMR_ONESHOT(&me->tmr, spora, UNLINKED_TIMEOUT);
 }
 
 static void
-linkReady(Spora *const me)
+linkStatusOn(Spora *const me)
 {
     bsp_setBleConnectionLed(true);
 }
@@ -338,15 +344,22 @@ onMotion(Spora *const me)
     RKH_TMR_ONESHOT(&me->tmr, spora, MOTION_DET_TIME);
 }
 
+static void
+battStatEnable(Spora *const me)
+{
+    battery_statusEnable();
+}
+
 /* ............................. Exit actions .............................. */
 static void
 unlinkedExit(Spora *const me)
 {
     rkh_tmr_stop(&me->tmr); 
+    battStatDisable(me);
 }
 
 static void
-linkLost(Spora *const me)
+linkStatusOff(Spora *const me)
 {
     bsp_setBleConnectionLed(false);
 }
@@ -356,6 +369,12 @@ offMotion(Spora *const me)
 {
     bsp_setMotionLed(false);
     rkh_tmr_stop(&me->tmr); 
+}
+
+static void
+battStatDisable(Spora *const me)
+{
+    battery_statusDisable();
 }
 
 /* ................................ Guards ................................. */

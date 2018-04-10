@@ -87,6 +87,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/bsp/assert.c</locationURI>
 		</link>
 		<link>
+			<name>source/bsp/battery</name>
+			<type>2</type>
+			<locationURI>PARENT-3-PROJECT_LOC/bsp/battery</locationURI>
+		</link>
+		<link>
 			<name>source/bsp/board</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>

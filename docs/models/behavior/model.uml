@@ -195,6 +195,9 @@
           <effect xmi:type="uml:OpaqueBehavior" xmi:id="_46MTkC0nEeiI7ukfNdXgtQ" name="sendCfg()"/>
           <trigger xmi:id="_46M6oC0nEeiI7ukfNdXgtQ" name="evSporaGetCfg"/>
         </transition>
+        <transition xmi:id="_qSVxwDxvEeigxJiYaL1qrA" source="_yfOmgAdwEeiVZe6039K0-w" target="_AQP3kAXKEei64r585RhGNQ">
+          <trigger xmi:id="_tOKCoDxvEeigxJiYaL1qrA" name="evConnected"/>
+        </transition>
         <subvertex xmi:type="uml:State" xmi:id="_o1eSYAXNEei64r585RhGNQ" name="steady">
           <region xmi:id="_tKfK0AXNEei64r585RhGNQ" name="steady">
             <transition xmi:id="_GQPHQAXOEei64r585RhGNQ" source="__AI6kAXJEei64r585RhGNQ" target="__nTBMAXJEei64r585RhGNQ"/>
@@ -228,13 +231,19 @@
               <effect xmi:type="uml:OpaqueBehavior" xmi:id="_87fBsC3KEeiqcdQQ1ZOIQA" name="sendData()"/>
               <trigger xmi:id="_87fowC3KEeiqcdQQ1ZOIQA" name="evSporaGetData"/>
             </transition>
-            <subvertex xmi:type="uml:State" xmi:id="__nTBMAXJEei64r585RhGNQ" name="unlinked"/>
+            <subvertex xmi:type="uml:State" xmi:id="__nTBMAXJEei64r585RhGNQ" name="unlinked">
+              <entry xmi:type="uml:OpaqueBehavior" xmi:id="_mDKoUDx_EeigxJiYaL1qrA" name="battStatEnable()"/>
+              <exit xmi:type="uml:OpaqueBehavior" xmi:id="_gf4wgDyAEeigxJiYaL1qrA" name="battStatDisable()"/>
+            </subvertex>
             <subvertex xmi:type="uml:Pseudostate" xmi:id="__AI6kAXJEei64r585RhGNQ" name="Initial1"/>
             <subvertex xmi:type="uml:State" xmi:id="_AQP3kAXKEei64r585RhGNQ" name="linked">
-              <entry xmi:type="uml:OpaqueBehavior" xmi:id="_Xc52wAe_EeicwMZx6sE2Ig" name="linkReady()"/>
-              <exit xmi:type="uml:OpaqueBehavior" xmi:id="_YF038Ae_EeicwMZx6sE2Ig" name="linkLost()"/>
+              <entry xmi:type="uml:OpaqueBehavior" xmi:id="_Xc52wAe_EeicwMZx6sE2Ig" name="linkStatusOn()"/>
+              <exit xmi:type="uml:OpaqueBehavior" xmi:id="_YF038Ae_EeicwMZx6sE2Ig" name="linkStatusOff()"/>
             </subvertex>
-            <subvertex xmi:type="uml:State" xmi:id="_uJkdsAXXEei64r585RhGNQ" name="hiden"/>
+            <subvertex xmi:type="uml:State" xmi:id="_uJkdsAXXEei64r585RhGNQ" name="hiden">
+              <entry xmi:type="uml:OpaqueBehavior" xmi:id="_HvwewDyAEeigxJiYaL1qrA" name="battStatEnable()"/>
+              <exit xmi:type="uml:OpaqueBehavior" xmi:id="_juBgcDyAEeigxJiYaL1qrA" name="battStatDisable()"/>
+            </subvertex>
             <subvertex xmi:type="uml:Pseudostate" xmi:id="_TY9coAdxEeiVZe6039K0-w" name="ShallowHistory2" kind="shallowHistory"/>
           </region>
         </subvertex>

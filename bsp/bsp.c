@@ -53,6 +53,7 @@
 #include "pin_mux.h"
 #include "mpu9250.h"
 #include "pushbutton.h"
+#include "battery.h"
 #include "bsp.h"
 #include "blemgr.h"
 #include "codeless.h"
@@ -96,6 +97,7 @@ SysTick_Handler(void)
 	RKH_TIM_TICK(0);
     pushbutton_tick();
     mpu9250_sampler();
+    battery_sampler();
     
     if(tickCounter && --tickCounter == 0)
     {
@@ -220,6 +222,12 @@ void
 bsp_toggleMotionLed(void)
 {
 	LED_RED_TOGGLE();
+}
+
+void
+bsp_setBatteryLed(bool state)
+{
+	state == true ? LED_GREEN_ON() : LED_GREEN_OFF();
 }
 
 uint32_t
