@@ -74,8 +74,8 @@ typedef enum
     stDisabled
 } BatteryState;
 
-#define BATTERY_SAMPLE_TICK     RKH_TIME_MS(200)
-#define SEQUENCE_KEEPALIVE_TIME (10000/BATTERY_SAMPLE_TICK)
+#define BATTERY_SAMPLE_TICK     RKH_TIME_MS(100)
+#define SEQUENCE_KEEPALIVE_TIME (RKH_TIME_MS(10000)/BATTERY_SAMPLE_TICK)
  
 /* ---------------------------- Local data types --------------------------- */
 /* ---------------------------- Global variables --------------------------- */
@@ -170,7 +170,7 @@ battery_sampler(void)
         case stSeqBlue:
             bsp_setBatteryLed(false);
             bsp_setBleConnectionLed(true);
-            state = stIdle;
+            state = stSeqOff;
             break;
 
         case stSeqOff:

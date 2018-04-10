@@ -134,6 +134,7 @@ RKH_CREATE_SHALLOW_HISTORY_STATE(steadySHist, &steady, NULL, NULL, NULL);
 RKH_CREATE_BASIC_STATE(unlinked, unlinkedEntry, unlinkedExit, &steady, NULL);
 RKH_CREATE_TRANS_TABLE(unlinked)
     RKH_TRREG(evUnlikedTout, NULL, setHiden, &hiden),
+    RKH_TRREG(evPushbuttonLongPress, NULL, setHiden, &hiden),
     RKH_TRREG(evConnected, NULL, NULL, &linked),
 RKH_END_TRANS_TABLE
 
@@ -153,7 +154,6 @@ RKH_END_TRANS_TABLE
 
 RKH_CREATE_BASIC_STATE(motionDetect, onMotion, offMotion, RKH_ROOT, NULL);
 RKH_CREATE_TRANS_TABLE(motionDetect)
-    RKH_TRREG(evConnected, NULL, NULL, &linked),
     RKH_TRINT(evSporaCfg, NULL, &updateCfg),
     RKH_TRINT(evSporaGetCfg, NULL, &sendCfg),
     RKH_TRREG(evMotionIndicatorTout, NULL, NULL, &steadySHist),
