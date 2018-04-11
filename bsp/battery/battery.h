@@ -61,12 +61,18 @@ extern "C" {
 /* --------------------------------- Macros -------------------------------- */
 /* -------------------------------- Constants ------------------------------ */
 /* ------------------------------- Data types ------------------------------ */
+typedef enum
+{
+    bleInScan,
+    bleHiden
+} BleScanStatus;
+
 /* -------------------------- External variables --------------------------- */
 /* -------------------------- Function prototypes -------------------------- */
 void battery_init(void);
 void battery_sampler(void);
 void battery_statusDisable(void);
-void battery_statusEnable(void);
+void battery_statusEnable(BleScanStatus ble);
 
 /* -------------------- External C language linkage end -------------------- */
 #ifdef __cplusplus

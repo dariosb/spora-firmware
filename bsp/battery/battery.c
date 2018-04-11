@@ -54,6 +54,7 @@
 #include "rkh.h"
 #include "bsp.h"
 #include "fsl_gpio.h"
+#include "battery.h"
 
 /* ----------------------------- Local macros ------------------------------ */
 #define pinRead()                GPIO_PinRead(BATTERY_STATUS_GPIO, \
@@ -83,6 +84,7 @@ typedef enum
 static unsigned char state;
 static bool running = false;
 static uint32_t sampleTick, sequenceTick;
+static BleScanStatus currentBleScanStatus;
 
 /* ----------------------- Local function prototypes ----------------------- */
 /* ---------------------------- Local functions ---------------------------- */
@@ -109,6 +111,7 @@ battery_init(void)
     state = stIdle;
     sampleTick = BATTERY_SAMPLE_TICK;
     sequenceTick = SEQUENCE_KEEPALIVE_TIME;
+    currentBleScanStatus = bleInScan;
     running = true;
 }
 
@@ -137,7 +140,8 @@ battery_sampler(void)
             {
                 SEQUENCE_TIMER_RELOAD();
                 bsp_setBatteryLed(false);
-                state = stSeqRed;
+
+                state = (currentBleScanStatus == bleInScan) ? stSeqBlue : stSeqRed;
             }
 
             break;
@@ -151,7 +155,8 @@ battery_sampler(void)
             {
                 SEQUENCE_TIMER_RELOAD();
                 bsp_setBatteryLed(false);
-                state = stSeqRed;
+
+                state = (currentBleScanStatus == bleInScan) ? stSeqBlue : stSeqRed;
             }
 
             break;
@@ -201,11 +206,12 @@ battery_statusDisable(void)
 }
 
 void
-battery_statusEnable(void)
+battery_statusEnable(BleScanStatus ble)
 {
     RKH_ENTER_CRITICAL();
 
     state = stIdle;
+    currentBleScanStatus = ble;
 
     RKH_EXIT_CRITICAL();
 }

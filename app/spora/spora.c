@@ -325,7 +325,7 @@ sendData(Spora *const me, RKH_EVT_T *pe)
 static void
 unlinkedEntry(Spora *const me)
 {
-    battStatEnable(me);
+	battery_statusEnable(bleInScan);
     RKH_SET_STATIC_EVENT(&e_tmr, evUnlikedTout);
     RKH_TMR_ONESHOT(&me->tmr, spora, UNLINKED_TIMEOUT);
 }
@@ -347,7 +347,7 @@ onMotion(Spora *const me)
 static void
 battStatEnable(Spora *const me)
 {
-    battery_statusEnable();
+    battery_statusEnable(bleHiden);
 }
 
 /* ............................. Exit actions .............................. */
